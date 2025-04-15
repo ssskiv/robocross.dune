@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     ros-${ROS_DISTRO}-ros-base \
     ros-${ROS_DISTRO}-rqt \
     ros-${ROS_DISTRO}-rqt-common-plugins \
+    ros-${ROS_DISTRO}-realsense2-camera \
     # ros-${ROS_DISTRO}-gazebo-ros-pkgs \
     git \
     nano \
