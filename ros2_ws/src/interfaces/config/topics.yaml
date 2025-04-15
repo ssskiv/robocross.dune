@@ -1,0 +1,4 @@
+topics:
+  - /odom
+  - /cmd_vel
+  - /scan

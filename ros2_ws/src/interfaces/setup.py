@@ -1,5 +1,5 @@
 from setuptools import find_packages, setup
-
+from glob import glob
 package_name = 'interfaces'
 
 setup(
@@ -9,6 +9,7 @@ setup(
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
+        ('share/' + package_name+ '/config', glob('config/*')),
         ('share/' + package_name, ['package.xml']),
     ],
     install_requires=['setuptools', 'pymavlink', 'serial'],
@@ -23,6 +24,7 @@ setup(
             'arduino_serial = interfaces.arduino_serial_both_node:main',
             'mamba_serial = interfaces.mamba_serial_node:main',
             'mamba_mavlink = interfaces.mamba_mavlink_node:main',
+            'rosbag_recorder_node = interfaces.rosbag_recorder_node:main',
         ],
     },
 )
