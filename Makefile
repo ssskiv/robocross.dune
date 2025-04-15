@@ -6,7 +6,7 @@ build:
 
 run:
 	xhost +local:root
-	docker run -it --rm \
+	docker run -d \
 		--name $(CONTAINER_NAME) \
 		--net=host \
 		--privileged \
@@ -16,13 +16,15 @@ run:
 		--volume="$(HOME)/.Xauthority:/root/.Xauthority:rw" \
 		--env XAUTHORITY=/root/.Xauthority \
 		--volume="$(PWD)/ros2_ws:/root/ros2_ws" \
-		$(IMAGE_NAME) bash
+		$(IMAGE_NAME) tail -f /dev/null
+	
 start:
-	docker start $(CONTAINER_NAME) 
+	docker start $(CONTAINER_NAME)
+	 
 stop:
-	-docker stop $(CONTAINER_NAME)
+	docker stop $(CONTAINER_NAME)
 
 clean:
+	-docker stop $(CONTAINER_NAME)	
 	-docker rm $(CONTAINER_NAME)
-	-docker rmi $(IMAGE_NAME)
 
