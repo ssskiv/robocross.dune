@@ -1,0 +1,299 @@
+<?xml version="1.0" ?>
+<robot name="Rover" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find main)/urdf/materials.xacro" />
+<xacro:include filename="$(find main)/urdf/Rover.trans" />
+<xacro:include filename="$(find main)/urdf/Rover.gazebo" />
+
+<link name="dummy_base_link"></link>
+
+
+
+<link name="base_link">
+  <inertial>
+    <origin xyz="-6.106915349179497e-13 -0.02576797376370591 0.3408721287496551" rpy="0 0 -1.57"/>
+    <mass value="119.00094541166615"/>
+    <inertia ixx="11.367893" iyy="2.895706" izz="13.361019" ixy="-0.0" iyz="0.11269" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 1.57"/>
+    <geometry>
+      <mesh filename="file://$(find main)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="ok">
+      <color rgba="0.4 0.4 0.4 1.0"/>
+    </material>
+
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 1.57"/>
+    <geometry>
+      <mesh filename="file://$(find main)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="fr_wheel_1">
+  <inertial>
+    <origin xyz="-0.055000000000000104 1.0988582432869265e-07 -4.0437316894958997e-07" rpy="0 0 0"/>
+    <mass value="11.601995917486711"/>
+    <inertia ixx="0.209416" iyy="0.116407" izz="0.116407" ixy="0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.45 0.491042 -0.196191" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find main)/meshes/fr_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="blue">
+      <color rgba="0.1 0.1 0.1 1.0"/>
+    </material>
+  </visual>
+  <collision>
+    <origin xyz="0.45 0.491042 -0.196191" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find main)/meshes/fr_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="mr_wheel_1">
+  <inertial>
+    <origin xyz="-0.055000000000000104 1.0988582444665385e-07 -4.0437316886632324e-07" rpy="0 0 0"/>
+    <mass value="11.601995917486711"/>
+    <inertia ixx="0.209416" iyy="0.116407" izz="0.116407" ixy="0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.45 0.051042 -0.196191" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find main)/meshes/mr_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="blue">
+      <color rgba="0.1 0.1 0.1 1.0"/>
+    </material>
+
+  </visual>
+  <collision>
+    <origin xyz="0.45 0.051042 -0.196191" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find main)/meshes/mr_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="br_wheel_1">
+  <inertial>
+    <origin xyz="-0.055000000000000104 1.0988582443971495e-07 -4.0437316886632324e-07" rpy="0 0 0"/>
+    <mass value="11.601995917486711"/>
+    <inertia ixx="0.209416" iyy="0.116407" izz="0.116407" ixy="0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.45 -0.388958 -0.196191" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find main)/meshes/br_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="blue"/>
+  </visual>
+  <collision>
+    <origin xyz="0.45 -0.388958 -0.196191" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find main)/meshes/br_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="fl_wheel_1">
+  <inertial>
+    <origin xyz="0.05500000000000005 1.0988582432869265e-07 -4.0437316894958997e-07" rpy="0 0 0"/>
+    <mass value="11.601995917486711"/>
+    <inertia ixx="0.209416" iyy="0.116407" izz="0.116407" ixy="0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.45 0.491042 -0.196191" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find main)/meshes/fl_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="blue"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.45 0.491042 -0.196191" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find main)/meshes/fl_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="ml_wheel_1">
+  <inertial>
+    <origin xyz="0.05500000000000005 1.0988582444665385e-07 -4.0437316886632324e-07" rpy="0 0 0"/>
+    <mass value="11.601995917486711"/>
+    <inertia ixx="0.209416" iyy="0.116407" izz="0.116407" ixy="-0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.45 0.051042 -0.196191" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find main)/meshes/ml_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="blue"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.45 0.051042 -0.196191" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find main)/meshes/ml_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="bl_wheel_1">
+  <inertial>
+    <origin xyz="0.05500000000000005 1.0988582443971495e-07 -4.0437316886632324e-07" rpy="0 0 0"/>
+    <mass value="11.601995917486711"/>
+    <inertia ixx="0.209416" iyy="0.116407" izz="0.116407" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.45 -0.388958 -0.196191" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find main)/meshes/bl_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="blue"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.45 -0.388958 -0.196191" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find main)/meshes/bl_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+ 
+
+<link name="cam_link_1">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <cylinder radius="0.01" length="0.2"/>
+      <!-- <mesh filename="file://$(find main)/meshes/cam_link_1.stl" scale="0.001 0.001 0.001"/> -->
+    </geometry>
+    <material name="silver"/>
+  </visual>
+</link>
+
+<link name="cam_1">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.03 0.1 0.03"/>
+    </geometry>
+    <material name="silver">
+    </material>
+  </visual>
+</link>
+
+<gazebo reference="cam_1">
+  <sensor name="camera" type="camera">
+    <always_on>true</always_on>
+    <visualize>true</visualize>
+    <update_rate>30</update_rate>
+    <topic>camera/image</topic>
+    <gz_frame_id>cam_1</gz_frame_id>
+    <camera name="camera">
+      <camera_info_topic>camera/camera_info</camera_info_topic>
+      <horizontal_fov>1.8</horizontal_fov>
+      <image>
+        <format>R8G8B8</format>
+        <width>640</width>
+        <height>640</height>
+      </image>
+      <clip>
+        <near>0.1</near>
+        <far>20</far>
+      </clip>
+    </camera>
+  </sensor>
+</gazebo>
+
+<gazebo reference="cam_1">
+  <sensor name="depth_camera" type="depth">
+    <always_on>true</always_on>
+    <visualize>true</visualize>
+    <update_rate>10</update_rate>
+    <topic>depth_camera/image</topic>
+    <gz_frame_id>cam_1</gz_frame_id>
+    <camera name="depth_camera">
+      <camera_info_topic>depth_camera/camera_info</camera_info_topic>
+      <horizontal_fov>1.8</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>640</height>
+      </image>
+      <clip>
+        <near>0.1</near>
+        <far>20</far>
+      </clip>
+    </camera>
+  </sensor>
+</gazebo>
+
+<joint name="dummy" type="fixed">
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  <parent link="dummy_base_link"/>
+  <child link="base_link"/>
+</joint>
+
+
+<joint name="frw_to_body" type="continuous">
+  <origin xyz="0.491042 -0.35  0.196191" rpy="0 0 -1.57"/>
+  <parent link="base_link"/>
+  <child link="fr_wheel_1"/>
+  <axis xyz="-1.0 0.0 0.0"/>
+</joint>
+
+<joint name="mrw_to_body" type="continuous">
+  <origin xyz="0.051042 -0.35  0.196191" rpy="0 0 -1.57"/>
+  <parent link="base_link"/>
+  <child link="mr_wheel_1"/>
+  <axis xyz="-1.0 0.0 0.0"/>
+</joint>
+
+<joint name="brw_to_body" type="continuous">
+  <origin xyz="-0.388958 -0.35  0.196191" rpy="0 0 -1.57"/>
+  <parent link="base_link"/>
+  <child link="br_wheel_1"/>
+  <axis xyz="-1.0 0.0 0.0"/>
+</joint>
+
+<joint name="flw_to_body" type="continuous">
+  <origin xyz="0.491042 0.35  0.196191" rpy="0 0 -1.57"/>
+  <parent link="base_link"/>
+  <child link="fl_wheel_1"/>
+  <axis xyz="-1.0 0.0 0.0"/>
+</joint>
+
+<joint name="mlw_to_body" type="continuous">
+  <origin xyz="0.051042 0.35  0.196191" rpy="0 0 -1.57"/>
+  <parent link="base_link"/>
+  <child link="ml_wheel_1"/>
+  <axis xyz="-1.0 0.0 0.0"/>
+</joint>
+
+<joint name="blw_to_body" type="continuous">
+  <origin xyz="-0.388958 0.35  0.196191" rpy="0 0 -1.57"/>
+  <parent link="base_link"/>
+  <child link="bl_wheel_1"/>
+  <axis xyz="-1.0 0.0 0.0"/>
+</joint>
+
+<joint name="camlink_to_body" type="fixed">
+  <origin xyz="0.6 0 0.5" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="cam_link_1"/>
+</joint>
+
+<joint name="cam_to_camlink" type="fixed">
+  <origin xyz="0 0 0.1" rpy="0 0 0"/>
+  <parent link="cam_link_1"/>
+  <child link="cam_1"/>
+</joint>
+
+
+    
+
+</robot>

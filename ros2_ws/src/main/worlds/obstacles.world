@@ -70,7 +70,7 @@
       <self_collide>false</self_collide>
     </model>
     <include>
-      <uri>file:///aiww/src/gz_main/models/my_world_model</uri>
+      <uri>file:///bmstu/ros2_ws/src/main/models/my_world_model/model.sdf</uri>
       <name>my_world_model</name>
       <pose>0 0 0 0 0 0</pose>
     </include>

@@ -1,0 +1,92 @@
+<?xml version="1.0" ?>
+<robot name="Rover" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+<transmission name="frw_to_body_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="frw_to_body">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="frw_to_body_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="mrw_to_body_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="mrw_to_body">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="mrw_to_body_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="brw_to_body_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="brw_to_body">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="brw_to_body_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="flw_to_body_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="flw_to_body">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="flw_to_body_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="mlw_to_body_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="mlw_to_body">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="mlw_to_body_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="blw_to_body_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="blw_to_body">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="blw_to_body_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<!-- <transmission name="camlink_to_body_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="camlink_to_body">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="camlink_to_body_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="cam_to_camlink_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="cam_to_camlink">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="cam_to_camlink_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission> -->
+
+</robot>
