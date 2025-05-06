@@ -24,10 +24,10 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean
 
 # Set locale
-RUN locale-gen en_US en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+RUN locale-gen=en_US en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
 
 # Source ROS 2 on container start
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /root/.bashrc
