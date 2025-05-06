@@ -1,0 +1,192 @@
+<sdf version='1.10'>
+  <world name='empty'>
+    <scene>
+      <shadows>false</shadows>
+      <ambient>0.400000006 0.400000006 0.400000006 1</ambient>
+      <background>0.699999988 0.699999988 0.699999988 1</background>
+    </scene>
+    <physics name='1ms' type='ignored'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>25</real_time_update_rate>
+    </physics>
+    <plugin name='gz::sim::systems::Physics' filename='gz-sim-physics-system'/>
+    <plugin name='gz::sim::systems::UserCommands' filename='gz-sim-user-commands-system'/>
+    <plugin name='gz::sim::systems::SceneBroadcaster' filename='gz-sim-scene-broadcaster-system'/>
+    <plugin name='gz::sim::systems::Sensors' filename='gz-sim-sensors-system'>
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin name='gz::sim::systems::Contact' filename='gz-sim-contact-system'/>
+    <gravity>0 0 -9.8000000000000007</gravity>
+    <magnetic_field>5.5644999999999998e-06 2.2875799999999999e-05 -4.2388400000000002e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <model name='ground_plane'>
+      <static>true</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode/>
+            </friction>
+            <bounce/>
+            <contact/>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.800000012 0.800000012 0.800000012 1</ambient>
+            <diffuse>0.800000012 0.800000012 0.800000012 1</diffuse>
+            <specular>0.800000012 0.800000012 0.800000012 1</specular>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <enable_wind>false</enable_wind>
+      </link>
+      <pose>0 0 0 0 0 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+    <include>
+      <uri>file:///aiww/src/gz_main/models/my_world_model</uri>
+      <name>my_world_model</name>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+    <light name='sun' type='directional'>
+      <pose>0 0 10 0 0 0</pose>
+      <cast_shadows>true</cast_shadows>
+      <intensity>1</intensity>
+      <direction>-0.5 0.10000000000000001 -0.90000000000000002</direction>
+      <diffuse>0.800000012 0.800000012 0.800000012 1</diffuse>
+      <specular>0.200000003 0.200000003 0.200000003 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <linear>0.01</linear>
+        <constant>0.90000000000000002</constant>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+
+    <light name='spotlight' type='spot'>
+      <pose>10 10 3 0 0 0</pose>
+      <cast_shadows>true</cast_shadows>
+      <intensity>3</intensity>
+      <direction>0 0 -1</direction>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+      <attenuation>
+        <range>48</range>
+        <linear>0.71296298503875732</linear>
+        <constant>0.19556452333927155</constant>
+        <quadratic>0.0010000000474974513</quadratic>
+      </attenuation>
+      <spot>
+        <inner_angle>2.0999999046325684</inner_angle>
+        <outer_angle>2.5</outer_angle>
+        <falloff>2.7999999523162842</falloff>
+      </spot>
+    </light>
+
+    <light name='spotlight2' type='spot'>
+      <pose>10 -10 3 0 0 0</pose>
+      <cast_shadows>true</cast_shadows>
+      <intensity>3</intensity>
+      <direction>0 0 -1</direction>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+      <attenuation>
+        <range>48</range>
+        <linear>0.71296298503875732</linear>
+        <constant>0.19556452333927155</constant>
+        <quadratic>0.0010000000474974513</quadratic>
+      </attenuation>
+      <spot>
+        <inner_angle>2.0999999046325684</inner_angle>
+        <outer_angle>2.5</outer_angle>
+        <falloff>2.7999999523162842</falloff>
+      </spot>
+    </light>
+
+    <actor name="actor_walking">
+    <pose>0 0 1 0 0 0</pose>
+      <skin>
+          <filename>https://fuel.gazebosim.org/1.0/Mingfei/models/actor/tip/files/meshes/walk.dae</filename>
+          <scale>1.0</scale>
+      </skin>
+      <animation name="walk">
+          <filename>https://fuel.gazebosim.org/1.0/Mingfei/models/actor/tip/files/meshes/walk.dae</filename>
+          <interpolate_x>true</interpolate_x>
+      </animation>
+          <script>
+          <loop>true</loop>
+          <delay_start>0.000000</delay_start>
+          <auto_start>true</auto_start>
+          <trajectory id="0" type="walk" tension="0.6">
+              <waypoint>
+                  <time>0</time>
+                  <pose>0 0 1.0 0 0 0</pose>
+              </waypoint>
+              <waypoint>
+                  <time>2</time>
+                  <pose>2.0 0 1.0 0 0 0</pose>
+              </waypoint>
+              <waypoint>
+                  <time>2.5</time>
+                  <pose>2 0 1.0 0 0 1.57</pose>
+              </waypoint>
+              <waypoint>
+                  <time>4</time>
+                  <pose>2 2 1.0 0 0 1.57</pose>
+              </waypoint>
+              <waypoint>
+                  <time>4.5</time>
+                  <pose>2 2 1.0 0 0 3.142</pose>
+              </waypoint>
+              <waypoint>
+                  <time>6</time>
+                  <pose>0 2 1 0 0 3.142</pose>
+              </waypoint>
+              <waypoint>
+                  <time>6.5</time>
+                  <pose>0 2 1 0 0 -1.57</pose>
+              </waypoint>
+              <waypoint>
+                  <time>8</time>
+                  <pose>0 0 1.0 0 0 -1.57</pose>
+              </waypoint>
+              <waypoint>
+                  <time>8.5</time>
+                  <pose>0 0 1.0 0 0 0</pose>
+              </waypoint>
+          </trajectory>
+      </script>
+  </actor>
+  </world>
+</sdf>
