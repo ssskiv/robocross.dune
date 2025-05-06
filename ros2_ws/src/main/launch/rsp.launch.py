@@ -38,6 +38,15 @@ def generate_launch_description():
         # namespace="main_bot",
         parameters=[params]
     )
+
+    node_joint_state_publisher = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        output='screen',
+        # namespace="main_bot",
+        parameters=[params]
+    )
+
     rviz2 = Node(
             package='rviz2',
             namespace='',
@@ -57,5 +66,6 @@ def generate_launch_description():
             description='Use sim time if true'),
         # joint_state_publisher_gui, 
         node_robot_state_publisher,
+        node_joint_state_publisher,
         rviz2
     ])

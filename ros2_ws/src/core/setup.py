@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 from glob import glob
-package_name = 'interfaces'
+package_name = 'core'
 
 setup(
     name=package_name,
@@ -12,7 +12,7 @@ setup(
         ('share/' + package_name+ '/config', glob('config/*')),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools', 'pymavlink', 'serial'],
+    install_requires=['setuptools', 'serial'],
     zip_safe=True,
     maintainer='root',
     maintainer_email='ivanioshpa@gmail.com',
@@ -21,11 +21,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'arduino_serial = interfaces.arduino_serial_both_node:main',
-            'mamba_serial = interfaces.mamba_serial_node:main',
-            'mamba_mavlink = interfaces.mamba_mavlink_node:main',
-            'rosbag_recorder_node = interfaces.rosbag_recorder_node:main',
-            'uart_node = interfaces.uart_node:main',
+            'indicator_node = core.indicator_node:main',
+            'goal_checker_node = core.goal_checker_node:main',
+            'goal_sender_node = core.goal_sender_node:main',
         ],
     },
 )

@@ -70,6 +70,12 @@ RUN sudo wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrin
   && sudo apt-get install -y libgz-sim8-dev libgz-math8-dev libgz-common6-dev libgz-plugin3-dev \
   && sudo rm -rf /var/lib/apt/lists/*
 
+RUN sudo apt update && \
+    sudo apt install -y python3-serial python3-pymavlink && \
+    sudo rm -rf /var/lib/apt/lists/*
+
+RUN pip install pymavlink --no-cache-dir --break-system-packages
+
 # Source ROS 2 on container start
 # RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /bmstu/.bashrc
 # RUN echo "export PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\$ '" >> /bmstu/.bashrc

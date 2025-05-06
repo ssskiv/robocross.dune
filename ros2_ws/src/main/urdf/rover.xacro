@@ -5,7 +5,7 @@
 <xacro:include filename="$(find main)/urdf/Rover.trans" />
 <xacro:include filename="$(find main)/urdf/Rover.gazebo" />
 
-<link name="dummy_base_link"></link>
+<!-- <link name="dummy_base_link"></link> -->
 
 
 
@@ -214,7 +214,7 @@
   <sensor name="depth_camera" type="depth">
     <always_on>true</always_on>
     <visualize>true</visualize>
-    <update_rate>10</update_rate>
+    <update_rate>20</update_rate>
     <topic>depth_camera/image</topic>
     <gz_frame_id>cam_1</gz_frame_id>
     <camera name="depth_camera">
@@ -231,12 +231,12 @@
     </camera>
   </sensor>
 </gazebo>
-
+<!-- 
 <joint name="dummy" type="fixed">
-  <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  <origin xyz="0 0 0" rpy="0 0 0"/>
   <parent link="dummy_base_link"/>
   <child link="base_link"/>
-</joint>
+</joint> -->
 
 
 <joint name="frw_to_body" type="continuous">

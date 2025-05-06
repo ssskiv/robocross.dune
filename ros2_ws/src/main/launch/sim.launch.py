@@ -53,6 +53,11 @@ def generate_launch_description():
     '-name', 'my_bot', '-x', '1.0', '-y', '1.0', '-z', '1.0'],
     output = 'screen')
     
+    core = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory('main'), 'launch', 'robot.launch.py')]),
+            launch_arguments = {'no_sim' : 'false'}.items()
+        )
 
     return LaunchDescription([
         world_arg,
@@ -60,4 +65,5 @@ def generate_launch_description():
         rsp,
         ros_gz_bridge,
         spawn_entity,
+        core,
     ])
