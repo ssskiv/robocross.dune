@@ -5,8 +5,8 @@ set -e
 source /opt/ros/$ROS_DISTRO/setup.bash
 
 # Source workspace if built
-if [ -f /root/ros2_ws/install/setup.bash ]; then
-    source /root/ros2_ws/install/setup.bash
+if [ -f /bmstu/ros2_ws/install/setup.bash ]; then
+    source /bmstu/ros2_ws/install/setup.bash
 fi
 
 exec "$@"

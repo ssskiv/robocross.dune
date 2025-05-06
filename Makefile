@@ -1,21 +1,24 @@
 IMAGE_NAME=robocross
 CONTAINER_NAME=robocross
+UID:=${shell id -u}
 
 build:
-	docker build -t $(IMAGE_NAME) .
+	# docker build -t $(IMAGE_NAME) --build-arg UID=${UID} --progress=plain --no-cache .
+	docker build -t $(IMAGE_NAME) --build-arg UID=${UID} .
 
 run:
-	xhost +local:root
+	xhost +local:bmstu
 	docker run -d \
 		--name $(CONTAINER_NAME) \
 		--net=host \
+		-u 1000 \
 		--privileged \
 		--env DISPLAY=${DISPLAY} \
 		--env QT_X11_NO_MITSHM=1 \
 		--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-		--volume="$(HOME)/.Xauthority:/root/.Xauthority:rw" \
-		--env XAUTHORITY=/root/.Xauthority \
-		--volume="$(PWD)/ros2_ws:/root/ros2_ws" \
+		--volume="$(HOME)/.Xauthority:/bmstu/.Xauthority:rw" \
+		--env XAUTHORITY=/bmstu/.Xauthority \
+		--volume="$(PWD)/ros2_ws:/bmstu/ros2_ws" \
 		$(IMAGE_NAME) tail -f /dev/null
 	
 start:
