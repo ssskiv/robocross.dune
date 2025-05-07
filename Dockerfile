@@ -71,7 +71,7 @@ RUN sudo wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrin
   && sudo rm -rf /var/lib/apt/lists/*
 
 RUN sudo apt update && \
-    sudo apt install -y python3-serial python3-pymavlink && \
+    sudo apt install -y python3-serial && \
     sudo rm -rf /var/lib/apt/lists/*
 
 RUN pip install pymavlink --no-cache-dir --break-system-packages
@@ -90,6 +90,6 @@ WORKDIR /bmstu/ros2_ws
 
 # Create entrypoint
 COPY ./ros_entrypoint.sh /ros_entrypoint.sh
-RUN chmod +x /ros_entrypoint.sh
+RUN sudo chmod +x /ros_entrypoint.sh
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
