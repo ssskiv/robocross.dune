@@ -14,7 +14,16 @@ class IndicatorNode(Node):
 
     
     def on_status(self, msg):
-        pass
+        match msg.split()[0]:#предполагается разделение по пробелам, решение временное
+            case 'moving':
+                # publisher.publish('moving')
+                self.get_logger().info('Got moving')
+            case 'stop':
+                self.get_logger().info('Got stop')
+            case 'lights_on':
+                self.get_logger().info('Got lights_on')
+            case 'lights_off':
+                self.get_logger().info('Got lights_off')
 
 def main(args=None):
     rclpy.init(args=args)

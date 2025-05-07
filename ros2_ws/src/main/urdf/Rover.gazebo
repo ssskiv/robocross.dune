@@ -133,7 +133,7 @@
     <mu2 value="0.001"/>
 </gazebo>
 
-  <gazebo reference="laser_frame">
+  <!-- <gazebo reference="laser_frame">
           <sensor name="laser" type="gpu_lidar">
               <pose> 0 0 0 0 0 0 </pose>
               <visualize>true</visualize>
@@ -155,15 +155,15 @@
               <child_frame_id>base_footprint</child_frame_id>
               <gz_frame_id>laser_frame</gz_frame_id>
           </sensor>
-    </gazebo>
+    </gazebo> -->
 
 
 
-    <joint name="laser_joint" type="fixed">
+    <!-- <joint name="laser_joint" type="fixed">
         <parent link="base_link"/>
         <child link="laser_frame"/>
         <origin xyz="0.7 0 0.4" rpy="0 0 0"/>
-    </joint>
+    </joint> -->
 
    <xacro:macro name="inertial_cylinder" params="mass length radius *origin">
         <inertial>
@@ -174,7 +174,7 @@
                     izz="${(1/2) * mass * (radius*radius)}" />
         </inertial>
     </xacro:macro>
-  <link name="laser_frame">
+  <!-- <link name="laser_frame">
       <visual>
           <geometry>
               <cylinder radius="0.04" length="0.04"/>
@@ -188,7 +188,7 @@
       <xacro:inertial_cylinder mass="0.1" length="0.04" radius="0.04">
           <origin xyz="0 0 0" rpy="0 0 0"/>
       </xacro:inertial_cylinder>
-  </link>
+  </link> -->
 
 
 </robot>

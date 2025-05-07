@@ -226,7 +226,7 @@
       </image>
       <clip>
         <near>0.1</near>
-        <far>20</far>
+        <far>5</far>
       </clip>
     </camera>
   </sensor>
