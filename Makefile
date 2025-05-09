@@ -19,6 +19,8 @@ run:
 		--volume="$(HOME)/.Xauthority:/bmstu/.Xauthority:rw" \
 		--env XAUTHORITY=/bmstu/.Xauthority \
 		--volume="$(PWD)/ros2_ws:/bmstu/ros2_ws" \
+		--gpus=all \
+		-e NVIDIA_DRIVER_CAPABILITIES=all \
 		$(IMAGE_NAME) tail -f /dev/null
 	
 start:

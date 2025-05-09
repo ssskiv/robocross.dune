@@ -83,6 +83,28 @@ COPY ./bashrc  /tmp/bashrc
 RUN cat /tmp/bashrc >> /bmstu/.bashrc &&\
     rm -f /tmp/bashrc &&\
     chown -R bmstu:bmstu /bmstu
+    
+# Install NVIDIA OpenGL libraries and tools for verification
+# Install OpenGL libraries for both NVIDIA and Mesa fallback, plus tools
+RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+    libnvidia-gl-570 \
+    libgl1 \
+    libglu1-mesa \
+    mesa-utils \
+    nvidia-utils-570 \
+    && sudo rm -rf /var/lib/apt/lists/*
+
+# Create an entrypoint script to detect GPU and configure OpenGL
+RUN echo '#!/bin/bash\n\
+if command -v nvidia-smi > /dev/null 2>&1 && nvidia-smi > /dev/null 2>&1; then\n\
+    echo "NVIDIA GPU detected, configuring for NVIDIA OpenGL"\n\
+    export LIBGL_ALWAYS_INDIRECT=0\n\
+    export __GLX_VENDOR_LIBRARY_NAME=nvidia\n\
+else\n\
+    echo "No NVIDIA GPU detected, falling back to Mesa"\n\
+    export LIBGL_ALWAYS_INDIRECT=0\n\
+    export __GLX_VENDOR_LIBRARY_NAME=mesa\n\'
+#NVIDIA END
 
 USER bmstu
 # Set working directory
