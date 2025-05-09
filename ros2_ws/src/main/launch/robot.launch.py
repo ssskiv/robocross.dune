@@ -28,7 +28,7 @@ def generate_launch_description():
         name = 'ekf_filter_node',
         executable = 'ekf_node',
         output="screen",
-        parameters=[config_ekf],
+        parameters=[config_ekf, {'use_sim_time': use_sim_time}],
     )
     indicator_node = Node(
         package = 'core',
@@ -82,6 +82,12 @@ def generate_launch_description():
                 launch_arguments={'use_sim_time': use_sim_time, 'map_subscribe_transient_local': 'true', 'params_file': nav_params}.items()
     )
 
+    mapviz = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory(package_name), 'launch', 'mapviz.launch.py'
+        )]),
+        launch_arguments={'use_sim_time': use_sim_time}.items()
+    )
     #TODO!!!! Create/find and launch RealSense node !!!!     
 
     return LaunchDescription([
@@ -92,6 +98,7 @@ def generate_launch_description():
         goal_sender_node,
         uart_node,
         mavlink_node,
-        start_localization,
-        start_navigation,
+        # start_localization,
+        # start_navigation,
+        # mapviz,
     ])

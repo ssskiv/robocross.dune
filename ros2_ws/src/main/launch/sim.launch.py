@@ -49,9 +49,9 @@ def generate_launch_description():
     )
 
     spawn_entity = Node(package = 'ros_gz_sim', executable = 'create',
-    arguments = ['-topic', 'robot_description',
-    '-name', 'my_bot', '-x', '1.0', '-y', '1.0', '-z', '1.0'],
-    output = 'screen')
+        arguments = ['-topic', 'robot_description',
+        '-name', 'my_bot', '-x', '1.0', '-y', '1.0', '-z', '1.0'],
+        output = 'screen')
     
     robot = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(

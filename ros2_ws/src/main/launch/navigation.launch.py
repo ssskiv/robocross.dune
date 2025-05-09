@@ -47,10 +47,10 @@ def generate_launch_description():
         'planner_server',
         'behavior_server',
         'velocity_smoother',
-        'collision_monitor',
+        # 'collision_monitor',
         'bt_navigator',
         'waypoint_follower',
-        'docking_server',
+        # 'docking_server',
     ]
 
     # Map fully qualified names to relative ones so the node's namespace can be prepended.

@@ -231,6 +231,39 @@
     </camera>
   </sensor>
 </gazebo>
+<gazebo reference="cam_1">
+  <sensor name="tb3_gps" type="navsat">
+  <always_on>true</always_on>
+  <update_rate>10</update_rate>
+  <visualize>true</visualize>
+
+  <pose>0 0 0 0 0 0</pose>
+  <topic>gps</topic>
+  <gz_frame_id>cam_1</gz_frame_id>
+  <gps>
+    <position_sensing>
+      <horizontal>
+        <noise type="gaussian">
+          <mean>0.0</mean>
+          <stddev>0.00001</stddev>
+        </noise>
+      </horizontal>
+      <vertical>
+        <noise type="gaussian">
+          <mean>0.0</mean>
+          <stddev>0.00001</stddev>
+        </noise>
+      </vertical>
+    </position_sensing>
+  </gps>
+  <!-- <plugin name="my_gps_plugin" filename="libgazebo_ros_gps_sensor.so">
+    <ros>
+      <remapping>~/out:=/gps/fix</remapping>
+    </ros>
+  </plugin> -->
+</sensor>
+</gazebo>
+
 <!-- 
 <joint name="dummy" type="fixed">
   <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -282,7 +315,7 @@
 </joint>
 
 <joint name="camlink_to_body" type="fixed">
-  <origin xyz="0.6 0 0.5" rpy="0 0 0"/>
+  <origin xyz="0.6 0.0001 0.5" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="cam_link_1"/>
 </joint>

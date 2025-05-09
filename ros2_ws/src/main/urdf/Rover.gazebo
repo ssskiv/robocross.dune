@@ -165,6 +165,8 @@
         <origin xyz="0.7 0 0.4" rpy="0 0 0"/>
     </joint> -->
 
+
+
    <xacro:macro name="inertial_cylinder" params="mass length radius *origin">
         <inertial>
             <xacro:insert_block name="origin"/>

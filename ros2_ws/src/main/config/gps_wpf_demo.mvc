@@ -1,0 +1,69 @@
+capture_directory: "~"
+fixed_frame: map
+target_frame: map
+fix_orientation: false
+rotate_90: false
+enable_antialiasing: true
+show_displays: true
+show_status_bar: true
+show_capture_tools: true
+window_width: 1920
+window_height: 1016
+view_scale: 0.188637674
+offset_x: -19.3150578
+offset_y: 2.03316402
+use_latest_transforms: true
+background: "#a0a0a4"
+image_transport: raw
+displays:
+  - type: mapviz_plugins/tile_map
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      custom_sources:
+        - base_url: http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
+          max_zoom: 20
+          name: docker
+          type: wmts
+      bing_api_key: ""
+      source: docker
+  - type: mapviz_plugins/tf_frame
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      frame: base_link
+      color: "#00ff00"
+      draw_style: arrows
+      position_tolerance: 0
+      buffer_size: 1
+      static_arrow_sizes: true
+      arrow_size: 53
+  - type: mapviz_plugins/navsat
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /gps/fix
+      color: "#55aaff"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 1
+      qos_depth: 10
+      qos_history: 1
+      qos_reliability: 1
+      qos_durability: 2
+  - type: mapviz_plugins/occupancy_grid
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      alpha: 1
+      topic: /local_costmap/voxel_layer
+      update: true
+      scheme: map
+      qos_depth: 10
+      qos_history: 1
+      qos_reliability: 1
+      qos_durability: 2
