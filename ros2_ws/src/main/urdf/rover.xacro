@@ -224,7 +224,7 @@
 </gazebo>
 
 
-<gazebo reference="cam_1">
+<gazebo reference="base_link">
   <sensor name="gps" type="navsat">
   <always_on>true</always_on>
   <update_rate>20</update_rate>
@@ -232,8 +232,8 @@
 
   <pose>0 0 0 0 0 0</pose>
   <topic>gps</topic>
-  <gz_frame_id>odom</gz_frame_id>
-  <child_frame_id>base_link</child_frame_id>
+  <gz_frame_id>base_link</gz_frame_id>
+  <!-- <child_frame_id>base_link</child_frame_id> -->
   <gps>
     <position_sensing>
       <horizontal>

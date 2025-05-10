@@ -6,7 +6,7 @@
       <background>0.699999988 0.699999988 0.699999988 1</background>
     </scene>
     
-    <physics name='1ms' type='bullet'>
+    <physics name='1ms' type='ode'>
       <max_step_size>0.004</max_step_size>
       <real_time_factor>1.0</real_time_factor>
       <real_time_update_rate>25</real_time_update_rate>
@@ -92,11 +92,13 @@
       <uri>model:///bmstu/ros2_ws/src/main/models/my_world_model</uri>
             <pose>0 0 0 0 0 0</pose>
     </include> -->
-    <include>
+
+
+    <!-- <include>
       <uri>file:///bmstu/ros2_ws/src/main/worlds/1234/map.sdf</uri>
             <pose>-43.0 23.2 0 1.57 0 0</pose>
 
-    </include>
+    </include> -->
 
 <!--
     <model name='cylinder54'>
