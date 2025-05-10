@@ -165,6 +165,9 @@
 </link>
  
 
+
+
+
 <link name="cam_link_1">
   <visual>
     <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -262,48 +265,212 @@
   <child link="base_link"/>
 </joint> -->
 
+<link name="spring_fr">
+  <inertial>
+    <origin xyz="0.00005 0.00005  0.00005 " rpy="0 0 0"/>
+    <mass value="0.01"/>
+    <inertia ixx="0.0000006" iyy="0.0000006" izz="0.0000006" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.010 0.010 0.010"/>
+    </geometry>
+    <material name="silver">
+    </material>
+  </visual>
+</link>
+<joint name="fr_spring_to_body" type="prismatic">
+  <origin xyz="0.491042 -0.35  0.196191" rpy="0 0 0 "/>
+  <parent link="base_link"/>
+  <child link="spring_fr"/>
+  <axis xyz="0.0 0.0 1.0"/>
+  <limit lower="-0.05" upper="0.05" velocity="1.0" effort="10.0" />
+  <dynamics damping="500.0" spring_reference = "0.0" spring_stiffness = "10000.1" friction = "0.75"/>
+</joint>
+
 
 <joint name="frw_to_body" type="continuous">
-  <origin xyz="0.491042 -0.35  0.196191" rpy="0 0 -1.57"/>
-  <parent link="base_link"/>
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 -1.57"/>
+  <parent link="spring_fr"/>
   <child link="fr_wheel_1"/>
   <axis xyz="-1.0 0.0 0.0"/>
+
+</joint>
+
+<link name="spring_mr">
+  <inertial>
+    <origin xyz="0.0000000000000005 0.00000000000000000005 0.00000000000000000005" rpy="0 0 0"/>
+    <mass value="0.00000000000001"/>
+    <inertia ixx="0.0000006" iyy="0.0000006" izz="0.0000006" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.010 0.010 0.010"/>
+    </geometry>
+    <material name="silver">
+    </material>
+  </visual>
+</link>
+<joint name="mr_spring_to_body" type="prismatic">
+  <origin xyz="0.051042 -0.35  0.196191" rpy="0 0 0 "/>
+  <parent link="base_link"/>
+  <child link="spring_mr"/>
+  <axis xyz="0.0 0.0 1.0"/>
+  <limit lower="-0.05" upper="0.05" velocity="1.0" effort="10.0" />
+  <dynamics damping="500.0" spring_reference = "0.0" spring_stiffness = "10000.1" friction = "0.75"/>
 </joint>
 
 <joint name="mrw_to_body" type="continuous">
-  <origin xyz="0.051042 -0.35  0.196191" rpy="0 0 -1.57"/>
-  <parent link="base_link"/>
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 -1.57"/>
+  <parent link="spring_mr"/>
   <child link="mr_wheel_1"/>
   <axis xyz="-1.0 0.0 0.0"/>
 </joint>
 
-<joint name="brw_to_body" type="continuous">
-  <origin xyz="-0.388958 -0.35  0.196191" rpy="0 0 -1.57"/>
+
+
+<link name="spring_br">
+  <inertial>
+    <origin xyz="0.0000000000000005 0.00000000000000000005 0.00000000000000000005" rpy="0 0 0"/>
+    <mass value="0.00000000000001"/>
+    <inertia ixx="0.0000006" iyy="0.0000006" izz="0.0000006" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.010 0.010 0.010"/>
+    </geometry>
+    <material name="silver">
+    </material>
+  </visual>
+</link>
+<joint name="br_spring_to_body" type="prismatic">
+  <origin xyz="-0.388958 -0.35  0.196191" rpy="0 0 0 "/>
   <parent link="base_link"/>
+  <child link="spring_br"/>
+  <axis xyz="0.0 0.0 1.0"/>
+  <limit lower="-0.05" upper="0.05" velocity="1.0" effort="10.0" />
+  <dynamics damping="500.0" spring_reference = "0.0" spring_stiffness = "10000.1" friction = "0.75"/>
+</joint>
+
+<joint name="brw_to_body" type="continuous">
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 -1.57"/>
+  <parent link="spring_br"/>
   <child link="br_wheel_1"/>
   <axis xyz="-1.0 0.0 0.0"/>
 </joint>
 
-<joint name="flw_to_body" type="continuous">
-  <origin xyz="0.491042 0.35  0.196191" rpy="0 0 -1.57"/>
+
+
+
+<link name="spring_fl">
+  <inertial>
+    <origin xyz="0.0000000000000005 0.00000000000000000005 0.00000000000000000005" rpy="0 0 0"/>
+    <mass value="0.00000000000001"/>
+    <inertia ixx="0.0000006" iyy="0.0000006" izz="0.0000006" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.010 0.010 0.010"/>
+    </geometry>
+    <material name="silver">
+    </material>
+  </visual>
+</link>
+<joint name="fl_spring_to_body" type="prismatic">
+  <origin xyz="0.491042 0.35  0.196191" rpy="0 0 0 "/>
   <parent link="base_link"/>
+  <child link="spring_fl"/>
+  <axis xyz="0.0 0.0 1.0"/>
+<limit lower="-0.05" upper="0.05" velocity="1.0" effort="10.0" />
+  <dynamics damping="500.0" spring_reference = "0.0" spring_stiffness = "10000.1" friction = "0.75"/>
+</joint>
+
+<joint name="flw_to_body" type="continuous">
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 -1.57"/>
+  <parent link="spring_fl"/>
   <child link="fl_wheel_1"/>
   <axis xyz="-1.0 0.0 0.0"/>
 </joint>
 
-<joint name="mlw_to_body" type="continuous">
-  <origin xyz="0.051042 0.35  0.196191" rpy="0 0 -1.57"/>
+
+
+
+
+
+<link name="spring_ml">
+  <inertial>
+    <origin xyz="0.0000000000000005 0.00000000000000000005 0.00000000000000000005" rpy="0 0 0"/>
+    <mass value="0.00000000000001"/>
+    <inertia ixx="0.0000006" iyy="0.0000006" izz="0.0000006" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.010 0.010 0.010"/>
+    </geometry>
+    <material name="silver">
+    </material>
+  </visual>
+</link>
+<joint name="ml_spring_to_body" type="prismatic">
+  <origin xyz="0.051042 0.35  0.196191" rpy="0 0 0 "/>
   <parent link="base_link"/>
+  <child link="spring_ml"/>
+  <axis xyz="0.0 0.0 1.0"/>
+<limit lower="-0.05" upper="0.05" velocity="1.0" effort="10.0" />
+  <dynamics damping="500.0" spring_reference = "0.0" spring_stiffness = "10000.1" friction = "0.75"/>
+</joint>
+
+<joint name="mlw_to_body" type="continuous">
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 -1.57"/>
+  <parent link="spring_ml"/>
   <child link="ml_wheel_1"/>
   <axis xyz="-1.0 0.0 0.0"/>
 </joint>
 
-<joint name="blw_to_body" type="continuous">
-  <origin xyz="-0.388958 0.35  0.196191" rpy="0 0 -1.57"/>
+
+
+
+
+<link name="spring_bl">
+  <inertial>
+    <origin xyz="0.0000000000000005 0.00000000000000000005 0.00000000000000000005" rpy="0 0 0"/>
+    <mass value="0.00000000000001"/>
+    <inertia ixx="0.0000006" iyy="0.0000006" izz="0.0000006" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.010 0.010 0.010"/>
+    </geometry>
+    <material name="silver">
+    </material>
+  </visual>
+</link>
+<joint name="bl_spring_to_body" type="prismatic">
+  <origin xyz="-0.388958 0.35 0.196191" rpy="0 0 0 "/>
   <parent link="base_link"/>
+  <child link="spring_bl"/>
+  <axis xyz="0.0 0.0 1.0"/>
+<limit lower="-0.05" upper="0.05" velocity="1.0" effort="10.0" />
+  <dynamics damping="500.0" spring_reference = "0.0" spring_stiffness = "10000.1" friction = "0.75"/>
+</joint>
+
+
+<joint name="blw_to_body" type="continuous">
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 -1.57"/>
+  <parent link="spring_bl"/>
   <child link="bl_wheel_1"/>
   <axis xyz="-1.0 0.0 0.0"/>
 </joint>
+
+
+
+
 
 <joint name="camlink_to_body" type="fixed">
   <origin xyz="0.6 0.0001 0.5" rpy="0 0 0"/>
