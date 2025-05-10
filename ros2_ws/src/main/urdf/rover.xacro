@@ -187,26 +187,14 @@
   </visual>
 </link>
 
-<gazebo reference="cam_1">
-  <sensor name="camera" type="camera">
+<gazebo reference="base_link">
+  <sensor name="imu" type="imu">
     <always_on>true</always_on>
-    <visualize>true</visualize>
-    <update_rate>30</update_rate>
-    <topic>camera/image</topic>
-    <gz_frame_id>cam_1</gz_frame_id>
-    <camera name="camera">
-      <camera_info_topic>camera/camera_info</camera_info_topic>
-      <horizontal_fov>1.8</horizontal_fov>
-      <image>
-        <format>R8G8B8</format>
-        <width>640</width>
-        <height>640</height>
-      </image>
-      <clip>
-        <near>0.1</near>
-        <far>20</far>
-      </clip>
-    </camera>
+    <!-- <visualize>true</visualize> -->
+    <update_rate>20</update_rate>
+    <gz_frame_id>odom</gz_frame_id>
+    <!-- <child_frame_id>base_link</child_frame_id> -->
+    <topic>imu</topic>
   </sensor>
 </gazebo>
 
@@ -231,27 +219,29 @@
     </camera>
   </sensor>
 </gazebo>
+
+
 <gazebo reference="cam_1">
-  <sensor name="tb3_gps" type="navsat">
+  <sensor name="gps" type="navsat">
   <always_on>true</always_on>
-  <update_rate>10</update_rate>
+  <update_rate>20</update_rate>
   <visualize>true</visualize>
 
   <pose>0 0 0 0 0 0</pose>
   <topic>gps</topic>
-  <gz_frame_id>cam_1</gz_frame_id>
+  <gz_frame_id>odom</gz_frame_id>
   <gps>
     <position_sensing>
       <horizontal>
         <noise type="gaussian">
           <mean>0.0</mean>
-          <stddev>0.00001</stddev>
+          <stddev>0.0</stddev>
         </noise>
       </horizontal>
       <vertical>
         <noise type="gaussian">
           <mean>0.0</mean>
-          <stddev>0.00001</stddev>
+          <stddev>0.0</stddev>
         </noise>
       </vertical>
     </position_sensing>

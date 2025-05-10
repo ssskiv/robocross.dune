@@ -72,7 +72,7 @@ RUN sudo wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrin
 
 RUN sudo apt update && \
     sudo apt install -y python3-serial && \
-    sudo apt install ros-${ROS_DISTRO}-mapviz \
+    sudo apt install -y ros-${ROS_DISTRO}-mapviz \
         ros-${ROS_DISTRO}-mapviz-plugins \
         ros-${ROS_DISTRO}-tile-map \
         ros-${ROS_DISTRO}-multires-image && \

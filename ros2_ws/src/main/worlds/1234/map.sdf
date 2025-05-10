@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+  <model name="my_terrain">
+    <!-- Статический объект (не двигается) -->
+    <static>true</static>
+    
+    <!-- Ссылка на основную геометрию -->
+    <link name="base_link">
+      <!-- Визуальная часть (рендеринг) -->
+      <visual name="visual">
+        <geometry>
+          <!-- Загрузка .stl -->
+          <mesh>
+            <uri>file:///bmstu/ros2_ws/src/main/worlds/1234/map.obj</uri>
+            <scale>0.35 0.35 0.35</scale>  <!-- Масштаб (если нужно) -->
+          </mesh>
+        </geometry>
+        
+        <!-- Материал (если есть .tif-текстура) -->
+        <!-- <material>
+          <script>
+            <uri>file:///bmstu/ros2_ws/src/main/worlds/1234/texture.png</uri>
+            <name>CustomMaterial</name>
+          </script>
+        </material> -->
+      </visual>
+      
+      <!-- Коллизии (физика) -->
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>file:///bmstu/ros2_ws/src/main/worlds/1234/map.obj</uri>
+            <scale>0.35 0.35 0.35</scale> 
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

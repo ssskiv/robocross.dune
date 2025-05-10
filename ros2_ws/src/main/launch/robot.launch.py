@@ -23,12 +23,22 @@ def generate_launch_description():
 
 
     config_ekf= os.path.join(get_package_share_directory(package_name),'config','ekf_params.yaml')
+    # config_ekf2= os.path.join(get_package_share_directory(package_name),'config','ekf_params2.yaml')
+    
     ekf = Node(
         package = 'robot_localization',
-        name = 'ekf_filter_node',
+        name = 'ekf_filter_node_map',
         executable = 'ekf_node',
         output="screen",
         parameters=[config_ekf, {'use_sim_time': use_sim_time}],
+    )
+    ekf2 = Node(
+        package = 'robot_localization',
+        name = 'ekf_filter_node_odom',
+        executable = 'ekf_node',
+        output="screen",
+        parameters=[config_ekf, {'use_sim_time': use_sim_time}],
+        remappings=[('/odometry/filtered', '/odometry/raw')],
     )
     indicator_node = Node(
         package = 'core',
@@ -63,6 +73,15 @@ def generate_launch_description():
         condition=IfCondition(no_sim),
     )
     
+    gps_filter = Node(
+        package='robot_localization',
+        name = 'gps_filter_node',
+        executable='navsat_transform_node',
+        output='screen',
+        parameters=[],
+        remappings=[('/odometry/filtered', '/odometry/raw')]
+    )
+    
     nav_params = os.path.join(get_package_share_directory(package_name),'config','nav2_params.yaml')
     # nav_params = os.path.join(get_package_share_directory(package_name),'config','nav2_params_amcl.yaml')
     start_localization = IncludeLaunchDescription(
@@ -93,12 +112,14 @@ def generate_launch_description():
     return LaunchDescription([
         declare_use_sim_time,
         ekf,
+        ekf2,
+        gps_filter,
         indicator_node,
         goal_checker_node,
         goal_sender_node,
         uart_node,
         mavlink_node,
         # start_localization,
-        # start_navigation,
+        start_navigation,
         # mapviz,
     ])

@@ -18,6 +18,9 @@
       <render_engine>ogre2</render_engine>
     </plugin>
     <plugin name='gz::sim::systems::NavSat' filename='gz-sim-navsat-system'/>
+    <plugin filename="gz-sim-imu-system"
+        name="gz::sim::systems::Imu">
+</plugin>
     <spherical_coordinates>
       <!-- currently gazebo has a bug: instead of outputting lat, long, altitude in ENU
       (x = East, y = North and z = Up) as the default configurations, it's outputting (-E)(-N)U,
@@ -88,6 +91,11 @@
     <include>
       <uri>model:///bmstu/ros2_ws/src/main/models/my_world_model</uri>
             <pose>0 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>file:///bmstu/ros2_ws/src/main/worlds/1234/map.sdf</uri>
+            <pose>0 0 0 1.57 0 0</pose>
+
     </include>
 
 <!--
