@@ -6,8 +6,8 @@
       <background>0.699999988 0.699999988 0.699999988 1</background>
     </scene>
     
-    <physics name='1ms' type='ignored'>
-      <max_step_size>0.001</max_step_size>
+    <physics name='1ms' type='bullet'>
+      <max_step_size>0.004</max_step_size>
       <real_time_factor>1.0</real_time_factor>
       <real_time_update_rate>25</real_time_update_rate>
     </physics>
@@ -94,7 +94,7 @@
     </include> -->
     <include>
       <uri>file:///bmstu/ros2_ws/src/main/worlds/1234/map.sdf</uri>
-            <pose>0 0 0 1.57 0 0</pose>
+            <pose>-43.0 23.2 0 1.57 0 0</pose>
 
     </include>
 
