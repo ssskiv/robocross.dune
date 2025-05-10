@@ -88,10 +88,10 @@
       <!-- <self_collide>false</self_collide> -->
     </model>
     
-    <include>
+    <!-- <include>
       <uri>model:///bmstu/ros2_ws/src/main/models/my_world_model</uri>
             <pose>0 0 0 0 0 0</pose>
-    </include>
+    </include> -->
     <include>
       <uri>file:///bmstu/ros2_ws/src/main/worlds/1234/map.sdf</uri>
             <pose>0 0 0 1.57 0 0</pose>

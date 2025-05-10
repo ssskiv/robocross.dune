@@ -58,7 +58,7 @@ ekf_filter_node_map:
     
 
     print_diagnostics: true
-    debug: true
+    debug: false
 
     # acceleration_limits: [3.0, 3.0, 0.2, 3.0, 3.0, 3.0]
 
@@ -128,13 +128,13 @@ ekf_filter_node_odom:
   # ax    ay     az
     
     imu0_differential: false
-    imu0_relative: true
+    imu0_relative: false
     imu0_queue_size: 10
     imu0_remove_gravitational_acceleration: true
     
 
     print_diagnostics: true
-    debug: true
+    debug: false
 
     acceleration_limits: [3.0, 3.0, 0.2, 3.0, 3.0, 3.0]
 

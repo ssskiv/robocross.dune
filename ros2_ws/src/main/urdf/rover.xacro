@@ -187,13 +187,12 @@
   </visual>
 </link>
 
-<gazebo reference="base_link">
+<!-- <gazebo reference="base_link">
   <sensor name="imu" type="imu">
     <always_on>true</always_on>
-    <!-- <visualize>true</visualize> -->
     <update_rate>20</update_rate>
     <gz_frame_id>odom</gz_frame_id>
-    <!-- <child_frame_id>base_link</child_frame_id> -->
+    <child_frame_id>base_link</child_frame_id>
     <topic>imu</topic>
   </sensor>
 </gazebo>
@@ -230,6 +229,7 @@
   <pose>0 0 0 0 0 0</pose>
   <topic>gps</topic>
   <gz_frame_id>odom</gz_frame_id>
+  <child_frame_id>base_link</child_frame_id>
   <gps>
     <position_sensing>
       <horizontal>
@@ -246,13 +246,8 @@
       </vertical>
     </position_sensing>
   </gps>
-  <!-- <plugin name="my_gps_plugin" filename="libgazebo_ros_gps_sensor.so">
-    <ros>
-      <remapping>~/out:=/gps/fix</remapping>
-    </ros>
-  </plugin> -->
 </sensor>
-</gazebo>
+</gazebo> -->
 
 <!-- 
 <joint name="dummy" type="fixed">
