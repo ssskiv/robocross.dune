@@ -8,10 +8,10 @@ show_displays: true
 show_status_bar: true
 show_capture_tools: true
 window_width: 1920
-window_height: 1016
-view_scale: 0.188637674
-offset_x: -19.3150578
-offset_y: 2.03316402
+window_height: 1056
+view_scale: 0.0922961459
+offset_x: 4.20469856
+offset_y: -15.1642418
 use_latest_transforms: true
 background: "#a0a0a4"
 image_transport: raw
@@ -23,7 +23,7 @@ displays:
       collapsed: false
       custom_sources:
         - base_url: http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
-          max_zoom: 20
+          max_zoom: 19
           name: docker
           type: wmts
       bing_api_key: ""
@@ -47,9 +47,9 @@ displays:
       collapsed: false
       topic: /gps/fix
       color: "#55aaff"
-      draw_style: lines
+      draw_style: points
       position_tolerance: 0
-      buffer_size: 1
+      buffer_size: 20
       qos_depth: 10
       qos_history: 1
       qos_reliability: 1
@@ -62,7 +62,27 @@ displays:
       alpha: 1
       topic: /local_costmap/voxel_layer
       update: true
-      scheme: map
+      scheme: costmap
+      qos_depth: 10
+      qos_history: 1
+      qos_reliability: 1
+      qos_durability: 2
+  - type: mapviz_plugins/odometry
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /odometry/gps
+      color: "#00ff00"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      show_covariance: false
+      show_all_covariances: false
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
       qos_depth: 10
       qos_history: 1
       qos_reliability: 1

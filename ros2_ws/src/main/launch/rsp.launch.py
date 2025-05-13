@@ -47,14 +47,7 @@ def generate_launch_description():
         parameters=[params]
     )
 
-    rviz2 = Node(
-            package='rviz2',
-            namespace='',
-            executable='rviz2',
-            name='rviz2',
-            arguments=['-d', [os.path.join(get_package_share_directory(package_name), 'config', 'urdf_core.rviz')]],
-            parameters = [{'use_sim_time': use_sim_time}]
-        )
+   
 
 
 
@@ -67,5 +60,5 @@ def generate_launch_description():
         # joint_state_publisher_gui, 
         node_robot_state_publisher,
         node_joint_state_publisher,
-        rviz2
+        
     ])

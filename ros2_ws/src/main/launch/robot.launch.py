@@ -78,8 +78,21 @@ def generate_launch_description():
         name = 'gps_filter_node',
         executable='navsat_transform_node',
         output='screen',
-        parameters=[],
+        parameters=[config_ekf],
         remappings=[('/odometry/filtered', '/odometry/raw')]
+    )
+    
+    rgbd_odometry_node = Node(
+        package='rtabmap_odom', executable='rgbd_odometry', output="screen",
+        parameters=[config_ekf],
+        remappings=[
+            ("depth/image", '/depth_camera/image'),
+            ("rgb/camera_info", '/camera/camera_info'),
+            ("rgb/image", '/camera/image'),
+            ("odom", '/odometry/rgbd'),],
+        arguments=["--delete_db_on_start", ''],
+        prefix='',
+        namespace='rtabmap'
     )
     
     nav_params = os.path.join(get_package_share_directory(package_name),'config','nav2_params.yaml')
@@ -121,5 +134,11 @@ def generate_launch_description():
         # mavlink_node,
         # start_localization,
         start_navigation,
-        # mapviz,
+        mapviz,
+        TimerAction(
+            period=5.0,  # Delay in seconds
+            actions=[
+                # rgbd_odometry_node
+            ]
+        )
     ])

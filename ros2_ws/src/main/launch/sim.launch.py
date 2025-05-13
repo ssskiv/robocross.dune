@@ -50,7 +50,7 @@ def generate_launch_description():
 
     spawn_entity = Node(package = 'ros_gz_sim', executable = 'create',
         arguments = ['-topic', 'robot_description',
-        '-name', 'my_bot', '-x', '1.0', '-y', '1.0', '-z', '5.0'],
+        '-name', 'my_bot', '-x', '1.0', '-y', '1.0', '-z', '5.0', '-Y', '3.1415'],
         output = 'screen')
     
     robot = IncludeLaunchDescription(
@@ -59,11 +59,21 @@ def generate_launch_description():
             launch_arguments = {'no_sim' : 'false'}.items()
         )
 
+    rviz2 = Node(
+        package='rviz2',
+        namespace='',
+        executable='rviz2',
+        name='rviz2',
+        arguments=['-d', [os.path.join(get_package_share_directory(package_name), 'config', 'urdf_core.rviz')]],
+        parameters = [{'use_sim_time': False}]
+    )
+
     return LaunchDescription([
         world_arg,
         gazebo,
         rsp,
         ros_gz_bridge,
         spawn_entity,
-        robot,
+        # rviz2,
+        # robot,
     ])

@@ -6,10 +6,10 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /RobotModel1
-        - /Odometry1
+        - /TF1/Frames1
         - /Odometry1/Shape1
         - /Odometry1/Covariance1
+        - /RealSense 11/Camera1
       Splitter Ratio: 0.5
     Tree Height: 799
   - Class: rviz_common/Selection
@@ -57,42 +57,50 @@ Visualization Manager:
       Filter (whitelist): ""
       Frame Timeout: 15
       Frames:
-        All Enabled: true
+        All Enabled: false
         base_link:
           Value: true
         bl_wheel_1:
-          Value: true
+          Value: false
         br_wheel_1:
-          Value: true
+          Value: false
         cam_1:
-          Value: true
+          Value: false
         cam_link_1:
-          Value: true
+          Value: false
         fl_wheel_1:
-          Value: true
+          Value: false
         fr_wheel_1:
-          Value: true
+          Value: false
         map:
           Value: true
+        map__identity:
+          Value: false
         ml_wheel_1:
-          Value: true
+          Value: false
         mr_wheel_1:
-          Value: true
+          Value: false
         odom:
           Value: true
+        origin:
+          Value: false
+        rgbd_1:
+          Value: false
         spring_bl:
-          Value: true
+          Value: false
         spring_br:
-          Value: true
+          Value: false
         spring_fl:
-          Value: true
+          Value: false
         spring_fr:
-          Value: true
+          Value: false
         spring_ml:
-          Value: true
+          Value: false
         spring_mr:
-          Value: true
-      Marker Scale: 0.5
+          Value: false
+        utm:
+          Value: false
+      Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
@@ -103,6 +111,8 @@ Visualization Manager:
             base_link:
               cam_link_1:
                 cam_1:
+                  {}
+                rgbd_1:
                   {}
               spring_bl:
                 bl_wheel_1:
@@ -122,6 +132,12 @@ Visualization Manager:
               spring_mr:
                 mr_wheel_1:
                   {}
+            utm:
+              {}
+          origin:
+            {}
+        map__identity:
+          {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -187,6 +203,10 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        rgbd_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         spring_bl:
           Alpha: 1
           Show Axes: false
@@ -285,7 +305,7 @@ Visualization Manager:
         Value: /goal_pose
       Value: true
     - Class: rviz_default_plugins/Image
-      Enabled: true
+      Enabled: false
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -297,7 +317,7 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /camera/image
-      Value: true
+      Value: false
     - Class: rviz_common/Group
       Displays:
         - Alpha: 0.699999988079071
@@ -417,7 +437,7 @@ Visualization Manager:
           Use rainbow: true
           Value: true
         - Class: rviz_default_plugins/Camera
-          Enabled: true
+          Enabled: false
           Far Plane Distance: 100
           Image Rendering: background and overlay
           Name: Camera
@@ -428,11 +448,11 @@ Visualization Manager:
             History Policy: Keep Last
             Reliability Policy: Reliable
             Value: /camera/image
-          Value: true
+          Value: false
           Visibility:
-            "": true
             Grid: true
             Image: true
+            MPPI Trajectories: true
             Maps:
               Global Costmap: true
               Local Costmap: true
@@ -496,8 +516,7 @@ Visualization Manager:
       Enabled: true
       Name: MPPI Trajectories
       Namespaces:
-        Candidate Trajectories: true
-        Optimal Trajectory: true
+        {}
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -505,6 +524,20 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /trajectories
       Value: true
+    - Class: rviz_default_plugins/Image
+      Enabled: false
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: false
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /depth_camera/image
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -560,11 +593,11 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 226.63902282714844
+      Scale: 122.91800689697266
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz_default_plugins)
-      X: 3.0510103702545166
-      Y: 0.7371793985366821
+      X: 0
+      Y: 0
     Saved: ~
 Window Geometry:
   Camera:
@@ -576,7 +609,7 @@ Window Geometry:
   Hide Right Dock: false
   Image:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000003b90000035afc020000000dfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003b0000035a000000c700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000a0049006d0061006700650000000320000000740000001600fffffffb000000220053006c0061006d0054006f006f006c0062006f00780050006c007500670069006e000000049e000002a40000000000000000fb0000000c00430061006d0065007200610000000183000001630000001600fffffffb0000000c00430061006d0065007200610000000418000000d60000000000000000fb0000000a0049006d006100670065010000026c000002820000000000000000000000010000010f0000035afc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003b0000035a000000a000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000078000000051fc0100000002fb0000000800540069006d00650100000000000007800000025300fffffffb0000000800540069006d00650100000000000004500000000000000000000002ac0000035a00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000025d0000035afc020000000efb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003b0000035a000000c700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000a0049006d0061006700650000000320000000740000001600fffffffb000000220053006c0061006d0054006f006f006c0062006f00780050006c007500670069006e000000049e000002a40000000000000000fb0000000c00430061006d006500720061000000016e0000007c0000001600fffffffb0000000c00430061006d0065007200610000000418000000d60000000000000000fb0000000a0049006d00610067006500000001f0000001a50000001600fffffffb0000000a0049006d00610067006501000002ce000000c70000000000000000000000010000010f0000035afc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003b0000035a000000a000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000078000000051fc0100000002fb0000000800540069006d00650100000000000007800000025300fffffffb0000000800540069006d00650100000000000004500000000000000000000004080000035a00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
