@@ -5,6 +5,7 @@ FROM osrf/ros:humble-desktop
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ROS_DISTRO=${ROS_DISTRO}
 ARG UID=1000
+ARG NVIDIA_DRIVER=570
 ENV ROS_DOMAIN_ID=231
 
 
@@ -73,11 +74,11 @@ RUN cat /tmp/bashrc >> /bmstu/.bashrc &&\
 # Install NVIDIA OpenGL libraries and tools for verification
 # Install OpenGL libraries for both NVIDIA and Mesa fallback, plus tools
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
-    libnvidia-gl-570 \
+    libnvidia-gl-${NVIDIA_DRIVER} \
     libgl1 \
     libglu1-mesa \
     mesa-utils \
-    nvidia-utils-570 \
+    nvidia-utils-${NVIDIA_DRIVER} \
     && sudo rm -rf /var/lib/apt/lists/*
 
 # Create an entrypoint script to detect GPU and configure OpenGL

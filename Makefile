@@ -1,19 +1,21 @@
 IMAGE_NAME=robocross
 CONTAINER_NAME=robocross
+MAPPROXY_NAME=mapproxy
 UID:=${shell id -u}
+NVIDIA_DRIVER:=570
 
 .PHONY: all 
 #auto build run start stop clean check-docker install-docker docker-nonroot
 
 all: auto
 
-auto: check-docker clean build run 
+auto: check-docker check-mapproxy clean build run 
 	@echo "\nDone. Now you can connect to container!"
 
 build:
 # docker build -t $(IMAGE_NAME) --build-arg UID=${UID} --progress=plain --no-cache .
 	@echo "Building image $(IMAGE_NAME)..."
-	@docker build -t $(IMAGE_NAME) -f Dockerfile.humble --build-arg UID=${UID} .
+	@docker build -t $(IMAGE_NAME) -f Dockerfile.humble --build-arg UID=${UID} --build-arg NVIDIA_DRIVER=$(NVIDIA_DRIVER) .
 
 run:
 	@echo "\nCreating container $(CONTAINER_NAME) with image $(IMAGE_NAME)... \n"
@@ -34,17 +36,27 @@ run:
 		$(IMAGE_NAME) tail -f /dev/null
 	
 start:
-	docker start $(CONTAINER_NAME)
+	docker start $(CONTAINER_NAME) || true
+	docker start $(MAPPROXY_NAME) || true
 	 
-stop:
-	docker stop $(CONTAINER_NAME)
+# stop:
+# 	@bash -c '\
+# 		if docker ps --format "{{.Names}}" | grep -q "^$(CONTAINER_NAME)$$"; then \
+# 			docker stop $(CONTAINER_NAME); \
+# 		fi'
+
+# remove:
+# 	@bash -c '\
+# 		if docker image ps --format "{{.Names}}" | grep -q "^$(CONTAINER_NAME)$$"; then \
+# 			docker rmi $(CONTAINER_NAME); \
+# 		fi'
 
 clean:
 # docker stop $(CONTAINER_NAME)	
 # docker rm $(CONTAINER_NAME)
 	@echo "Stopping and removing $(CONTAINER_NAME) and image $(IMAGE_NAME)..."
 	@docker stop $(CONTAINER_NAME) || true && docker rm $(CONTAINER_NAME) || true
-	@docker rmi $(CONTAINER_NAME)
+	@docker rmi $(CONTAINER_NAME) || true
 
 check-docker:
 	@bash -c '\
@@ -85,3 +97,21 @@ docker-nonroot:
 	@sudo apt-get install -y docker-ce-rootless-extras
 	@dockerd-rootless-setuptool.sh install
 	@echo "Docker configured! Continuing to container configuration."
+
+create-mapproxy:
+	@echo "Creating and starting mapproxy"
+	@mkdir -p ~/mapproxy
+	@docker run --name ${MAPPROXY_NAME} -p 8080:8080 -d -t -v ~/mapproxy:/mapproxy danielsnider/mapproxy
+	@echo "mapproxy started"
+
+check-mapproxy:
+	@bash -c '\
+		if docker ps --format "{{.Names}}" | grep -q "^$(MAPPROXY_NAME)$$"; then \
+			echo "mapproxy is running"; \
+		elif docker ps -a --format "{{.Names}}" | grep -q "^$(MAPPROXY_NAME)$$"; then \
+			echo "starting mapproxy"; \
+			docker start ${MAPPROXY_NAME}; \
+		else \
+			echo "mapproxy does not exist."; \
+			$(MAKE) create-mapproxy; \
+		fi'
