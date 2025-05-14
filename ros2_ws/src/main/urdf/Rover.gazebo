@@ -58,14 +58,15 @@
 </gazebo> -->
 
 <gazebo>
-        <plugin name="gz::sim::systems::JointStatePublisher" filename="gz-sim-joint-state-publisher-system">
-            <topic>joint_states</topic> 
+        <!-- <plugin name="gz::sim::systems::JointStatePublisher" filename="gz-sim-joint-state-publisher-system">
+            <topic>joint_states</topic>  -->
             <!-- <joint_name>gripper_joint</joint_name> -->
-        </plugin>
+        <!-- </plugin> -->
 
-        <plugin name="gz::sim::systems::DiffDrive" filename="gz-sim-diff-drive-system">
+        <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
 
             <!-- Wheel Information -->
+            <num_wheel_pairs>3</num_wheel_pairs>
             <left_joint>blw_to_body</left_joint>
             <left_joint>mlw_to_body</left_joint>
             <left_joint>flw_to_body</left_joint>
@@ -76,7 +77,7 @@
 
 
             <wheel_separation>1.1</wheel_separation>
-            <wheel_radius>0.17</wheel_radius>
+            <wheel_diameter>0.34</wheel_diameter>
 
 
             <!-- Limits -->
@@ -84,19 +85,20 @@
             <!-- <max_linear_acceleration>0.33</max_linear_acceleration> -->
 
             <!-- Input -->
-            <topic>cmd_vel</topic>
+            <commandTopic>cmd_vel</commandTopic>
 
             
             <!-- Output -->
-            <frame_id>odom</frame_id>
+            <odometryFrame>odom</odometryFrame>
             <!-- <frame_id>dummy_base_link</fra -->
             <child_frame_id>base_link</child_frame_id>
-            <odom_topic>odom</odom_topic>
+            <odometryTopic>odom</odometryTopic>
             <odom_publisher_frequency>20</odom_publisher_frequency>
             
             <tf_topic>/tf</tf_topic>
 
         </plugin>
+        
 
 </gazebo>
 

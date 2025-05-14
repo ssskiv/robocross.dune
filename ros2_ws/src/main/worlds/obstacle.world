@@ -1,4 +1,4 @@
-<sdf version='1.10'>
+<sdf version='1.7'>
   <world name='empty'>
     <scene>
       <shadows>false</shadows>
@@ -9,18 +9,29 @@
     <physics name='1ms' type='ode'>
       <max_step_size>0.004</max_step_size>
       <real_time_factor>1.0</real_time_factor>
-      <real_time_update_rate>25</real_time_update_rate>
+      <real_time_update_rate>250</real_time_update_rate>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>50</iters>
+          <sor>1.3</sor>
+        </solver>
+        <constraints>
+          <cfm>0.0001</cfm>
+          <erp>0.8</erp>
+        </constraints>
+      </ode>    
     </physics>
-    <plugin name='gz::sim::systems::Physics' filename='gz-sim-physics-system'/>
-    <plugin name='gz::sim::systems::UserCommands' filename='gz-sim-user-commands-system'/>
-    <plugin name='gz::sim::systems::SceneBroadcaster' filename='gz-sim-scene-broadcaster-system'/>
-    <plugin name='gz::sim::systems::Sensors' filename='gz-sim-sensors-system'>
-      <render_engine>ogre2</render_engine>
-    </plugin>
-    <plugin name='gz::sim::systems::NavSat' filename='gz-sim-navsat-system'/>
-    <plugin filename="gz-sim-imu-system"
+    <!-- <plugin name='gz::sim::systems::Physics' filename='gz-sim-physics-system'/> -->
+    <!-- <plugin name='gz::sim::systems::UserCommands' filename='gz-sim-user-commands-system'/> -->
+    <!-- <plugin name='gz::sim::systems::SceneBroadcaster' filename='gz-sim-scene-broadcaster-system'/> -->
+    <!-- <plugin name='gz::sim::systems::Sensors' filename='gz-sim-sensors-system'> -->
+      <!-- <render_engine>ogre2</render_engine>
+    </plugin> -->
+    <!-- <plugin name='gz::sim::systems::NavSat' filename='gazebo_ros_gps_sensor.so'/>
+    <plugin filename="gazebo_ros_imu_sensor.so"
         name="gz::sim::systems::Imu">
-</plugin>
+</plugin> -->
     <spherical_coordinates>
       <!-- currently gazebo has a bug: instead of outputting lat, long, altitude in ENU
       (x = East, y = North and z = Up) as the default configurations, it's outputting (-E)(-N)U,
@@ -33,11 +44,11 @@
       <heading_deg>180</heading_deg>
     </spherical_coordinates>
 
-    <plugin name='gz::sim::systems::Contact' filename='gz-sim-contact-system'/>
+    <!-- <plugin name='gz::sim::systems::Contact' filename='gz-sim-contact-system'/> -->
     <gravity>0 0 -9.8000000000000007</gravity>
     <magnetic_field>5.5644999999999998e-06 2.2875799999999999e-05 -4.2388400000000002e-05</magnetic_field>
     <atmosphere type='adiabatic'/>
-    <model name='ground_plane'>
+    <!-- <model name='ground_plane'>
     
       <static>true</static>
       <link name='link'>
@@ -85,15 +96,18 @@
         <enable_wind>false</enable_wind>
       </link>
       <pose>0 0 0 0 0 0</pose>
-    </model>
+    </model> -->
 
+
+    <include>
+      <uri>model:///bmstu/ros2_ws/src/main/models/map_model</uri>
+      <pose>107.75 -33.58 0.0 1.57 0.0 3.14</pose>
+    </include>
 
     <!-- <include>
-      <uri>file:///bmstu/ros2_ws/src/main/worlds/1234/map.sdf</uri>
-            <pose>107.75 -33.58 0.0 1.57 0.0 3.14</pose>
-
+      <uri>file:///bmstu/ros2_ws/src/main/urdf/rover_model</uri>
+      <pose>107.75 -33.58 0.0 1.57 0.0 3.14</pose>
     </include> -->
-
 <!--
     <model name='cylinder54'>
       <pose>0.27 -0.09 0.08 0.0 0.0 0.0</pose>

@@ -126,7 +126,7 @@
 </gazebo>
 
 <gazebo reference="base_link">
-  <sensor name="gps" type="navsat">
+  <sensor name="gps" type="gps">
   <always_on>true</always_on>
   <update_rate>20</update_rate>
   <visualize>true</visualize>
@@ -170,12 +170,21 @@
 
 <link name="spring_fr">
   <xacro:spring_link/>
+  
 </link>
+
+
+
 <joint name="fr_spring_to_body" type="prismatic">
   <origin xyz="0.491042 -0.35  0.196191" rpy="0 0 0 "/>
   <parent link="base_link"/>
   <child link="spring_fr"/>
   <xacro:spring_joint/>
+  <sensor name="force_torque" type="force_torque">
+          <update_rate>30</update_rate>
+          <visualize>true</visualize>
+          <topic>force</topic>
+        </sensor>  
   </joint>
 
 

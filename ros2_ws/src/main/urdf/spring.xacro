@@ -17,29 +17,18 @@
     </xacro:macro>
 
     <xacro:macro name="spring_joint">
-        <axis xyz="0.0 0.0 1.0"/>
+        <axis xyz="0.0 0.0 -1.0"/>
             
-        <limit lower="0.0" upper="0.0" velocity="0.0" effort="1.0" />
-        
-        <!-- <dynamics damping="5000.0" spring_reference ="0.20" spring_stiffness="5000000.0" friction ="0.0"/> -->
-        <!-- <physics> -->
-            <!-- <ode>
-                <implicit_spring_damper>10000</implicit_spring_damper>
-                <cfm_damping>true</cfm_damping>
-                <max_force>5000</max_force>
+            <limit lower="-0.050" upper="0.050"  velocity="-1.0" effort="-1.0"/>
+            
+            <dynamics damping="50.0" spring_reference ="0.0" spring_stiffness="5.0"/>
+            <ode>
                 <fudge_factor>0.1</fudge_factor>
-                 <cfm>0.0001</cfm>
-                    <erp>0.9</erp>
-                <limit>
-                    <cfm>0.0001</cfm>
-                    <erp>0.9</erp>
-                </limit> -->
-                <!-- <suspension>
-                    <cfm>10000</cfm>
-                    <erp>0.2</erp>
-                </suspension> -->
-            <!-- </ode> -->
-        <!-- </physics> -->
+                <cfm>0.00001</cfm>
+                <erp>0.8</erp>
+            </ode>
+            
+        
     </xacro:macro>
     <xacro:macro name="wheel"> 
 
