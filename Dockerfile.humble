@@ -1,0 +1,95 @@
+# Base image with ROS 2 ${ROS_DISTRO} Desktop
+FROM osrf/ros:humble-desktop
+
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV ROS_DISTRO=${ROS_DISTRO}
+ARG UID=1000
+ENV ROS_DOMAIN_ID=231
+RUN cut -d: -f1 /etc/passwd
+
+# RUN usermod -l bmstu ubuntu \
+#     -d /bmstu -m \
+#     -s /usr/bin/bash \
+#     -G dialout \
+#     -c "BMSTU YRC" bmstu && \
+#     echo "bmstu ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN whoami
+# USER ubuntu
+RUN useradd -m -g users ubuntu && groupadd ubuntu
+RUN usermod -l  bmstu ubuntu && \
+    groupmod -n bmstu ubuntu && \
+    usermod -d /bmstu -m  bmstu  && \
+    usermod -c "BMSTU YRC" bmstu
+    # RUN usermod -G dialout
+RUN echo "bmstu ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# Update and install required tools
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    build-essential \
+    python3-colcon-common-extensions \
+    ros-${ROS_DISTRO}-ros-base \
+    # ros-${ROS_DISTRO}-rqt \
+    # ros-${ROS_DISTRO}-rqt-common-plugins \
+    # ros-${ROS_DISTRO}-realsense2-camera \
+    ros-${ROS_DISTRO}-gazebo-ros-pkgs \
+    ros-${ROS_DISTRO}-geometry2 \
+    git \
+    nano \
+    tmux \
+    curl \
+    wget \
+    locales \
+    && apt-get clean
+
+# Set locale
+RUN locale-gen en_US en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+RUN sudo apt-get update \
+    && sudo apt-get install -y ros-${ROS_DISTRO}-xacro ros-${ROS_DISTRO}-joint-state-publisher-gui \
+    && sudo apt-get install -y ros-${ROS_DISTRO}-tf-transformations  ros-${ROS_DISTRO}-rqt-tf-tree \
+    && sudo rm -rf /var/lib/apt/lists/*
+
+# Source ROS 2 on container start
+# RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /bmstu/.bashrc
+# RUN echo "export PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\$ '" >> /bmstu/.bashrc
+COPY ./bashrc  /tmp/bashrc
+RUN cat /tmp/bashrc >> /bmstu/.bashrc &&\
+    rm -f /tmp/bashrc &&\
+    chown -R bmstu:bmstu /bmstu
+    
+# Install NVIDIA OpenGL libraries and tools for verification
+# Install OpenGL libraries for both NVIDIA and Mesa fallback, plus tools
+RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+    libnvidia-gl-570 \
+    libgl1 \
+    libglu1-mesa \
+    mesa-utils \
+    nvidia-utils-570 \
+    && sudo rm -rf /var/lib/apt/lists/*
+
+# Create an entrypoint script to detect GPU and configure OpenGL
+RUN echo '#!/bin/bash\n\
+if command -v nvidia-smi > /dev/null 2>&1 && nvidia-smi > /dev/null 2>&1; then\n\
+    echo "NVIDIA GPU detected, configuring for NVIDIA OpenGL"\n\
+    export LIBGL_ALWAYS_INDIRECT=0\n\
+    export __GLX_VENDOR_LIBRARY_NAME=nvidia\n\
+else\n\
+    echo "No NVIDIA GPU detected, falling back to Mesa"\n\
+    export LIBGL_ALWAYS_INDIRECT=0\n\
+    export __GLX_VENDOR_LIBRARY_NAME=mesa\n\'
+#NVIDIA END
+
+USER bmstu
+# Set working directory
+WORKDIR /bmstu/ros2_ws
+
+# Create entrypoint
+COPY ./ros_entrypoint.sh /ros_entrypoint.sh
+RUN sudo chmod +x /ros_entrypoint.sh
+ENTRYPOINT ["/ros_entrypoint.sh"]
+CMD ["bash"]

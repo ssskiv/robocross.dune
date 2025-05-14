@@ -4,7 +4,7 @@ UID:=${shell id -u}
 
 build:
 	# docker build -t $(IMAGE_NAME) --build-arg UID=${UID} --progress=plain --no-cache .
-	docker build -t $(IMAGE_NAME) --build-arg UID=${UID} .
+	docker build -t $(IMAGE_NAME) -f Dockerfile --build-arg UID=${UID} .
 
 run:
 	xhost +local:bmstu
@@ -12,6 +12,8 @@ run:
 		--name $(CONTAINER_NAME) \
 		--net=host \
 		-u 1000 \
+		--ipc=host \
+		--pid=host \
 		--privileged \
 		--env DISPLAY=${DISPLAY} \
 		--env QT_X11_NO_MITSHM=1 \
