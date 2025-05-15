@@ -1,79 +1,93 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- <xacro:include filename="$(find main)/urdf/materials.xacro" /> -->
     <xacro:macro name="spring_link">
         <inertial>
-            <origin xyz="0.0 0.0  0.0 " rpy="0 0 0"/>
-            <mass value="0.01"/>
-            <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="0.0" ixz="0.0"/>
+            <origin xyz="0.0 0.0  0.0 " rpy="0 0 0" />
+            <mass value="0.01" />
+            <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="0.0" ixz="0.0" />
         </inertial>
         <visual>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-            <box size="0.1 0.1 0.1"/>
+                <box size="0.1 0.1 0.1" />
             </geometry>
-            <material name="silver">
-            </material>
         </visual>
     </xacro:macro>
 
     <xacro:macro name="spring_joint">
-        <axis xyz="0.0 0.0 -1.0"/>
-            
-            <limit lower="-0.050" upper="0.050"  velocity="-1.0" effort="-1.0"/>
-            
-            <dynamics damping="50.0" spring_reference ="0.0" spring_stiffness="5.0"/>
-            <ode>
-                <fudge_factor>0.1</fudge_factor>
-                <cfm>0.00001</cfm>
-                <erp>0.8</erp>
-            </ode>
-            
-        
+        <axis xyz="0.0 0.0 0.0" />
+        <limit lower="0.0" upper="0.0" velocity="0.0" effort="-1.0" />
     </xacro:macro>
-    <xacro:macro name="wheel"> 
 
-    <inertial>
-            <origin xyz="0.05 0 0" rpy="0 1.57 0"/>
-            <mass value="11.6"/>
-            <inertia  ixx="0.124" ixy = "0" ixz = "0"
-              iyy="0.124" iyz = "0"
-              izz="0.21"/>
-            </inertial>
-            <visual>
-            <origin xyz="0.05 0 0" rpy="0 1.57 0"/>
+    <xacro:macro name="surface">
+        <surface>
+            <friction>
+                <ode>
+                    <mu>1</mu>
+                    <mu2>1</mu2>
+                    <slip1>0.01</slip1>
+                    <slip2>0.01</slip2>
+                </ode>
+            </friction>
+            <contact>
+                <ode>
+                    <soft_cfm>0</soft_cfm>
+                    <soft_erp>0.2</soft_erp>
+                    <kp>1e+13</kp>
+                    <kd>1</kd>
+                    <max_vel>0.01</max_vel>
+                    <min_depth>0.0</min_depth>
+                </ode>
+            </contact>
+        </surface>
+    </xacro:macro>
+
+    <xacro:macro name="wheel">
+        <inertial>
+            <origin xyz="0.05 0 0" rpy="0 1.5707 0" />
+            <mass value="11.6" />
+            <inertia ixx="0.124" ixy="0" ixz="0"
+                iyy="0.124" iyz="0"
+                izz="0.21" />
+        </inertial>
+        <visual>
+            <origin xyz="0.05 0 0" rpy="0 1.5707 0" />
             <geometry>
-                <cylinder radius="0.19" length="0.14"/>
+                <cylinder radius="0.19" length="0.14" />
             </geometry>
-            <material name="blue"/>
-            </visual>
-            <collision>
-                <origin xyz="0.05 0 0" rpy="0 1.57 0"/>
-                    <geometry>
-                <cylinder radius="0.19" length="0.14"/>
-                </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.05 0 0" rpy="0 1.5707 0" />
+            <geometry>
+                <cylinder radius="0.19" length="0.14" />
+            </geometry>
+            <xacro:surface />
         </collision>
     </xacro:macro>
-    <xacro:macro name="left_wheel"> 
-            <inertial>
-            <origin xyz="-0.05 0 0" rpy="0 1.57 3.14"/>
-            <mass value="11.6"/>
-            <inertia  ixx="0.124" ixy = "0" ixz = "0"
-              iyy="0.124" iyz = "0"
-              izz="0.21"/>
-            </inertial>
 
-            <visual>
-            <origin xyz="-0.05 0 0" rpy="0 1.57 3.14"/>
+    <xacro:macro name="left_wheel">
+        <inertial>
+            <origin xyz="-0.05 0 0" rpy="0 1.5707 3.1415" />
+            <mass value="11.6" />
+            <inertia ixx="0.124" ixy="0" ixz="0"
+                iyy="0.124" iyz="0"
+                izz="0.21" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.050 0 0" rpy="0 1.5707 3.1415" />
             <geometry>
-                <cylinder radius="0.19" length="0.14"/>
+                <cylinder radius="0.19" length="0.14" />
             </geometry>
-            <material name="blue"/>
-            </visual>
-            <collision>
-                <origin xyz="-0.05 0 0" rpy="0 1.57 3.14"/>
-                    <geometry>
-                <cylinder radius="0.19" length="0.14"/>
-                </geometry>
+            <material name="blue" />
+        </visual>
+        <collision>
+            <origin xyz="-0.05 0 0" rpy="0 1.57 3.1415" />
+            <geometry>
+                <cylinder radius="0.19" length="0.14" />
+            </geometry>
+            <xacro:surface />
         </collision>
     </xacro:macro>
+
 </robot>

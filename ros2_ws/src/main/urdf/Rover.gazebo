@@ -1,14 +1,18 @@
 <?xml version="1.0" ?>
 <robot name="Rover" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
-<xacro:property name="body_color" value="Gazebo/Silver" />
+<!-- <xacro:property name="body_color" value="greyg" /> -->
 <!-- 
 <gazebo>
   <plugin name="control" filename="libgazebo_ros_control.so"/>
 </gazebo> -->
-
+<xacro:macro name="greymat">
+<material>
+    <color rgba="1.0 0.5 0.5 1.0"/>
+  </material>
+</xacro:macro>
 <gazebo reference="base_link">
-  <material>${body_color}</material>
+  <xacro:greymat/>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <self_collide>true</self_collide>
@@ -16,42 +20,42 @@
 </gazebo>
 
 <!-- <gazebo reference="fr_wheel_1">
-  <material>${body_color}</material>
+  <xacro:greymat/>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <self_collide>true</self_collide>
 </gazebo>
 
 <gazebo reference="mr_wheel_1">
-  <material>${body_color}</material>
+  <xacro:greymat/>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <self_collide>true</self_collide>
 </gazebo>
 
 <gazebo reference="br_wheel_1">
-  <material>${body_color}</material>
+  <xacro:greymat/>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <self_collide>true</self_collide>
 </gazebo>
 
 <gazebo reference="fl_wheel_1">
-  <material>${body_color}</material>
+  <xacro:greymat/>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <self_collide>true</self_collide>
 </gazebo>
 
 <gazebo reference="ml_wheel_1">
-  <material>${body_color}</material>
+  <xacro:greymat/>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <self_collide>true</self_collide>
 </gazebo>
 
 <gazebo reference="bl_wheel_1">
-  <material>${body_color}</material>
+  <xacro:greymat/>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <self_collide>true</self_collide>
@@ -81,7 +85,7 @@
 
 
             <!-- Limits -->
-            <!-- <max_wheel_torque>200</max_wheel_torque> -->
+            <max_wheel_torque>200</max_wheel_torque>
             <!-- <max_linear_acceleration>0.33</max_linear_acceleration> -->
 
             <!-- Input -->
@@ -105,14 +109,14 @@
 
 
 <!-- <gazebo reference="cam_link_1">
-  <material>${body_color}</material>
+  <xacro:greymat/>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <self_collide>true</self_collide>
 </gazebo>
 
 <gazebo reference="cam_1">
-  <material>${body_color}</material>
+  <xacro:greymat/>
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <self_collide>true</self_collide>
