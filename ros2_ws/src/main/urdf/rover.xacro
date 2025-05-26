@@ -10,8 +10,8 @@
 
   <link name="base_link">
     <inertial>
-      <origin xyz="0.0 0.0 0.3" rpy="0 0 -1.57" />
-      <mass value="40.0" />
+      <origin xyz="0.06 0.0 0.3" rpy="0 0 -1.57" />
+      <mass value="20.0" />
       <inertia ixx="11.367893" iyy="2.895706" izz="13.361019" ixy="0.0" iyz="0.0" ixz="0.0" />
     </inertial>
     <visual>
@@ -102,7 +102,7 @@
           <height>640</height>
         </image>
         <clip>
-          <near>0.5</near>
+          <near>0.1</near>
           <far>25</far>
         </clip>
       </camera>
@@ -112,8 +112,8 @@
   <gazebo reference="cam_1">
     <sensor name="camera" type="camera">
       <always_on>true</always_on>
-      <visualize>true</visualize>
-      <update_rate>20</update_rate>
+      <!-- <visualize>true</visualize> -->
+      <update_rate>10</update_rate>
       <topic>camera/image</topic>
       <gz_frame_id>cam_1</gz_frame_id>
       <camera name="camera">
@@ -124,8 +124,8 @@
           <height>640</height>
         </image>
         <clip>
-          <near>0.5</near>
-          <far>50</far>
+          <near>0.1</near>
+          <far>25</far>
         </clip>
       </camera>
     </sensor>
@@ -134,7 +134,7 @@
   <gazebo reference="base_link">
     <sensor name="gps" type="gps">
       <always_on>true</always_on>
-      <update_rate>20</update_rate>
+      <update_rate>10</update_rate>
       <visualize>true</visualize>
 
       <pose>0 0 0 0 0 0</pose>
@@ -218,13 +218,13 @@
 
 
   <joint name="camlink_to_body" type="fixed">
-    <origin xyz="0.6 0.0001 0.5" rpy="0 0 0" />
+    <origin xyz="-0.5 0.0 0.8" rpy="0 0 0" />
     <parent link="base_link" />
     <child link="cam_link_1" />
   </joint>
 
   <joint name="cam_to_camlink" type="fixed">
-    <origin xyz="0 0 0.1" rpy="0 0.60 0" />
+    <origin xyz="0 0 0.1" rpy="0 0.6 0" />
     <parent link="cam_link_1" />
     <child link="cam_1" />
   </joint>

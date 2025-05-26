@@ -5,6 +5,7 @@ FROM osrf/ros:humble-desktop
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ROS_DISTRO=${ROS_DISTRO}
 ARG UID=1000
+ARG NVIDIA_GPU=1
 ARG NVIDIA_DRIVER=570
 ENV ROS_DOMAIN_ID=231
 
@@ -13,7 +14,8 @@ RUN useradd -m -g users ubuntu && groupadd ubuntu
 RUN usermod -l  bmstu ubuntu && \
     groupmod -n bmstu ubuntu && \
     usermod -d /bmstu -m  bmstu  && \
-    usermod -c "BMSTU YRC" bmstu
+    usermod -c "BMSTU YRC" bmstu && \
+    usermod -s /bin/bash bmstu
     # RUN usermod -G dialout
 RUN echo "bmstu ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
@@ -83,7 +85,7 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 
 # Create an entrypoint script to detect GPU and configure OpenGL
 RUN echo '#!/bin/bash\n\
-if command -v nvidia-smi > /dev/null 2>&1 && nvidia-smi > /dev/null 2>&1; then\n\
+if ["${NVIDIA_GPU}"="1"]; then\n\
     echo "NVIDIA GPU detected, configuring for NVIDIA OpenGL"\n\
     export LIBGL_ALWAYS_INDIRECT=0\n\
     export __GLX_VENDOR_LIBRARY_NAME=nvidia\n\
@@ -101,4 +103,4 @@ WORKDIR /bmstu/ros2_ws
 COPY ./ros_entrypoint.sh /ros_entrypoint.sh
 RUN sudo chmod +x /ros_entrypoint.sh
 ENTRYPOINT ["/ros_entrypoint.sh"]
-CMD ["bash"]
+CMD ["/bin/bash"]

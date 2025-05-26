@@ -5,6 +5,7 @@ FROM osrf/ros:jazzy-desktop
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ROS_DISTRO=${ROS_DISTRO}
 ARG UID=1000
+ARG NVIDIA_GPU=1
 # ENV GID=1000
 # RUN awk -F: '/\/home/ {printf "%s:%s\n",$1,$3}' /etc/passwd
 
@@ -20,7 +21,8 @@ ARG UID=1000
 RUN usermod -l  bmstu ubuntu && \
     groupmod -n bmstu ubuntu && \
     usermod -d /bmstu -m  bmstu  && \
-    usermod -c "BMSTU YRC" bmstu
+    usermod -c "BMSTU YRC" bmstu && \
+    usermod -s /bin/bash bmstu 
     # RUN usermod -G dialout
 RUN echo "bmstu ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
@@ -47,6 +49,7 @@ RUN locale-gen en_US en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
+ENV SHELL=/bin/bash
 
 RUN sudo apt-get update \
     && sudo apt-get install -y ros-${ROS_DISTRO}-xacro ros-${ROS_DISTRO}-joint-state-publisher-gui \
@@ -100,7 +103,8 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 
 # Create an entrypoint script to detect GPU and configure OpenGL
 RUN echo '#!/bin/bash\n\
-if command -v nvidia-smi > /dev/null 2>&1 && nvidia-smi > /dev/null 2>&1; then\n\
+if [ "${NVIDIA_GPU}}" = "1"];\n\
+    then\n\
     echo "NVIDIA GPU detected, configuring for NVIDIA OpenGL"\n\
     export LIBGL_ALWAYS_INDIRECT=0\n\
     export __GLX_VENDOR_LIBRARY_NAME=nvidia\n\
@@ -117,5 +121,6 @@ WORKDIR /bmstu/ros2_ws
 # Create entrypoint
 COPY ./ros_entrypoint.sh /ros_entrypoint.sh
 RUN sudo chmod +x /ros_entrypoint.sh
+CMD ["/bin/bash", "-c"]
 ENTRYPOINT ["/ros_entrypoint.sh"]
-CMD ["bash"]
+

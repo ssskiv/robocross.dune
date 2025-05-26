@@ -10,3 +10,4 @@ if [ -f /bmstu/ros2_ws/install/setup.bash ]; then
 fi
 
 exec "$@"
+exec "bash"

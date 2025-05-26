@@ -3,37 +3,16 @@ CONTAINER_NAME=robocross
 MAPPROXY_NAME=mapproxy
 UID:=${shell id -u}
 NVIDIA_DRIVER:=570
+NVIDIA_GPU:=1
+gpu=--gpus=all\
 
 .PHONY: all 
 #auto build run start stop clean check-docker install-docker docker-nonroot
 
 all: auto
 
-auto: check-docker check-mapproxy clean build run 
+auto: check-docker check-nvidia check-mapproxy clean build run 
 	@echo "\nDone. Now you can connect to container!"
-
-build:
-# docker build -t $(IMAGE_NAME) --build-arg UID=${UID} --progress=plain --no-cache .
-	@echo "Building image $(IMAGE_NAME)..."
-	@docker build -t $(IMAGE_NAME) -f Dockerfile.humble --build-arg UID=${UID} --build-arg NVIDIA_DRIVER=$(NVIDIA_DRIVER) .
-
-run:
-	@echo "\nCreating container $(CONTAINER_NAME) with image $(IMAGE_NAME)... \n"
-	@xhost +local:bmstu
-	@docker run -d \
-		--name $(CONTAINER_NAME) \
-		--net=host \
-		-u 1000 \
-		--privileged \
-		--env DISPLAY=${DISPLAY} \
-		--env QT_X11_NO_MITSHM=1 \
-		--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-		--volume="$(HOME)/.Xauthority:/bmstu/.Xauthority:rw" \
-		--env XAUTHORITY=/bmstu/.Xauthority \
-		--volume="$(PWD)/ros2_ws:/bmstu/ros2_ws" \
-		--gpus=all \
-		-e NVIDIA_DRIVER_CAPABILITIES=all \
-		$(IMAGE_NAME) tail -f /dev/null
 	
 start:
 	docker start $(CONTAINER_NAME) || true
@@ -70,6 +49,21 @@ check-docker:
 	else \
 		$(MAKE) install-docker; \
 	fi'
+
+set-gpu:
+	NVIDIA_GPU=0 
+	gpu=""
+
+check-nvidia:
+	@bash -c '\
+	if command -v nvidia-smi >/dev/null 2>&1; then \
+		echo "GPU FOUND";\
+	else \
+		$(MAKE) set-gpu; \
+		echo "NO GPU"; \
+	fi'
+
+
 
 install-docker:
 	@echo "Docker not found. Installing Docker..."
@@ -115,3 +109,26 @@ check-mapproxy:
 			echo "mapproxy does not exist."; \
 			$(MAKE) create-mapproxy; \
 		fi'
+
+build:
+# docker build -t $(IMAGE_NAME) --build-arg UID=${UID} --progress=plain --no-cache .
+	@echo "Building image $(IMAGE_NAME)..."
+	@docker build -t $(IMAGE_NAME) -f Dockerfile.humble --build-arg UID=${UID} --build-arg NVIDIA_DRIVER=$(NVIDIA_DRIVER) --build-arg NVIDIA_GPU=$(NVIDIA_GPU) .
+
+run:
+	@echo "\nCreating container $(CONTAINER_NAME) with image $(IMAGE_NAME)... \n"
+	@xhost +local:bmstu
+	@docker run -d \
+		--name $(CONTAINER_NAME) \
+		--net=host \
+		-u 1000 \
+		--privileged \
+		--env DISPLAY=${DISPLAY} \
+		--env QT_X11_NO_MITSHM=1 \
+		--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+		--volume="$(HOME)/.Xauthority:/bmstu/.Xauthority:rw" \
+		--env XAUTHORITY=/bmstu/.Xauthority \
+		--volume="$(PWD)/ros2_ws:/bmstu/ros2_ws" \
+		${GPU} \
+		-e NVIDIA_DRIVER_CAPABILITIES=all \
+		$(IMAGE_NAME) tail -f /dev/null
