@@ -133,8 +133,8 @@ def generate_launch_description():
         # uart_node,
         # mavlink_node,
         # start_localization,
-        start_navigation,
-        mapviz,
+        # start_navigation,
+        # mapviz,
         TimerAction(
             period=5.0,  # Delay in seconds
             actions=[

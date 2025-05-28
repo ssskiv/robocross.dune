@@ -22,7 +22,7 @@ ekf_filter_node_map:
 
     # GPS odometry (from navsat_transform_node):
 
-    odom1: /odometry/gps
+    odom1: /gps/fix
     odom1_config: [true,  true,  false,
                   false, false, false,
                   false, false, false,
@@ -35,10 +35,10 @@ ekf_filter_node_map:
 
     imu0: /imu
     imu0_config: [false, false, false,
-                   false, false, true,
-                   false, false, false,
-                   false, false, false,
-                   false, false, false]
+                  false,  false,  false,
+                  false, false, false,
+                  false,  false,  false,
+                  false,  false,  false]
                   
     # imu0_config: [false, false, false,
     #                true, true, true,
@@ -100,7 +100,7 @@ ekf_filter_node_odom:
     sensor_timeout: 0.1
 
     two_d_mode: true
-    publish_tf: false
+    publish_tf: true
     map_frame: map              # для использования в SLAM/AMCL
     odom_frame: odom
     base_link_frame: base_link
@@ -118,10 +118,10 @@ ekf_filter_node_odom:
 
     imu0: /imu
     imu0_config: [false, false, false,
-                  false,  false,  true,
+                  true,  true,  true,
                   false, false, false,
                   false,  false,  false,
-                  true,  false,  false]
+                  true,  true,  true]
   # x     y      z
   # roll  pitch  yaw
   # vx    vy     vz
@@ -176,7 +176,7 @@ gps_filter_node:
     magnetic_declination_radians: 0.0
     yaw_offset: 0.0
     zero_altitude: true
-    broadcast_utm_transform: true
+    broadcast_cartesian_transform: true
     publish_filtered_gps: true
     use_odometry_yaw: true
     wait_for_datum: false

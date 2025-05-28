@@ -85,8 +85,8 @@
 
 
             <!-- Limits -->
-            <max_wheel_torque>200</max_wheel_torque>
-            <!-- <max_linear_acceleration>0.33</max_linear_acceleration> -->
+            <max_wheel_torque>25</max_wheel_torque>
+            <max_linear_acceleration>0.33</max_linear_acceleration>
 
             <!-- Input -->
             <commandTopic>cmd_vel</commandTopic>
@@ -96,11 +96,15 @@
             <odometryFrame>odom</odometryFrame>
             <!-- <frame_id>dummy_base_link</fra -->
             <child_frame_id>base_link</child_frame_id>
-            <odometryTopic>odom</odometryTopic>
+            <publishOdom>true</publishOdom>
+            <odometryTopic>/odom</odometryTopic>
+            <odom_topic>/odom</odom_topic>
             <odom_publisher_frequency>20</odom_publisher_frequency>
             
             <tf_topic>/tf</tf_topic>
-
+            <ros>
+              <remapping>odom:=stm_odom</remapping>
+            </ros>
         </plugin>
         
 

@@ -30,6 +30,7 @@ RUN apt-get update && apt-get install -y \
     ros-${ROS_DISTRO}-realsense2-camera \
     ros-${ROS_DISTRO}-gazebo-ros-pkgs \
     ros-${ROS_DISTRO}-geometry2 \
+    ros-${ROS_DISTRO}-robot-localization \
     git \
     nano \
     tmux \

@@ -5,7 +5,9 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
 from launch.actions import DeclareLaunchArgument
+from launch.event_handlers import OnShutdown
 from launch_ros.actions import Node
+from launch.actions import ExecuteProcess, RegisterEventHandler
 
 import xacro
 
@@ -53,6 +55,40 @@ def generate_launch_description():
 
 
 
+    delete_model_command = [
+        'ros2', 'service', 'call',
+        '/delete_entity',
+        'gazebo_msgs/srv/DeleteEntity',
+        '"{name: \'' + 'rover' + '\'}"' # JSON string for the request
+    ]
+
+    delete_model_action = ExecuteProcess(
+        cmd=delete_model_command,
+        name='delete_model_service_call',
+        output='screen',
+        shell=True, # Required because we're passing a complex command string
+        # Do not wait for this process to finish, as the launch system might be shutting down
+        # This is more of a "fire and forget" if you don't need its success/failure for further launch logic
+        # You can add OnExecutionComplete if you want to handle the service call's completion
+    )
+
+    # 3. Register an event handler to trigger despawn when the robot node exits
+    on_robot_node_exit_handler = RegisterEventHandler(
+        OnShutdown(
+            # target_action=node_robot_state_publisher,
+            on_shutdown=[
+                # ExecuteProcess(
+                #     cmd=['echo', f'Node {node_robot_state_publisher.name} exited. Attempting to despawn rover in Gazebo Classic...'],
+                #     name='despawn_log_message',
+                #     output='screen'
+                # ),
+                # delete_model_action
+                os.system("ros2 service call /delete_entity gazebo_msgs/srv/DeleteEntity '{name: 'rover'}'"),
+            ]
+        )
+    )
+
+    
     # Launch!
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -63,4 +99,5 @@ def generate_launch_description():
         node_robot_state_publisher,
         node_joint_state_publisher,
         spawn_entity,
+        on_robot_node_exit_handler,
     ])

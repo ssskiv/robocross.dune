@@ -14,9 +14,15 @@
         <solver>
           <type>quick</type>
           <iters>50</iters>
-          <sor>1.3</sor>
+          <!-- <sor>1.3</sor> -->
         </solver>
-        
+          <bounce>0.0</bounce>
+          <cfm>0.2</cfm>
+          <erp>0.6</erp>
+          <kp>200</kp>
+          <kd>1</kd>
+          <max_vel>1.0</max_vel>
+          <min_depth>0.0</min_depth>
       </ode>    
     </physics>
     <!-- <plugin name='gz::sim::systems::Physics' filename='gz-sim-physics-system'/> -->
@@ -52,7 +58,7 @@
         <collision name='collision'>
           <geometry>
             <plane>
-              <normal>0 -0.05 1</normal>
+              <normal>0 -0.0 1</normal>
               <size>100 100</size>
             </plane>
           </geometry>
@@ -93,7 +99,7 @@
         </inertial>
         <enable_wind>false</enable_wind>
       </link>
-      <pose>0 0 0 0.05 0 0</pose>
+      <pose>0 0 0 0.0 0 0</pose>
     </model> -->
 
 

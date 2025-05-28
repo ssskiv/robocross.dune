@@ -23,7 +23,7 @@ def generate_launch_description():
         description = 'World to load'
     )
     gazebo = ExecuteProcess(
-            cmd=['gazebo','--verbose', '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so', default_world], # Replace with your command and arguments
+            cmd=['gazebo','--debug', '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so', default_world], # Replace with your command and arguments
             shell=True, # Optional: Set to True if you need shell features like wildcards or pipes
             name='gazebo', # Optional: Name for the process
             output='screen' # Optional: 'screen' to display output in the terminal, 'log' to save to a log file, or 'none' to discard
