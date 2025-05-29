@@ -10,12 +10,12 @@
 
   <link name="base_link">
     <inertial>
-      <origin xyz="0.06 0.0 0.3" rpy="0 0 -1.57" />
-      <mass value="5.0" />
+      <origin xyz="0.06 0.0 0.3" rpy="0 0 -1.5708" />
+      <mass value="0.10" />
       <inertia ixx="11.367893" iyy="2.895706" izz="13.361019" ixy="0.0" iyz="0.0" ixz="0.0" />
     </inertial>
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 1.57" />
+      <origin xyz="0 0 0" rpy="0 0 1.5708" />
       <geometry>
         <mesh filename="file://$(find main)/meshes/base_link.stl" scale="0.001 0.001 0.001" />
       </geometry>
@@ -23,9 +23,9 @@
 
     </visual>
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 1.57" />
+      <origin xyz="0 0 0.5" rpy="0 0 1.5708" />
       <geometry>
-        <!-- <mesh filename="file://$(find main)/meshes/base_link.stl" scale="0.001 0.001 0.001" /> -->
+        <mesh filename="file://$(find main)/meshes/base_link.stl" scale="0.0001 0.0001 0.0001" />
       </geometry>
     </collision>
   </link>
@@ -231,35 +231,35 @@
 
 
   <joint name="frw_to_body" type="continuous">
-    <origin xyz="0.491042 -0.35  0.196191" rpy="0 0 -1.57" />
+    <origin xyz="0.491042 -0.35  0.196191" rpy="0 0 -1.5708" />
     <parent link="fr_spring" />
     <child link="fr_wheel_1" />
     <axis xyz="-1.0 0.0 0.0" />
   </joint>
 
   <joint name="mrw_to_body" type="continuous">
-    <origin xyz="0.051042 -0.35  0.19" rpy="0 0 -1.57" />
+    <origin xyz="0.051042 -0.35  0.19" rpy="0 0 -1.5708" />
     <parent link="mr_spring" />
     <child link="mr_wheel_1" />
     <axis xyz="-1.0 0.0 0.0" />
   </joint>
 
   <joint name="brw_to_body" type="continuous">
-    <origin xyz="-0.388958 -0.35  0.196191" rpy="0 0 -1.57" />
+    <origin xyz="-0.388958 -0.35  0.196191" rpy="0 0 -1.5708" />
     <parent link="br_spring" />
     <child link="br_wheel_1" />
     <axis xyz="-1.0 0.0 0.0" />
   </joint>
 
   <joint name="flw_to_body" type="continuous">
-    <origin xyz="0.491042 0.35  0.196191" rpy="0 0 -1.57" />
+    <origin xyz="0.491042 0.35  0.196191" rpy="0 0 -1.5708" />
     <parent link="fl_spring" />
     <child link="fl_wheel_1" />
     <axis xyz="-1.0 0.0 0.0" />
   </joint>
 
   <joint name="mlw_to_body" type="continuous">
-    <origin xyz="0.051042 0.35  0.19" rpy="0 0 -1.57" />
+    <origin xyz="0.051042 0.35  0.19" rpy="0 0 -1.5708" />
     <parent link="ml_spring" />
     <child link="ml_wheel_1" />
     <axis xyz="-1.0 0.0 0.0" />
@@ -267,7 +267,7 @@
 
 
   <joint name="blw_to_body" type="continuous">
-    <origin xyz="-0.388958 0.35 0.196191" rpy="0 0 -1.57" />
+    <origin xyz="-0.388958 0.35 0.196191" rpy="0 0 -1.5708" />
     <parent link="bl_spring" />
     <child link="bl_wheel_1" />
     <axis xyz="-1.0 0.0 0.0" />

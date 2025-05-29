@@ -23,21 +23,21 @@ ekf_filter_node_map:
     # GPS odometry (from navsat_transform_node):
 
     odom1: /gps/fix
-    odom1_config: [true,  true,  false,
+    odom1_config: [true,  true,  true,
                   false, false, false,
                   false, false, false,
                   false, false, false,
                   false, false, false]
     odom1_queue_size: 10
     # odom1_nodelay: true
-    odom1_differential: true
+    odom1_differential: false
     odom1_relative: false
 
     imu0: /imu
     imu0_config: [false, false, false,
-                  false,  false,  false,
+                  true,  true,  true,
                   false, false, false,
-                  false,  false,  false,
+                  true,  true,  true,
                   false,  false,  false]
                   
     # imu0_config: [false, false, false,
@@ -51,8 +51,8 @@ ekf_filter_node_map:
   # vroll vpitch vyaw
   # ax    ay     az
     
-    imu0_differential: true
-    imu0_relative: false
+    imu0_differential: false
+    imu0_relative: true
     imu0_queue_size: 10
     imu0_remove_gravitational_acceleration: true
     
