@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<robot name="My robot">
+    <webots>
+        <plugin type="fucking_simulation.driver.MyRobotDriver" />
+    </webots>
+</robot>

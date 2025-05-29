@@ -24,8 +24,15 @@ if(BUILD_TESTING)
 endif()
 
 install(
-  DIRECTORY config launch worlds meshes urdf maps models
+  DIRECTORY config launch worlds meshes urdf maps models resource main
   DESTINATION share/${PROJECT_NAME}
 )
+
+install(
+  DIRECTORY main
+  DESTINATION lib/${PROJECT_NAME}
+  FILES_MATCHING PATTERN "*.py"
+)
+
 
 ament_package()

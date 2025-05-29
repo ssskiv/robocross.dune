@@ -4,10 +4,12 @@ FROM osrf/ros:humble-desktop
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ROS_DISTRO=${ROS_DISTRO}
+ENV USER=bmstu
 ARG UID=1000
 ARG NVIDIA_GPU=1
 ARG NVIDIA_DRIVER=570
 ENV ROS_DOMAIN_ID=231
+ARG DEBIAN_FRONTEND=noninteractive
 
 
 RUN useradd -m -g users ubuntu && groupadd ubuntu
@@ -28,8 +30,9 @@ RUN apt-get update && apt-get install -y \
     ros-${ROS_DISTRO}-rqt \
     ros-${ROS_DISTRO}-rqt-common-plugins \
     ros-${ROS_DISTRO}-realsense2-camera \
-    ros-${ROS_DISTRO}-gazebo-ros-pkgs \
-    ros-${ROS_DISTRO}-geometry2 \
+    # ros-${ROS_DISTRO}-gazebo-ros-pkgs \
+    # ros-${ROS_DISTRO}-geometry2 \
+    ros-${ROS_DISTRO}-webots-ros2 \
     ros-${ROS_DISTRO}-robot-localization \
     git \
     nano \
@@ -40,10 +43,21 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean
 
 # Set locale
-RUN locale-gen en_US en_US.UTF-8
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US:en
-ENV LC_ALL=en_US.UTF-8
+# RUN locale-gen en_US en_US.UTF-8
+# ENV LANG=en_US.UTF-8
+# ENV LANGUAGE=en_US:en
+# ENV LC_ALL=en_US.UTF-8
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Webots
+RUN curl -L -o /tmp/webots.deb \
+    'https://github.com/cyberbotics/webots/releases/download/R2025a/webots_2025a_amd64.deb' 
+RUN apt-get update && \
+    apt-get install -y /tmp/webots.deb && \
+    rm -f /tmp/webots.deb && \
+    mkdir -p /bmstu/.config/Cyberbotics \
+    && sudo rm -rf /var/lib/apt/lists/*
 
 RUN sudo apt-get update \
     && sudo apt-get install -y ros-${ROS_DISTRO}-xacro ros-${ROS_DISTRO}-joint-state-publisher-gui \
