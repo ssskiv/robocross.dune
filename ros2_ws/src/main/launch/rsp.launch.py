@@ -9,6 +9,10 @@ from launch.event_handlers import OnShutdown
 from launch_ros.actions import Node
 from launch.actions import ExecuteProcess, RegisterEventHandler
 
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, TimerAction
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+
+
 import xacro
 
 
@@ -88,6 +92,14 @@ def generate_launch_description():
         )
     )
 
+    robot_launch = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory(package_name),'launch','robot.launch.py'
+                )]), 
+                # condition=IfCondition( is_navigation ), 
+                launch_arguments={'use_sim_time': use_sim_time}.items()
+    )
+
     
     # Launch!
     return LaunchDescription([
@@ -99,5 +111,6 @@ def generate_launch_description():
         node_robot_state_publisher,
         node_joint_state_publisher,
         spawn_entity,
+        robot_launch,
         on_robot_node_exit_handler,
     ])
