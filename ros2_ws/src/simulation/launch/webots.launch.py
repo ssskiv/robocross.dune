@@ -15,6 +15,8 @@ from launch_ros.actions import Node
 from webots_ros2_driver.webots_launcher import WebotsLauncher, Ros2SupervisorLauncher
 from webots_ros2_driver.utils import controller_url_prefix
 from webots_ros2_driver.webots_controller import WebotsController
+from launch_ros.descriptions import ComposableNode, ParameterFile
+from nav2_common.launch import RewrittenYaml
 
 def generate_launch_description():
     package_name = 'simulation'
@@ -55,6 +57,23 @@ def generate_launch_description():
         ],
         respawn=True
     )
+    # pctls_params = ParameterFile(
+    #     RewrittenYaml(
+    #         source_file=os.path.join(package_dir, 'config', 'pctls_params.yaml'),
+    #         convert_types=True),
+    #     allow_substs=True)
+    
+    pointcloud_to_laserscan_node=Node(
+                package='pointcloud_to_laserscan',
+                executable='pointcloud_to_laserscan_node',
+                name='pointcloud_to_laserscan',
+                output='screen',
+                parameters=[os.path.join(package_dir, 'config', 'pctls_params.yaml')],
+                remappings=[
+                    ('cloud_in', '/pc/point_cloud'),
+                    ('scan', '/scan')
+                                    ]
+            )
     
     return LaunchDescription([
         world_arg,
@@ -62,6 +81,7 @@ def generate_launch_description():
         webots._supervisor,
         # ros2_supervisor,
         my_robot_driver,
+        pointcloud_to_laserscan_node,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=webots,

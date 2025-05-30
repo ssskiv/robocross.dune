@@ -10,7 +10,7 @@ class MyRobotDriver:
         self.__robot = webots_node.robot
         
         self.last_pos = 0.0
-        
+        # self.__robot.ge
         # self.create_subscription(GPS, 'left_sensor', self.__left_sensor_callback, 1)
         
         for i in ['f','m','b']:

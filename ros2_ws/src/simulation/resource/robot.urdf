@@ -10,12 +10,24 @@
                 <frameName>base_link</frameName>
             </ros>
         </device>
-        <!-- <device reference="imu" type="IMU">
+        <device reference="lidar" type="Lidar">
             <ros>
-                <topicName>/imu</topicName>
+                <frameName>base_link</frameName>
+                <enabled>true</enabled>
+                <scanRate>10</scanRate>
+                <topicName>/pc</topicName>
                 <alwaysOn>true</alwaysOn>
             </ros>
-        </device> -->
+        </device>
+        <device reference="camera" type="Camera">
+            <ros>
+                <frameName>base_link</frameName>
+                <enabled>true</enabled>
+                <scanRate>10</scanRate>
+                <topicName>/camera</topicName>
+                <alwaysOn>true</alwaysOn>
+            </ros>
+        </device>
 
         <plugin type="webots_ros2_driver::Ros2IMU">
             <enabled>true</enabled>
