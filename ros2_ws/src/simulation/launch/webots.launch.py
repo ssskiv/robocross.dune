@@ -17,8 +17,9 @@ from webots_ros2_driver.utils import controller_url_prefix
 from webots_ros2_driver.webots_controller import WebotsController
 
 def generate_launch_description():
-    package_name = 'main'
+    package_name = 'simulation'
     package_dir = get_package_share_directory(package_name)
+    # sim_pkg_dir = get_package_share_directory('simulation')
     
     robot_description = os.path.join(package_dir, pathlib.Path(os.path.join(package_dir, 'resource', 'robot.urdf')))
     

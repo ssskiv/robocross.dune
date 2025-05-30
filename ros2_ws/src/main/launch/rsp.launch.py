@@ -21,22 +21,9 @@ def generate_launch_description():
     # Check if we're told to use sim time
     use_sim_time = LaunchConfiguration('use_sim_time')
     package_name='main'
-    # Process the URDF file
-    pkg_path = os.path.join(get_package_share_directory(package_name))
-    xacro_file = os.path.join(pkg_path,'urdf','rover.xacro')
-    robot_description_config = xacro.process_file(xacro_file)
     
-    # Create a robot_state_publisher node
-    params = {'robot_description': robot_description_config.toxml(),  'use_sim_time': use_sim_time}
+    params = {'use_sim_time': use_sim_time}
 
-
-    # joint_state_publisher_gui = Node(
-    #     package='joint_state_publisher_gui',
-    #     executable='joint_state_publisher_gui',
-    #     name='joint_state_publisher_gui',
-    #     arguments=[],
-    #     output=['screen']
-    # )
     node_robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -52,46 +39,6 @@ def generate_launch_description():
         # namespace="main_bot",
         parameters=[params]
     )
-
-    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
-                        arguments=['-entity', 'rover', '-topic', 'robot_description', '-z', '4.5'],
-                        output='screen')
-
-
-
-    delete_model_command = [
-        'ros2', 'service', 'call',
-        '/delete_entity',
-        'gazebo_msgs/srv/DeleteEntity',
-        '"{name: \'' + 'rover' + '\'}"' # JSON string for the request
-    ]
-
-    delete_model_action = ExecuteProcess(
-        cmd=delete_model_command,
-        name='delete_model_service_call',
-        output='screen',
-        shell=True, # Required because we're passing a complex command string
-        # Do not wait for this process to finish, as the launch system might be shutting down
-        # This is more of a "fire and forget" if you don't need its success/failure for further launch logic
-        # You can add OnExecutionComplete if you want to handle the service call's completion
-    )
-
-    # 3. Register an event handler to trigger despawn when the robot node exits
-    on_robot_node_exit_handler = RegisterEventHandler(
-        OnShutdown(
-            # target_action=node_robot_state_publisher,
-            on_shutdown=[
-                # ExecuteProcess(
-                #     cmd=['echo', f'Node {node_robot_state_publisher.name} exited. Attempting to despawn rover in Gazebo Classic...'],
-                #     name='despawn_log_message',
-                #     output='screen'
-                # ),
-                # delete_model_action
-                os.system("ros2 service call /delete_entity gazebo_msgs/srv/DeleteEntity '{name: 'rover'}'"),
-            ]
-        )
-    )
-
     robot_launch = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory(package_name),'launch','robot.launch.py'
@@ -105,12 +52,11 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
-            default_value='true',
+            default_value='false',
             description='Use sim time if true'),
         # joint_state_publisher_gui, 
-        node_robot_state_publisher,
-        node_joint_state_publisher,
-        spawn_entity,
+        # node_robot_state_publisher,
+        # node_joint_state_publisher,
+        # spawn_entity,
         robot_launch,
-        on_robot_node_exit_handler,
     ])

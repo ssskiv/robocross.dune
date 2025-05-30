@@ -27,6 +27,6 @@
             <accelerometerName>accel</accelerometerName>
         </plugin>
 
-        <plugin type="fucking_simulation.driver.MyRobotDriver" />
+        <plugin type="simulation.driver.MyRobotDriver" />
     </webots>
 </robot>
