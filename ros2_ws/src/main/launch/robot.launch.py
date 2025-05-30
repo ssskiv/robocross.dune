@@ -16,7 +16,7 @@ def generate_launch_description():
 
     declare_use_sim_time = DeclareLaunchArgument(
             'use_sim_time',
-            default_value='true',
+            default_value='false',
             description='Use sim time if true')
     use_sim_time = LaunchConfiguration('use_sim_time')
     no_sim = LaunchConfiguration('no_sim')
@@ -120,12 +120,20 @@ def generate_launch_description():
         )]),
         launch_arguments={'use_sim_time': use_sim_time}.items()
     )
+    
+    gps_fixer = Node(
+            package="tf2_ros",
+            executable="static_transform_publisher",
+            name="swri_transform",
+            arguments=["0", "0", "0", "0", "0", "0", "base_link", "gps"]
+        )
     #TODO!!!! Create/find and launch RealSense node !!!!     
 
     return LaunchDescription([
         declare_use_sim_time,
         ekf,
         ekf2,
+        gps_fixer,
         gps_filter,
         # indicator_node,
         # goal_checker_node,

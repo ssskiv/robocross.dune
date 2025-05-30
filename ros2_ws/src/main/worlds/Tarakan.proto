@@ -1,0 +1,112 @@
+#VRML_SIM R2025a utf8
+EXTERNPROTO "Wheel.proto"
+PROTO Tarakan [
+    field SFString name "my_robot"
+    field SFVec3f translation 0 0 0.5
+    field SFRotation rotation 0 0 0 0
+    field SFNode hingeJointParameters HingeJointParameters { axis 0 1 0 anchor 0 0 0}
+    field SFNode suspensionJointParameters JointParameters {axis 0 0 1 minStop -0.1 maxStop 0.1 springConstant 800 dampingConstant 10}
+    field SFFloat maxTorque 100
+    field SFFloat maxVelocity 100
+    field SFNode wheelGeometry Cylinder {height 0.15 radius 0.19}
+    field SFNode wheelAppearance PBRAppearance {baseColor 1 0 0 roughness 1 metalness 0}
+]
+{
+    Robot {
+    translation IS translation
+    rotation IS rotation
+    children [
+        Transform {
+            translation 0 0 0.5
+            children [
+                Shape {
+                    appearance PBRAppearance {
+                        baseColor 0 0 1
+                        roughness 1
+                        metalness 0
+                    }
+                    geometry DEF BODY Box {
+                        size 1.2 0.7 0.2
+                    }
+                }
+            ]
+        }
+        Wheel{
+            translation 0.5 0.5 0.2
+            name "fl wheel"
+            suspensionJointParameters IS suspensionJointParameters
+            hingeJointParameters IS hingeJointParameters
+            geometry IS wheelGeometry
+            appearance IS wheelAppearance
+            maxTorque IS maxTorque
+            maxVelocity IS maxVelocity
+        }
+        Wheel{
+            translation 0 0.5 0.2
+            name "ml wheel"
+            suspensionJointParameters IS suspensionJointParameters
+            hingeJointParameters IS hingeJointParameters
+            geometry IS wheelGeometry
+            appearance IS wheelAppearance
+            maxTorque IS maxTorque
+            maxVelocity IS maxVelocity
+        }
+        Wheel{
+            translation -0.5 0.5 0.2
+            name "bl wheel"
+            suspensionJointParameters IS suspensionJointParameters
+            hingeJointParameters IS hingeJointParameters
+            geometry IS wheelGeometry
+            appearance IS wheelAppearance
+            maxTorque IS maxTorque
+            maxVelocity IS maxVelocity
+        }
+        Wheel{
+            translation 0.5 -0.5 0.2
+            name "fr wheel"
+            suspensionJointParameters IS suspensionJointParameters
+            hingeJointParameters IS hingeJointParameters
+            geometry IS wheelGeometry
+            appearance IS wheelAppearance
+            maxTorque IS maxTorque
+            maxVelocity IS maxVelocity
+        }
+        Wheel{
+            translation 0 -0.5 0.2
+            name "mr wheel"
+            suspensionJointParameters IS suspensionJointParameters
+            hingeJointParameters IS hingeJointParameters
+            geometry IS wheelGeometry
+            appearance IS wheelAppearance
+            maxTorque IS maxTorque
+            maxVelocity IS maxVelocity
+        }
+        Wheel{
+            translation -0.5 -0.5 0.2
+            name "br wheel"
+            suspensionJointParameters IS suspensionJointParameters
+            hingeJointParameters IS hingeJointParameters
+            geometry IS wheelGeometry
+            appearance IS wheelAppearance
+            maxTorque IS maxTorque
+            maxVelocity IS maxVelocity
+        }
+        GPS{name "gps"}
+        InertialUnit{name "imu"}
+        Gyro{name "gyro"}
+        Accelerometer{name "accel"}
+    ]
+    boundingObject Transform {
+        translation 0 0 0.5
+        children [
+            USE BODY
+        ]
+    }
+    physics Physics {
+        mass 80
+        density -1
+    }
+    controller "<extern>"
+    name IS name
+}
+}

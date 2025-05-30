@@ -1,6 +1,32 @@
 <?xml version="1.0" ?>
 <robot name="My robot">
     <webots>
+    
+
+        <device reference="gps" type="GPS">
+            <ros>
+                <topicName>/gps/fix</topicName>
+                <alwaysOn>true</alwaysOn>
+                <frameName>base_link</frameName>
+            </ros>
+        </device>
+        <!-- <device reference="imu" type="IMU">
+            <ros>
+                <topicName>/imu</topicName>
+                <alwaysOn>true</alwaysOn>
+            </ros>
+        </device> -->
+
+        <plugin type="webots_ros2_driver::Ros2IMU">
+            <enabled>true</enabled>
+            <topicName>/imu</topicName>
+            <alwaysOn>true</alwaysOn>
+            <frameName>base_link</frameName>
+            <inertialUnitName>imu</inertialUnitName>
+            <gyroName>gyro</gyroName>
+            <accelerometerName>accel</accelerometerName>
+        </plugin>
+
         <plugin type="fucking_simulation.driver.MyRobotDriver" />
     </webots>
 </robot>

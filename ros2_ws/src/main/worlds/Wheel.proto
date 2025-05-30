@@ -1,0 +1,57 @@
+#VRML_SIM R2025a utf8
+# tags: nonDeterministic
+# template language: javascript
+PROTO Wheel [
+    field SFString name "NAME NOT SPECIFIED"
+    field SFVec3f translation 0 0 0
+    field SFNode hingeJointParameters HingeJointParameters { axis 0 1 0 anchor 0 0 0}
+    field SFNode suspensionJointParameters JointParameters {axis 0 0 1 minStop -0.1 maxStop 0.1 springConstant 800 dampingConstant 10}
+    field SFFloat maxTorque 100
+    field SFFloat maxVelocity 100
+    field SFNode geometry Cylinder {height 0.15 radius 0.19}
+    field SFNode appearance PBRAppearance {baseColor 1 0 0 roughness 1 metalness 0}
+]
+{
+    SliderJoint {
+            jointParameters IS suspensionJointParameters 
+            endPoint Solid {
+                translation IS translation
+                children [
+                    HingeJoint {
+                        jointParameters IS hingeJointParameters
+                        device [
+                          RotationalMotor { maxTorque IS maxTorque maxVelocity IS maxVelocity
+                            name %<=  '"'+fields.name.value + ' motor'+'"' >%
+                          }
+                          PositionSensor{name  %<='"'+fields.name.value + ' ps'+'"' >%}
+                        ]
+                        endPoint Solid {
+                          
+                            children[DEF WHEEL Transform {
+                                rotation 1 0 0 1.5707996938995747
+                                children [
+                                    Shape {
+                                        appearance IS appearance
+                                        geometry IS geometry
+                                    }
+                                ]
+                            }]
+                        boundingObject USE WHEEL
+                        physics Physics {
+                    mass 8
+                    density -1
+                }}
+                    }
+                ]
+                name IS name
+                # boundingObject USE WHEEL
+
+                physics Physics {
+                    mass 0.1
+                    density -1
+                    inertiaMatrix [1 1 1 ,0 0 0]
+                    centerOfMass 0 0 0
+                }
+            }
+        }
+}
