@@ -79,7 +79,7 @@ def generate_launch_description():
         executable='navsat_transform_node',
         output='screen',
         parameters=[config_ekf],
-        remappings=[('/odometry/filtered', '/odometry/raw')]
+        remappings=[('/odometry/filtered', '/odometry/filtered')]
     )
     
     rgbd_odometry_node = Node(

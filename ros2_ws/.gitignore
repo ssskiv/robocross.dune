@@ -4,3 +4,4 @@ log
 vscode
 *.pyc
 frames*
+robot_localization_debug*

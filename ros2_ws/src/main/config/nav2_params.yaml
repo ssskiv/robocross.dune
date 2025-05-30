@@ -330,9 +330,9 @@ behavior_server:
     robot_base_frame: base_link
     transform_tolerance: 0.1
     simulate_ahead_time: 2.0
-    max_rotational_vel: 3.0
+    max_rotational_vel: 1.5
     min_rotational_vel: 0.1
-    rotational_acc_lim: 6.0
+    rotational_acc_lim: 0.25
 
 waypoint_follower:
   ros__parameters:
@@ -350,8 +350,8 @@ velocity_smoother:
     smoothing_frequency: 20.0
     scale_velocities: False
     feedback: "OPEN_LOOP"
-    max_velocity: [5.0, 1.0, 0.25]
-    min_velocity: [-2.0, -1.0, -0.25]
+    max_velocity: [5.0, 1.0, 1.50]
+    min_velocity: [-2.0, -1.0, -1.5]
     max_accel: [0.25, 0.0, 0.25]
     max_decel: [-0.25, 0.0, -1.25]
     odom_topic: "odometry/filtered"

@@ -6,8 +6,8 @@ PROTO Wheel [
     field SFVec3f translation 0 0 0
     field SFNode hingeJointParameters HingeJointParameters { axis 0 1 0 anchor 0 0 0}
     field SFNode suspensionJointParameters JointParameters {axis 0 0 1 minStop -0.1 maxStop 0.1 springConstant 800 dampingConstant 10}
-    field SFFloat maxTorque 100
-    field SFFloat maxVelocity 100
+    field SFFloat maxTorque 1
+    field SFFloat maxVelocity 1
     field SFNode geometry Cylinder {height 0.15 radius 0.19}
     field SFNode appearance PBRAppearance {baseColor 1 0 0 roughness 1 metalness 0}
 ]
