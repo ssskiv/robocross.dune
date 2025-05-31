@@ -24,7 +24,7 @@ if(BUILD_TESTING)
 endif()
 
 install(
-  DIRECTORY config launch maps main
+  DIRECTORY config launch maps
   DESTINATION share/${PROJECT_NAME}
 )
 
