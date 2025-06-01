@@ -12,7 +12,7 @@
         </device>
         <device reference="lidar" type="Lidar">
             <ros>
-                <frameName>base_link</frameName>
+                <frameName>lidar_link</frameName>
                 <enabled>true</enabled>
                 <scanRate>10</scanRate>
                 <topicName>/pc</topicName>

@@ -57,18 +57,18 @@ def generate_launch_description():
         ],
         respawn=True
     )
-    # pctls_params = ParameterFile(
-    #     RewrittenYaml(
-    #         source_file=os.path.join(package_dir, 'config', 'pctls_params.yaml'),
-    #         convert_types=True),
-    #     allow_substs=True)
+    pctls_params = ParameterFile(
+        RewrittenYaml(
+            source_file=os.path.join(package_dir, 'config', 'pctls_params.yaml'),
+            convert_types=True, param_rewrites=[]),
+        allow_substs=True)
     
     pointcloud_to_laserscan_node=Node(
                 package='pointcloud_to_laserscan',
                 executable='pointcloud_to_laserscan_node',
                 name='pointcloud_to_laserscan',
                 output='screen',
-                parameters=[os.path.join(package_dir, 'config', 'pctls_params.yaml')],
+                parameters=[pctls_params],
                 remappings=[
                     ('cloud_in', '/pc/point_cloud'),
                     ('scan', '/scan')
