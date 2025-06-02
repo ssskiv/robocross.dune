@@ -31,7 +31,6 @@ class WebotsYoloProcessor(Node):
         
         results = self.model(cv_image)
         
-       
         annotated_image = results[0].plot()  # Метод plot() делает bounding boxes
         
         
@@ -40,7 +39,7 @@ class WebotsYoloProcessor(Node):
         
         
         self.publisher_.publish(processed_image_msg)
-        self.get_logger().info('Изображение обработано YOLOv8')
+        self.get_logger().info('Обработал.. Проверяй')
 
 def main(args=None):
     rclpy.init(args=args)
