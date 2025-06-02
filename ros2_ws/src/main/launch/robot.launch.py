@@ -52,6 +52,12 @@ def generate_launch_description():
         executable = 'goal_checker_node',
         output='screen',
     )
+    yolo_detect_node = Node(
+        package = 'core',
+        name = 'yolo_detect_node',
+        executable = 'yolo_detect',
+        output='screen',
+    )
     goal_sender_node = Node(
         package = 'core',
         name = 'goal_sender_node',
@@ -133,6 +139,8 @@ def generate_launch_description():
             name="swri_transform",
             arguments=["0", "0", "0.7", "0", "0.05", "0", "base_link", "lidar_link"]
         )
+    
+    
     #TODO!!!! Create/find and launch RealSense node !!!!     
 
     return LaunchDescription([
@@ -142,6 +150,7 @@ def generate_launch_description():
         gps_fixer,
         lidar_fixer,
         gps_filter,
+        yolo_detect_node,
         # indicator_node,
         # goal_checker_node,
         # goal_sender_node,
