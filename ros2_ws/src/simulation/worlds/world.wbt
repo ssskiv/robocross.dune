@@ -5,6 +5,7 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/floors/protos/CircleArena.proto"
 EXTERNPROTO "/bmstu/ros2_ws/src/simulation/worlds/Tarakan.proto"
 EXTERNPROTO "/bmstu/ros2_ws/src/simulation/worlds/BarrelGenerator.proto"
+EXTERNPROTO "/bmstu/ros2_ws/src/simulation/worlds/Les.proto"
 
 
 WorldInfo {
@@ -18,10 +19,11 @@ Viewpoint {
     follow "none"
 }
 TexturedBackground {
-    
+    texture "noon_cloudy_empty"
 }
 TexturedBackgroundLight {
-    
+    texture "noon_cloudy_empty"
+    luminosity 0.5
 }
 # CircleArena {
 # radius 15
@@ -59,3 +61,9 @@ Tarakan{
     translation 0 0 0
 }
 BarrelGenerator{}
+Les{}
+Fog {
+    color 0.541 0.545 0.42
+    fogType "EXPONENTIAL2"
+    visibilityRange 50
+}
