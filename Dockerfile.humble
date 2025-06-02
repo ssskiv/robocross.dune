@@ -75,10 +75,11 @@ RUN sudo apt update \
     && sudo apt install -y ros-${ROS_DISTRO}-slam-toolbox \
     && sudo rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir  opencv-python pymavlink
+RUN pip install --no-cache-dir  opencv-python pymavlink ultralytics tensorboard 
 #--break-system-packages
 RUN sudo apt update && \
-    sudo apt install -y python3-serial && \
+    sudo apt install -y python3-serial \
+    python3-torch python3-torchvision && \
     sudo apt install -y ros-${ROS_DISTRO}-mapviz \
         ros-${ROS_DISTRO}-mapviz-plugins \
         ros-${ROS_DISTRO}-tile-map \
