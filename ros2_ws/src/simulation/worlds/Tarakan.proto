@@ -11,7 +11,7 @@ PROTO Tarakan [
     field SFNode wheelGeometry Cylinder {height 0.15 radius 0.19}
     field SFNode wheelAppearance PBRAppearance {baseColor 1 0 0 roughness 1 metalness 0}
     field SFVec3f lidarTranslation 0 0 0.7
-    field SFRotation lidarRotation 0 1 0 0.05
+    field SFRotation lidarRotation 0 1 0 0
     # field SFNode child NULL
     # field SFNode lidar {name "lidar" translation 0 0 1.5 rotation 0 1 0 0.2}
 ]
@@ -39,6 +39,7 @@ PROTO Tarakan [
             name "lidar" 
             translation IS lidarTranslation
             rotation IS lidarRotation
+            tiltAngle -0.05
             maxRange 25
             # fieldOfView 6.28
             projection "planar"

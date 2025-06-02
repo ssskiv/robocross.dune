@@ -127,6 +127,12 @@ def generate_launch_description():
             name="swri_transform",
             arguments=["0", "0", "0", "0", "0", "0", "base_link", "gps"]
         )
+    lidar_fixer = Node(
+            package="tf2_ros",
+            executable="static_transform_publisher",
+            name="swri_transform",
+            arguments=["0", "0", "0.7", "0", "0.05", "0", "base_link", "lidar_link"]
+        )
     #TODO!!!! Create/find and launch RealSense node !!!!     
 
     return LaunchDescription([
@@ -134,6 +140,7 @@ def generate_launch_description():
         ekf,
         ekf2,
         gps_fixer,
+        lidar_fixer,
         gps_filter,
         # indicator_node,
         # goal_checker_node,
