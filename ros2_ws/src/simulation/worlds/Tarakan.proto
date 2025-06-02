@@ -32,7 +32,15 @@ PROTO Tarakan [
                     geometry DEF BODY Box {
                         size 1.2 0.7 0.2
                     }
+                    
                 }
+                # Solid {
+                #     boundingObject USE BODY
+                #     physics physics Physics {
+                #         mass 80
+                #         density -1
+                #     }
+                # }
             ]
         }
         Lidar{
@@ -66,7 +74,7 @@ PROTO Tarakan [
                         roughness 1
                         metalness 0
                     }
-                    geometry DEF BODY Box {
+                    geometry DEF LBODY Box {
                         size 0.1 0.1 0.1
                     }
                 }

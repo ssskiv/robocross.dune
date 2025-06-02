@@ -1,0 +1,36 @@
+#VRML_SIM R2025a utf8
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/obstacles/protos/OilBarrel.proto"
+
+PROTO BarrelGenerator[
+    field SFFloat xMin -88
+    field SFFloat xMax 240
+    field SFFloat yMin -178
+    field SFFloat yMax 20
+    field SFFloat xDensity 10 #density in gap between barrels
+    field SFFloat yDensity 10 #density in gap between barrels
+    field SFFloat randomStrength 8
+    field SFFloat safeZoneX 0
+    field SFFloat safeZoneY 0
+    field SFFloat safeZoneRadius 5
+]{
+    %<import * as wbrandom from 'wbrandom.js';
+      let rs = fields.randomStrength.value;    
+    >%
+Pose{
+    children [
+%< for (let x = fields.xMin.value; x < fields.xMax.value; x+=fields.xDensity.value) { >%
+%< for (let y = fields.yMin.value; y < fields.yMax.value; y+=fields.yDensity.value) { >%
+%< let rx = x + wbrandom.real(-rs,rs); let ry = y+ wbrandom.real(-rs,rs);
+%< if ((Math.abs(rx-fields.safeZoneX.value)>=Math.abs(fields.safeZoneRadius.value)) && (Math.abs(ry-fields.safeZoneY.value)>=Math.abs(fields.safeZoneRadius.value))){>%
+OilBarrel {
+    translation %<= rx >% %<= ry >% %<= 1 >%
+    physics Physics {
+        mass 20
+        density -1
+        centerOfMass 0 0 -1
+    }
+    name %<=('"'+"oil barrel" + x+y+'"')>% 
+}
+%< }}} >%
+    ]
+}}
