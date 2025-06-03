@@ -1,0 +1,66 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "/bmstu/ros2_ws/src/simulation/worlds/Tarakan.proto"
+EXTERNPROTO "/bmstu/ros2_ws/src/simulation/worlds/BarrelGenerator.proto"
+EXTERNPROTO "/bmstu/ros2_ws/src/simulation/worlds/Les.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/SandyGround.proto"
+
+WorldInfo {
+  gpsCoordinateSystem "WGS84"
+  gpsReference 56.334023 43.640962 162
+  contactProperties [
+    ContactProperties {
+      maxContactJoints 30
+    }
+  ]
+}
+Viewpoint {
+  orientation -0.33185733874619844 -0.09874274160469809 0.9381474178937331 3.686018050088086
+  position 1.700313773507203 1.0549607538959629 1.4846240848267684
+  follow "none"
+}
+TexturedBackground {
+  texture "noon_cloudy_empty"
+}
+TexturedBackgroundLight {
+  texture "noon_cloudy_empty"
+  luminosity 0.5
+}
+Solid {
+  translation -1.57 0.940121 -2.5
+  rotation 0.9999972139241391 -0.001666135358007565 0.0016721653412075277 -0.00159531
+  children [
+    Shape {
+      appearance SandyGround {
+        textureTransform TextureTransform {
+          scale 8 8
+        }
+      }
+      geometry DEF MESH Mesh {
+        url [
+          "/bmstu/ros2_ws/src/simulation/worlds/1234/map.obj"
+        ]
+      }
+    }
+  ]
+  boundingObject USE MESH
+}
+Tarakan {
+  translation 0 0 0
+}
+BarrelGenerator {
+}
+Les {
+}
+Fog {
+  color 0.541 0.545 0.42
+  fogType "EXPONENTIAL2"
+  visibilityRange 50
+}
+Robot {
+  name "Ros2Supervisor"
+  controller "<extern>"
+  supervisor TRUE
+}
