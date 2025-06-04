@@ -23,13 +23,13 @@ class WebotsYoloProcessor(Node):
         # Yolov8
 
         self.model = YOLO('/bmstu/ros2_ws/src/core/train/weights/best.pt')  
-        self.get_logger().info('YOLOv8 модель загружена, нода запущена')
+        # self.get_logger().info('YOLOv8 модель загружена, нода запущена')
 
     def image_callback(self, msg):
        
         cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
         
-        results = self.model(cv_image)
+        results = self.model(cv_image, verbose = False)
         
         annotated_image = results[0].plot()  # Метод plot() делает bounding boxes
         
@@ -39,7 +39,7 @@ class WebotsYoloProcessor(Node):
         
         
         self.publisher_.publish(processed_image_msg)
-        self.get_logger().info('Обработал.. Проверяй')
+        # self.get_logger().info('Обработал.. Проверяй')
 
 def main(args=None):
     rclpy.init(args=args)

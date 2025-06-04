@@ -60,7 +60,7 @@ Tarakan{
     translation 0 0 0
 }
 BarrelGenerator{}
-Les{}
+# Les{}
 Fog {
     color 0.541 0.545 0.42
     fogType "EXPONENTIAL2"
