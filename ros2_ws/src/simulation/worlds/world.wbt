@@ -5,6 +5,9 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/floors/protos/CircleArena.proto"
 EXTERNPROTO "/bmstu/ros2_ws/src/simulation/worlds/Tarakan.proto"
 EXTERNPROTO "/bmstu/ros2_ws/src/simulation/worlds/BarrelGenerator.proto"
+EXTERNPROTO "/bmstu/ros2_ws/src/simulation/worlds/Les.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/SandyGround.proto"
+
 
 
 WorldInfo {
@@ -18,10 +21,11 @@ Viewpoint {
     follow "none"
 }
 TexturedBackground {
-    
+    texture "noon_cloudy_empty"
 }
 TexturedBackgroundLight {
-    
+    texture "noon_cloudy_empty"
+    luminosity 0.5
 }
 # CircleArena {
 # radius 15
@@ -30,32 +34,35 @@ TexturedBackgroundLight {
 # wallThickness 2
 # floorTileSize 5 5
 # }
-Pose {
-    translation 0 0 -2.5
-    rotation 1 0 0 1.57
+Solid {
+    translation -1.57 0.940121 -2.5
+    rotation 1 -0.00166614 0.00167217 -0.00159531
     # scale 1 1 1
     children [
         Shape {
-            appearance Appearance {
-                material Material{
-                    shininess 0
-                    ambientIntensity 0
-                    diffuseColor 0 0 0
+            appearance SandyGround {
+                textureTransform TextureTransform {
+                scale 8 8
                 }
-                texture ImageTexture {
-                    url "/bmstu/ros2_ws/src/simulation/worlds/1234/texture.png" }
             }
             geometry DEF MESH Mesh {
                 url "/bmstu/ros2_ws/src/simulation/worlds/1234/map.obj"
             }
         }
-        Solid {
-            boundingObject USE MESH
-        }
+        
+       
     ]
+    boundingObject USE MESH
+
 }
 Tarakan{
     name "my_robot"
     translation 0 0 0
 }
 BarrelGenerator{}
+# Les{}
+Fog {
+    color 0.541 0.545 0.42
+    fogType "EXPONENTIAL2"
+    visibilityRange 50
+}

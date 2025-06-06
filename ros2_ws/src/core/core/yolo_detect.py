@@ -23,7 +23,7 @@ class WebotsYoloProcessor(Node):
         # Yolov8
 
         self.model = YOLO('/bmstu/ros2_ws/src/core/train/weights/best.pt')  
-        self.get_logger().info('YOLOv8 модель загружена, нода запущена')
+        # self.get_logger().info('YOLOv8 модель загружена, нода запущена')
 
     def image_callback(self, msg):
        
@@ -60,7 +60,7 @@ class WebotsYoloProcessor(Node):
         
         
         self.publisher_.publish(processed_image_msg)
-        self.get_logger().info('Обработал.. Проверяй')
+        # self.get_logger().info('Обработал.. Проверяй')
 
 def main(args=None):
     rclpy.init(args=args)

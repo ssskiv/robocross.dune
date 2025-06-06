@@ -21,8 +21,8 @@ RUN usermod -l  bmstu ubuntu && \
     # RUN usermod -G dialout
 RUN echo "bmstu ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-RUN sudo rm /usr/share/keyrings/ros2-latest-archive-keyring.gpg \
-    && sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros2-latest-archive-keyring.gpg
+RUN rm -f /usr/share/keyrings/ros2-latest-archive-keyring.gpg \
+    && curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros2-latest-archive-keyring.gpg
 
 
 # Update and install required tools
@@ -75,10 +75,11 @@ RUN sudo apt update \
     && sudo apt install -y ros-${ROS_DISTRO}-slam-toolbox \
     && sudo rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir  opencv-python pymavlink
+RUN pip install --no-cache-dir  "numpy<2" opencv-python pymavlink ultralytics tensorboard 
 #--break-system-packages
 RUN sudo apt update && \
-    sudo apt install -y python3-serial && \
+    sudo apt install -y python3-serial \
+    python3-torch python3-torchvision && \
     sudo apt install -y ros-${ROS_DISTRO}-mapviz \
         ros-${ROS_DISTRO}-mapviz-plugins \
         ros-${ROS_DISTRO}-tile-map \

@@ -12,7 +12,7 @@ gpu=--gpus=all\
 all: auto
 
 auto: check-docker check-nvidia check-mapproxy clean build run 
-	@echo "\nDone. Now you can connect to container!"
+	@echo -e "\n\033[0;32m\033[1m=====Done. Now you can connect to container!====="
 	
 start:
 	docker start $(CONTAINER_NAME) || true
@@ -33,7 +33,7 @@ start:
 clean:
 # docker stop $(CONTAINER_NAME)	
 # docker rm $(CONTAINER_NAME)
-	@echo "Stopping and removing $(CONTAINER_NAME) and image $(IMAGE_NAME)..."
+	@echo "Stopping and removing $(CONTAINER_NAME) container and image $(IMAGE_NAME)..."
 	@docker stop $(CONTAINER_NAME) || true && docker rm $(CONTAINER_NAME) || true
 	@docker rmi $(CONTAINER_NAME) || true
 
