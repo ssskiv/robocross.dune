@@ -62,6 +62,7 @@ PROTO Tarakan [
             near 0.1
             width 640
             height 480
+            lens Lens { center 0.35 0.35 radialCoefficients 2 2}
             fieldOfView 1.57
         }
         Transform {

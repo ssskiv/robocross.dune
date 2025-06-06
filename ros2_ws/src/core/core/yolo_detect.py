@@ -30,6 +30,27 @@ class WebotsYoloProcessor(Node):
         cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
         
         results = self.model(cv_image)
+        for result in results:
+            boxes = result.boxes  
+            for box in boxes:
+                
+                x1, y1, x2, y2 = box.xyxy[0].cpu().numpy()  
+                x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)  # Преобразуем в целые числа
+                
+                width = x2 - x1
+                height = y2 - y1
+                area = width * height 
+
+                center_x = x1 + (width // 2)
+                center_y = y1 + (height // 2)
+                
+
+                class_id = int(box.cls)  # ID класса объекта
+                confidence = box.conf.item()  # Уверенность
+                self.get_logger().info(
+                    f'Объект: {class_id}, уверенность={confidence:.2f}, '
+                    f'Площадь={area} пикс*пикс, Центр=({center_x}, {center_y})'
+                )
         
         annotated_image = results[0].plot()  # Метод plot() делает bounding boxes
         
