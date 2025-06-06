@@ -3,3 +3,4 @@ install
 log
 .vscode
 core.*
+ros2_ws/src/core/data_pairs.txt
