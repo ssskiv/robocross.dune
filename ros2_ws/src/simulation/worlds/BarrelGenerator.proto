@@ -6,8 +6,8 @@ PROTO BarrelGenerator[
     field SFFloat xMax 230
     field SFFloat yMin -170
     field SFFloat yMax 15
-    field SFFloat xDensity 10 #density in gap between barrels
-    field SFFloat yDensity 10 #density in gap between barrels
+    field SFFloat xDensity 20 #density in gap between barrels
+    field SFFloat yDensity 20 #density in gap between barrels
     field SFFloat randomStrength 8
     field SFFloat safeZoneX 0
     field SFFloat safeZoneY 0
@@ -22,15 +22,25 @@ Pose{
 %< for (let y = fields.yMin.value; y < fields.yMax.value; y+=fields.yDensity.value) { >%
 %< let rx = x + wbrandom.real(-rs,rs); let ry = y+ wbrandom.real(-rs,rs);
 %< if ((Math.abs(rx-fields.safeZoneX.value)>=Math.abs(fields.safeZoneRadius.value)) && (Math.abs(ry-fields.safeZoneY.value)>=Math.abs(fields.safeZoneRadius.value))){>%
-OilBarrel {
-    translation %<= rx >% %<= ry >% %<= 1 >%
-    physics Physics {
-        mass 20
-        density -1
-        centerOfMass 0 0 -1
+    Solid
+    {
+        translation %<= rx >% %<= ry >% %<= 1 >%
+        name %<=('"'+"oil barrel" + x+y+'"')>% 
+        boundingObject DEF BODY Cylinder {height 1 radius 0.45 subdivision 16}
+        physics Physics {mass 20 density -1 centerOfMass 0 0 -0.25}
+        children 
+        [   
+            Shape{
+            appearance PBRAppearance{
+                baseColor 0 0 1
+                roughness 1
+                metalness 0
+            }
+            geometry USE BODY
+            castShadows FALSE
+            }
+        ]
     }
-    name %<=('"'+"oil barrel" + x+y+'"')>% 
-}
 %< }}} >%
     ]
 }}

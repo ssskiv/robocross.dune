@@ -5,13 +5,13 @@ PROTO Tarakan [
     field SFVec3f translation 0 0 0.5
     field SFRotation rotation 0 0 0 0
     field SFNode hingeJointParameters HingeJointParameters { axis 0 1 0 anchor 0 0 0}
-    field SFNode suspensionJointParameters JointParameters {axis 0 0 1 minStop -0.1 maxStop 0.1 springConstant 800 dampingConstant 10}
+    field SFNode suspensionJointParameters JointParameters {axis 0 0 1 minStop -0.1 maxStop 0.1 springConstant 1500 dampingConstant 1000}
     field SFFloat maxTorque 50
     field SFFloat maxVelocity 30
     field SFNode wheelGeometry Cylinder {height 0.15 radius 0.19}
     field SFNode wheelAppearance PBRAppearance {baseColor 1 0 0 roughness 1 metalness 0}
-    field SFVec3f lidarTranslation 0 0 0.7
-    field SFRotation lidarRotation 0 1 0 0
+    field SFVec3f lidarTranslation 0 0 0.2
+    field SFRotation lidarRotation 0 1 0 0.05
     # field SFNode child NULL
     # field SFNode lidar {name "lidar" translation 0 0 1.5 rotation 0 1 0 0.2}
 ]
@@ -21,7 +21,7 @@ PROTO Tarakan [
     rotation IS rotation
     children [
         Transform {
-            translation 0 0 0.5
+            translation 0 0 0
             children [
                 Shape {
                     appearance PBRAppearance {
@@ -34,26 +34,18 @@ PROTO Tarakan [
                     }
                     
                 }
-                # Solid {
-                #     boundingObject USE BODY
-                #     physics physics Physics {
-                #         mass 80
-                #         density -1
-                #     }
-                # }
-            ]
-        }
-        Lidar{
+                Lidar{
             name "lidar" 
             translation IS lidarTranslation
             rotation IS lidarRotation
-            tiltAngle -0.05
+            tiltAngle 0.0
             maxRange 25
-            # fieldOfView 6.28
-            projection "planar"
+            fieldOfView 6.28
+            projection "cylindrical"
+            horizontalResolution 1024
             resolution 0.07
-            verticalFieldOfView 0.00001
-            numberOfLayers 2
+            # verticalFieldOfView 0.00001
+            numberOfLayers 1
             }
         Camera{
             name "camera"
@@ -81,7 +73,7 @@ PROTO Tarakan [
             ]
         }
         Wheel{
-            translation 0.5 0.5 0.2
+            translation 0.5 0.5 -0.3
             name "fl wheel"
             suspensionJointParameters IS suspensionJointParameters
             hingeJointParameters IS hingeJointParameters
@@ -91,7 +83,7 @@ PROTO Tarakan [
             maxVelocity IS maxVelocity
         }
         Wheel{
-            translation 0 0.5 0.2
+            translation 0 0.5 -0.3
             name "ml wheel"
             suspensionJointParameters IS suspensionJointParameters
             hingeJointParameters IS hingeJointParameters
@@ -101,7 +93,7 @@ PROTO Tarakan [
             maxVelocity IS maxVelocity
         }
         Wheel{
-            translation -0.5 0.5 0.2
+            translation -0.5 0.5 -0.3
             name "bl wheel"
             suspensionJointParameters IS suspensionJointParameters
             hingeJointParameters IS hingeJointParameters
@@ -111,7 +103,7 @@ PROTO Tarakan [
             maxVelocity IS maxVelocity
         }
         Wheel{
-            translation 0.5 -0.5 0.2
+            translation 0.5 -0.5 -0.3
             name "fr wheel"
             suspensionJointParameters IS suspensionJointParameters
             hingeJointParameters IS hingeJointParameters
@@ -121,7 +113,7 @@ PROTO Tarakan [
             maxVelocity IS maxVelocity
         }
         Wheel{
-            translation 0 -0.5 0.2
+            translation 0 -0.5 -0.3
             name "mr wheel"
             suspensionJointParameters IS suspensionJointParameters
             hingeJointParameters IS hingeJointParameters
@@ -131,7 +123,7 @@ PROTO Tarakan [
             maxVelocity IS maxVelocity
         }
         Wheel{
-            translation -0.5 -0.5 0.2
+            translation -0.5 -0.5 -0.3
             name "br wheel"
             suspensionJointParameters IS suspensionJointParameters
             hingeJointParameters IS hingeJointParameters
@@ -144,9 +136,19 @@ PROTO Tarakan [
         InertialUnit{name "imu"}
         Gyro{name "gyro"}
         Accelerometer{name "accel"}
+                # Solid {
+                #     boundingObject USE BODY
+                #     physics physics Physics {
+                #         mass 80
+                #         density -1
+                #     }
+                # }
+            ]
+        }
+        
     ]
     boundingObject Transform {
-        translation 0 0 0.5
+        translation 0 0 0
         children [
             USE BODY
         ]
