@@ -132,3 +132,6 @@ run:
 		${GPU} \
 		-e NVIDIA_DRIVER_CAPABILITIES=all \
 		$(IMAGE_NAME) tail -f /dev/null
+connect:
+	docker start $(CONTAINER_NAME)
+	docker exec -it $(CONTAINER_NAME) bash

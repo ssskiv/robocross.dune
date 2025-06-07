@@ -22,8 +22,10 @@ def generate_launch_description():
     package_name = 'simulation'
     package_dir = get_package_share_directory(package_name)
     # sim_pkg_dir = get_package_share_directory('simulation')
+    main_dir = get_package_share_directory('main')
+
     
-    robot_description = os.path.join(package_dir, pathlib.Path(os.path.join(package_dir, 'resource', 'robot.urdf')))
+    robot_description = os.path.join(package_dir, pathlib.Path(os.path.join(main_dir, 'resource', 'robot.urdf')))
     
     default_world = os.path.join(
         get_package_share_directory(package_name),

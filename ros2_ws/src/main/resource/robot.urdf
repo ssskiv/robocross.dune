@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<robot name="My robot">
+<robot name="My robot" xmlns:xacro="http://ros.org/wiki/xacro">
     <webots>
     
 
@@ -41,4 +41,49 @@
 
         <plugin type="simulation.driver.MyRobotDriver" />
     </webots>
+
+    <link name="base_link">
+        <visual>
+        <origin xyz="0 0 0.5"/>
+            <geometry>
+                <box size="1.2 0.7 0.2"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <joint name="base_link_to_lidar_link" type="fixed">
+        <parent link="base_link"/>
+        <child link="lidar_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+    <joint name="base_link_to_gps" type="fixed">
+        <parent link="base_link"/>
+        <child link="gps"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+    <link name="gps">
+    </link>
+
+    <link name="lidar_link">
+        <visual>
+        <origin xyz="0 0 0"/>
+            <geometry>
+                <box size="0.1 0.1 0.1"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <link name="fl_wheel">
+        <visual>
+        <origin xyz="0.5 0.5 0.2"/>
+            <geometry>
+                <cylinder height="0.1" radiuse="0.19"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="base_link_to_fl_wheel" type="fixed">
+        <parent link="base_link"/>
+        <child link="lidar_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
 </robot>

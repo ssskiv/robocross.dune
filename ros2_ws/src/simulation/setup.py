@@ -19,7 +19,7 @@ data_files += generate_data_files('share/' + package_name + '/static/', 'map-ser
 data_files += generate_data_files('share/' + package_name + '/launch/', 'launch/')
 data_files += generate_data_files('share/' + package_name + '/worlds/', 'worlds/')
 data_files += generate_data_files('share/' + package_name + '/config/', 'config/')
-data_files += generate_data_files('share/' + package_name + '/resource/', 'resource/')
+# data_files += generate_data_files('share/' + package_name + '/resource/', 'resource/')
 data_files += generate_data_files('share/' + package_name + '/meshes/', 'meshes/')
 
 

@@ -25,7 +25,7 @@ TexturedBackground {
 }
 TexturedBackgroundLight {
     texture "noon_cloudy_empty"
-    luminosity 0.5
+    luminosity 0.05
 }
 # CircleArena {
 # radius 15
@@ -59,10 +59,10 @@ Tarakan{
     name "my_robot"
     translation 0 0 0
 }
-BarrelGenerator{}
 # Les{}
-Fog {
-    color 0.541 0.545 0.42
-    fogType "EXPONENTIAL2"
-    visibilityRange 50
-}
+# Fog {
+#     color 0.541 0.545 0.42
+#     fogType "EXPONENTIAL2"
+#     visibilityRange 50
+# }
+BarrelGenerator{}
