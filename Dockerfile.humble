@@ -75,8 +75,25 @@ RUN sudo apt update \
     && sudo apt install -y ros-${ROS_DISTRO}-slam-toolbox \
     && sudo rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir  "numpy<2" opencv-python pymavlink ultralytics tensorboard 
-#--break-system-packages
+
+
+#НЕ РЕДАКТИРУЙТЕ ЭТИ КОМАНДЫ
+#torch весит 821МБ(суммарно качать наверное >2ГБ)!!!! НИКТО НЕ ХОЧЕТ КАЧАТЬ ЕГО ЗАНОВО(особенно в 11 общаге)
+#НЕ РЕДАКТИРУЙТЕ ЭТИ КОМАНДЫ
+#torch весит 821МБ(суммарно качать наверное >2ГБ)!!!! НИКТО НЕ ХОЧЕТ КАЧАТЬ ЕГО ЗАНОВО(особенно в 11 общаге)
+#НЕ РЕДАКТИРУЙТЕ ЭТИ КОМАНДЫ
+#torch весит 821МБ(суммарно качать наверное >2ГБ)!!!! НИКТО НЕ ХОЧЕТ КАЧАТЬ ЕГО ЗАНОВО(особенно в 11 общаге)
+RUN pip install --no-cache-dir  "numpy==1.24.4" opencv-python
+RUN pip install --no-cache-dir pymavlink ultralytics tensorboard
+#НЕ РЕДАКТИРУЙТЕ ЭТИ КОМАНДЫ
+#torch весит 821МБ(суммарно качать наверное >2ГБ)!!!! НИКТО НЕ ХОЧЕТ КАЧАТЬ ЕГО ЗАНОВО(особенно в 11 общаге)
+#НЕ РЕДАКТИРУЙТЕ ЭТИ КОМАНДЫ
+#torch весит 821МБ(суммарно качать наверное >2ГБ)!!!! НИКТО НЕ ХОЧЕТ КАЧАТЬ ЕГО ЗАНОВО(особенно в 11 общаге) 
+#НЕ РЕДАКТИРУЙТЕ ЭТИ КОМАНДЫ
+#torch весит 821МБ(суммарно качать наверное >2ГБ)!!!! НИКТО НЕ ХОЧЕТ КАЧАТЬ ЕГО ЗАНОВО(особенно в 11 общаге)
+
+
+
 RUN sudo apt update && \
     sudo apt install -y python3-serial \
     python3-torch python3-torchvision && \

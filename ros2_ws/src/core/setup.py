@@ -25,6 +25,7 @@ setup(
             'yolo_detect = core.yolo_detect:main',
             'goal_checker_node = core.goal_checker_node:main',
             'goal_sender_node = core.goal_sender_node:main',
+            'scan_filter_node = core.scan_filter_node:main',
         ],
     },
 )

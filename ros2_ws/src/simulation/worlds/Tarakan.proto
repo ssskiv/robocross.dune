@@ -11,7 +11,8 @@ PROTO Tarakan [
     field SFNode wheelGeometry Cylinder {height 0.15 radius 0.19}
     field SFNode wheelAppearance PBRAppearance {baseColor 1 0 0 roughness 1 metalness 0}
     field SFVec3f lidarTranslation 0 0 0.2
-    field SFRotation lidarRotation 0 1 0 0.05
+    field SFRotation lidarRotation 0 1 0 0.0
+    field SFVec3f camTranslation 0.65 0 0
     # field SFNode child NULL
     # field SFNode lidar {name "lidar" translation 0 0 1.5 rotation 0 1 0 0.2}
 ]
@@ -47,9 +48,18 @@ PROTO Tarakan [
             # verticalFieldOfView 0.00001
             numberOfLayers 1
             }
+            RangeFinder{
+                name "depth"
+                translation IS camTranslation
+                near 0.1
+                width 640
+                height 480
+                fieldOfView 1.57
+                maxRange 10
+            } 
         Camera{
             name "camera"
-            translation IS lidarTranslation
+            translation IS camTranslation
             # rotation IS lidarRotation
             near 0.1
             width 640
@@ -68,6 +78,22 @@ PROTO Tarakan [
                     }
                     geometry DEF LBODY Box {
                         size 0.1 0.1 0.1
+                    }
+                }
+            ]
+        }
+        Transform {
+            translation IS camTranslation
+            # rotation IS lidarRotation
+            children [
+                Shape {
+                    appearance PBRAppearance {
+                        baseColor 0 1 1
+                        roughness 1
+                        metalness 0
+                    }
+                    geometry Box {
+                        size 0.05 0.1 0.05
                     }
                 }
             ]

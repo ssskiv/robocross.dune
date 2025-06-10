@@ -83,7 +83,7 @@ def generate_launch_description():
         webots._supervisor,
         # ros2_supervisor,
         my_robot_driver,
-        pointcloud_to_laserscan_node,
+        # pointcloud_to_laserscan_node,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=webots,

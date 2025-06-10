@@ -15,16 +15,25 @@
                 <frameName>lidar_link</frameName>
                 <enabled>true</enabled>
                 <scanRate>10</scanRate>
-                <topicName>/pc</topicName>
+                <topicName>/scan</topicName>
                 <alwaysOn>true</alwaysOn>
             </ros>
         </device>
         <device reference="camera" type="Camera">
             <ros>
-                <frameName>base_link</frameName>
+                <frameName>cam_link</frameName>
                 <enabled>true</enabled>
                 <scanRate>10</scanRate>
                 <topicName>/camera</topicName>
+                <alwaysOn>true</alwaysOn>
+            </ros>
+        </device>
+        <device reference="depth" type="RangeFinder">
+            <ros>
+                <frameName>cam_link</frameName>
+                <enabled>true</enabled>
+                <scanRate>10</scanRate>
+                <topicName>/depth</topicName>
                 <alwaysOn>true</alwaysOn>
             </ros>
         </device>
@@ -77,6 +86,21 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
                 <box size="0.1 0.1 0.1"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <joint name="base_link_to_cam_link" type="fixed">
+        <origin xyz="0.65 0 0" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="cam_link"/>
+    </joint>
+
+    <link name="cam_link">
+        <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.05 0.1 0.05"/>
             </geometry>
         </visual>
     </link>
