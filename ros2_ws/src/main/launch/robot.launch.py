@@ -166,7 +166,7 @@ def generate_launch_description():
         # start_localization,
         # start_navigation,
         scan_filter_node,
-        # mapviz,
+        mapviz,
         TimerAction(
             period=5.0,  # Delay in seconds
             actions=[

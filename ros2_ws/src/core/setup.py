@@ -26,6 +26,9 @@ setup(
             'goal_checker_node = core.goal_checker_node:main',
             'goal_sender_node = core.goal_sender_node:main',
             'scan_filter_node = core.scan_filter_node:main',
+            'logged_waypoint_follower = core.logged_waypoint_follower:main',
+            'interactive_waypoint_follower = core.interactive_waypoint_follower:main',
+            'gps_waypoint_logger = core.gps_waypoint_logger:main'
         ],
     },
 )

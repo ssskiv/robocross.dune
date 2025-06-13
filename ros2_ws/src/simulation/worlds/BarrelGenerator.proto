@@ -2,12 +2,12 @@
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/obstacles/protos/OilBarrel.proto"
 
 PROTO BarrelGenerator[
-    field SFFloat xMin -80
-    field SFFloat xMax 230
-    field SFFloat yMin -170
-    field SFFloat yMax 15
-    field SFFloat xDensity 20 #density in gap between barrels
-    field SFFloat yDensity 20 #density in gap between barrels
+    field SFFloat xMin -140
+    field SFFloat xMax 90
+    field SFFloat yMin -75
+    field SFFloat yMax 25
+    field SFFloat xDensity 10 #density in gap between barrels
+    field SFFloat yDensity 10 #density in gap between barrels
     field SFFloat randomStrength 8
     field SFFloat safeZoneX 0
     field SFFloat safeZoneY 0

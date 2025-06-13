@@ -19,7 +19,7 @@ Viewpoint {
     orientation -0.57735 0.57735 0.57735 2.0944
     position 0 0 50
     follow "my_robot"
-    followType "Mounted Shot"
+    followType "Tracked Shot"
 }
 PointLight{
     intensity 1
@@ -33,30 +33,75 @@ PointLight{
 # wallThickness 2
 # floorTileSize 5 5
 # }
-# Solid {
-#     translation -111.35 34.9601 -17.5
-#     rotation 1 -0.00166614 0.00167217 -0.00159531
-#     # scale 1 1 1
-#     children [
+Solid {
+    translation -9.5 -31 -11
+    rotation 1 -0.00166614 0.00167217 -0.00159531
+    # scale 1 1 1
+    children [
         
-#         Shape {
-#             appearance PBRAppearance{
-#                 baseColor 0 1 0
-#                 roughness 1
-#                 metalness 0
-#             }
-#             geometry DEF MESH Mesh {
-#                 url "/bmstu/ros2_ws/src/simulation/worlds/1234/map1.obj"
-#             }
-#             castShadows FALSE
-#         }
+        Shape {
+            # appearance PBRAppearance{
+            #     baseColor 0 1 0
+            #     roughness 1
+            #     metalness 0
+            # }
+            appearance Appearance{
+                # baseColor 0 1 0
+                # roughness 1
+                # metalness 0
+                material Material{transparency 0.8}
+                texture ImageTexture{
+                                    url "/bmstu/ros2_ws/src/simulation/worlds/1234/texture.png"
+
+                }
+            }
+            geometry DEF MESH Mesh {
+                url "/bmstu/ros2_ws/src/simulation/worlds/1234/map.obj"
+            }
+            castShadows FALSE
+        }
         
         
        
-#     ]
-#     boundingObject USE MESH
+    ]
+    boundingObject USE MESH
 
-# }
+}
+
+Solid {
+    translation -9.5 -31 -12
+    rotation 1 -0.00166614 0.00167217 -0.00159531
+    # scale 1 1 1
+    children [
+        
+        Shape {
+            appearance PBRAppearance{
+                baseColor 0.5 0.5 0
+                roughness 1
+                metalness 0
+            }
+            # appearance Appearance{
+            #     # baseColor 0 1 0
+            #     # roughness 1
+            #     # metalness 0
+            #     material Material{transparency 0.8}
+            #     texture ImageTexture{
+            #                         url "/bmstu/ros2_ws/src/simulation/worlds/1234/texture.png"
+
+            #     }
+            # }
+            geometry DEF MESH Mesh {
+                url "/bmstu/ros2_ws/src/simulation/worlds/1234/forest.obj"
+            }
+            castShadows FALSE
+        }
+        
+        
+       
+    ]
+    boundingObject USE MESH
+
+}
 
 # Transform {
 #     translation -111.35 34.9601 30
@@ -87,17 +132,17 @@ PointLight{
 #     # boundingObject USE MESH
 
 # }
-CircleArena {
-translation -1.57 0.940121 -1
-radius 300
-subdivision 9
-wallHeight 1
-wallThickness 2
-floorTileSize 5000 5000
-}
+# CircleArena {
+# translation -1.57 0.940121 -1
+# radius 300
+# subdivision 9
+# wallHeight 1
+# wallThickness 2
+# floorTileSize 5000 5000
+# }
 Tarakan{
     name "my_robot"
-    translation 0 0 2.5
+    translation 0 0 -2.5
 }
 # Les{}
 # Fog {

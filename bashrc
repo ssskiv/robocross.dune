@@ -7,3 +7,4 @@ alias cb='cd ~/ros2_ws && colcon build --symlink-install && source /bmstu/ros2_w
 alias tl='ros2 topic list'
 alias cw='cd ~/ros2_ws'
 alias sim='ros2 launch simulation sim.launch.py'
+alias nav='ros2 launch main navigation.launch.py'

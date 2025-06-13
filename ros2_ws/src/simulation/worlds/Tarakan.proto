@@ -5,14 +5,14 @@ PROTO Tarakan [
     field SFVec3f translation 0 0 0.5
     field SFRotation rotation 0 0 0 0
     field SFNode hingeJointParameters HingeJointParameters { axis 0 1 0 anchor 0 0 0}
-    field SFNode suspensionJointParameters JointParameters {axis 0 0 1 minStop -0.1 maxStop 0.1 springConstant 1500 dampingConstant 1000}
+    field SFNode suspensionJointParameters JointParameters {axis 0 0 1 minStop -0.01 maxStop 0.01 springConstant 1500 dampingConstant 1000}
     field SFFloat maxTorque 50
     field SFFloat maxVelocity 30
     field SFNode wheelGeometry Cylinder {height 0.15 radius 0.19}
     field SFNode wheelAppearance PBRAppearance {baseColor 1 0 0 roughness 1 metalness 0}
     field SFVec3f lidarTranslation 0 0 0.2
     field SFRotation lidarRotation 0 1 0 0.0
-    field SFVec3f camTranslation 0.65 0 0
+    field SFVec3f camTranslation 0.65 0 0.5
     # field SFNode child NULL
     # field SFNode lidar {name "lidar" translation 0 0 1.5 rotation 0 1 0 0.2}
 ]

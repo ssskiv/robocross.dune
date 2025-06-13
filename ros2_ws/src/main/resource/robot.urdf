@@ -68,6 +68,13 @@
         </visual>
     </link>
 
+    <link name="base_footprint"></link>
+    <joint name="base_link_to_base_footprint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="base_footprint"/>
+    </joint>
+
     <joint name="base_link_to_lidar_link" type="fixed">
         <origin xyz="0 0 0.2" rpy="0 0.05 0"/>
         <parent link="base_link"/>
@@ -91,7 +98,7 @@
     </link>
 
     <joint name="base_link_to_cam_link" type="fixed">
-        <origin xyz="0.65 0 0" rpy="0 0 0"/>
+        <origin xyz="0.65 0 0.5" rpy="0 0 0"/>
         <parent link="base_link"/>
         <child link="cam_link"/>
     </joint>
