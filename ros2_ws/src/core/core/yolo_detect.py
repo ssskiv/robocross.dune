@@ -23,7 +23,7 @@ class YoloDetect(Node):
             self.image_callback,
             10)
         self.publisher_image = self.create_publisher(Image, '/yolo_detect_image', 10)
-        self.publisher_coords = self.create_publisher(Point, '/object_coordinates', 10) 
+        self.publisher_scan = self.create_publisher(LaserScan, '/yolo_object_scan', 10)  # Топик для LaserScan
     
         # # Чтобы один было время
 
@@ -37,7 +37,7 @@ class YoloDetect(Node):
 
         # Параметры камеры
         self.image_width = 640  # Ширина изображения
-        self.camera_fov = 3.1453/2  # Поле зрения камеры в градусах 
+        self.fov_horizontal = 3.1453/2  # Поле зрения камеры в градусах 
 
 
         self.k = 197.47  # Как определить? Запустить либо скрипт, либо дебил с рулеткой и бочкой
@@ -60,6 +60,23 @@ class YoloDetect(Node):
         # angle_increment = 0.01  # Шаг угла
         # ranges = lidar_msg.ranges  # Массив расстояний
 
+        scan_msg = LaserScan()
+        scan_msg.header.frame_id = "base_link"  # ВАНЯЯ
+        scan_msg.header.stamp = self.get_clock().now().to_msg()
+
+        scan_msg.angle_min = -self.fov_horizontal / 2.0  # Начальный угол
+        scan_msg.angle_max = self.fov_horizontal / 2.0   # Конечный угол
+        scan_msg.angle_increment = 0.015  # Шаг угла (можно настроить)
+        scan_msg.time_increment = 0.0
+        scan_msg.scan_time = 0.0
+        scan_msg.range_min = 1.0
+        scan_msg.range_max = 50.0
+
+
+        num_points = int((scan_msg.angle_max - scan_msg.angle_min) / scan_msg.angle_increment) + 1
+        scan_msg.ranges = [float('nan')] * num_points  # Инициализация nan
+        
+
 
         for result in results:
             boxes = result.boxes  
@@ -72,30 +89,41 @@ class YoloDetect(Node):
                 height = y2 - y1
                 area = width * height 
 
-                center_x = x1 + (width // 2)
-                center_y = y1 + (height // 2)
+                #center_x = x1 + (width // 2)
+                #center_y = y1 + (height // 2)
+
+
                 # Россия вперед кто такой этот 
                 z = self.k / math.sqrt(area)
                 
                 # Края приколов
-                theta_left = (x1 / self.image_width - 0.5) * self.camera_fov
-                theta_right = (x2 / self.image_width - 0.5) * self.camera_fov
+                theta_left = (x1 / self.image_width - 0.5) * self.fov_horizontal
+                theta_right = (x2 / self.image_width - 0.5) * self.fov_horizontal
 
                 
                 # Тип объекта (ID класса)
-                class_id = int(box.cls)  # ID класса объекта
+                #class_id = int(box.cls)  # ID класса объекта
                 
                 
-                coord_msg = Point()
-                coord_msg.z = z  # Расстояние в поле z
-                self.publisher_coords.publish(coord_msg)
+                # Маппинг углов на индексы
+                for i in range(num_points):
+
+                    angle = scan_msg.angle_min + i * scan_msg.angle_increment
+
+                    if abs(angle - theta_left) < scan_msg.angle_increment / 2.0:
+                        scan_msg.ranges[num_points - i] = z
+                        
+                    elif abs(angle - theta_right) < scan_msg.angle_increment / 2.0:
+                        scan_msg.ranges[num_points - i] = z
+                    
+                    
                 
                 
-                self.get_logger().info(
-                    f'Объект: тип={class_id}, площадь={area} пикселей, расстояние={z:.2f} м, '
-                    f'углы (left, right)=({theta_left:.2f}, {theta_right:.2f} рад'
+                # self.get_logger().info(
+                #     f'Объект: тип={class_id}, площадь={area} пикселей, расстояние={z:.2f} м, '
+                #     f'углы (left, right)=({theta_left:.2f}, {theta_right:.2f} рад'
                 
-                )
+                # )
                 
                 # # Если нужно сохранить пары (площадь, расстояние) в файл
 
@@ -131,7 +159,11 @@ class YoloDetect(Node):
                 #     f'Площадь={area} пикс*пикс, Центр=({center_x}, {center_y})'
                 # )
         
+    
+        self.publisher_scan.publish(scan_msg)
+
         annotated_image = results[0].plot()  # Метод plot() делает bounding boxes
+        
         processed_image_msg = self.bridge.cv2_to_imgmsg(annotated_image, encoding='bgr8')
         processed_image_msg.header = msg.header
         self.publisher_image.publish(processed_image_msg)
