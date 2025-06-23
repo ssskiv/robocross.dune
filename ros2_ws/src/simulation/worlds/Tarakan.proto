@@ -158,7 +158,10 @@ PROTO Tarakan [
             maxTorque IS maxTorque
             maxVelocity IS maxVelocity
         }
-        GPS{name "gps"}
+        GPS{name "gps"
+        accuracy 0.0
+        # resolution 
+        }
         InertialUnit{name "imu"}
         Gyro{name "gyro"}
         Accelerometer{name "accel"}
