@@ -11,7 +11,7 @@
         <geometry>
           <!-- Загрузка .stl -->
           <mesh>
-            <uri>file:///bmstu/ros2_ws/src/main/worlds/1234/map.obj</uri>
+            <uri>file://home/developer/robocross.dune/ros2_ws/src/main/worlds/1234/map.obj</uri>
             <scale>0.83 0.83 0.83</scale>  <!-- Масштаб (если нужно) -->
           </mesh>
         </geometry>
@@ -19,7 +19,7 @@
         <!-- Материал (если есть .tif-текстура) -->
         <!-- <material>
           <script>
-            <uri>file:///bmstu/ros2_ws/src/main/worlds/1234/texture.png</uri>
+            <uri>file://home/developer/robocross.dune/ros2_ws/src/main/worlds/1234/texture.png</uri>
             <name>CustomMaterial</name>
           </script>
         </material> -->
@@ -29,7 +29,7 @@
       <collision name="collision">
         <geometry>
           <mesh>
-            <uri>file:///bmstu/ros2_ws/src/main/worlds/1234/map.obj</uri>
+            <uri>file://home/developer/robocross.dune/ros2_ws/src/main/worlds/1234/map.obj</uri>
             <scale>0.83 0.83 0.83</scale> 
           </mesh>
         </geometry>

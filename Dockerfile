@@ -84,10 +84,10 @@ RUN sudo apt update && \
 RUN pip install pymavlink --no-cache-dir --break-system-packages
 
 # Source ROS 2 on container start
-# RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /bmstu/.bashrc
-# RUN echo "export PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\$ '" >> /bmstu/.bashrc
+# RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /home/developer/.bashrc
+# RUN echo "export PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\$ '" >> /home/developer/.bashrc
 COPY ./bashrc  /tmp/bashrc
-RUN cat /tmp/bashrc >> /bmstu/.bashrc &&\
+RUN cat /tmp/bashrc >> /home/developer/.bashrc &&\
     rm -f /tmp/bashrc &&\
     chown -R bmstu:bmstu /bmstu
     
@@ -116,7 +116,7 @@ else\n\
 
 USER bmstu
 # Set working directory
-WORKDIR /bmstu/ros2_ws
+WORKDIR /home/developer/robocross.dune/ros2_ws
 
 # Create entrypoint
 COPY ./ros_entrypoint.sh /ros_entrypoint.sh

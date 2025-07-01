@@ -1,4 +1,4 @@
-capture_directory: "~"
+capture_directory: "/home/developer/"
 fixed_frame: map
 target_frame: map
 fix_orientation: false

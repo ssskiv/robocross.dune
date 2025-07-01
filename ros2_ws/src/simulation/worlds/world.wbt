@@ -3,9 +3,9 @@
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/floors/protos/CircleArena.proto"
-EXTERNPROTO "/bmstu/ros2_ws/src/simulation/worlds/Tarakan.proto"
-EXTERNPROTO "/bmstu/ros2_ws/src/simulation/worlds/BarrelGenerator.proto"
-EXTERNPROTO "/bmstu/ros2_ws/src/simulation/worlds/Les.proto"
+EXTERNPROTO "/home/developer/robocross.dune/ros2_ws/src/simulation/worlds/Tarakan.proto"
+EXTERNPROTO "/home/developer/robocross.dune/ros2_ws/src/simulation/worlds/BarrelGenerator.proto"
+EXTERNPROTO "/home/developer/robocross.dune/ros2_ws/src/simulation/worlds/Les.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/SandyGround.proto"
 
 
@@ -56,7 +56,7 @@ Solid {
                 }
             }
             geometry DEF MESH Mesh {
-                url "/bmstu/ros2_ws/src/simulation/worlds/1234/map.obj"
+                url "/home/developer/robocross.dune/ros2_ws/src/simulation/worlds/1234/map.obj"
             }
             castShadows FALSE
         }

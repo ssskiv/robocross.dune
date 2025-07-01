@@ -16,7 +16,7 @@ class RosbagRecorderNode(Node):
 
         # Declare parameters
         self.declare_parameter('topics_yaml', '')
-        self.declare_parameter('output_dir', '~/ros2_ws/rosbags')
+        self.declare_parameter('output_dir', '/home/developer/robocross.dune/ros2_ws/rosbags')
 
         # Get parameters
         yaml_path = self.get_parameter('topics_yaml').get_parameter_value().string_value
