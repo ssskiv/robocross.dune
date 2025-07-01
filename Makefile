@@ -11,7 +11,7 @@ gpu=--gpus=all\
 
 all: auto
 
-auto: check-docker check-nvidia check-mapproxy clean build run 
+auto: check-docker check-mapproxy clean build run 
 	@echo -e "\n\033[0;32m\033[1m=====Done. Now you can connect to container!====="
 	
 start:
@@ -50,18 +50,6 @@ check-docker:
 		$(MAKE) install-docker; \
 	fi'
 
-set-gpu:
-	NVIDIA_GPU=0 
-	gpu=""
-
-check-nvidia:
-	@bash -c '\
-	if command -v nvidia-smi >/dev/null 2>&1; then \
-		echo "GPU FOUND";\
-	else \
-		$(MAKE) set-gpu; \
-		echo "NO GPU"; \
-	fi'
 
 
 
@@ -74,7 +62,7 @@ install-docker:
 	    gnupg \
 	    lsb-release
 	@sudo install -m 0755 -d /etc/apt/keyrings
-	@curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+	@curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.asc
 	@sudo chmod a+r /etc/apt/keyrings/docker.gpg
 	@echo \
 	  "deb [arch=$$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
@@ -94,8 +82,8 @@ docker-nonroot:
 
 create-mapproxy:
 	@echo "Creating and starting mapproxy"
-	@mkdir -p ~/mapproxy
-	@docker run --name ${MAPPROXY_NAME} -p 8080:8080 -d -t -v ~/mapproxy:/mapproxy danielsnider/mapproxy
+	@mkdir -p /home/developer/mapproxy
+	@docker run --name ${MAPPROXY_NAME} -p 8080:8080 -d -t -v /home/developer/mapproxy://mapproxy danielsnider/mapproxy
 	@echo "mapproxy started"
 
 check-mapproxy:
@@ -117,18 +105,16 @@ build:
 
 run:
 	@echo "\nCreating container $(CONTAINER_NAME) with image $(IMAGE_NAME)... \n"
-	@xhost +local:bmstu
-	@docker run -d \
+	@xhost +
+	docker run -d \
 		--name $(CONTAINER_NAME) \
 		--net=host \
 		-u 1000 \
 		--privileged \
-		--env DISPLAY=${DISPLAY} \
+		--env "DISPLAY" \
 		--env QT_X11_NO_MITSHM=1 \
-		--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-		--volume="$(HOME)/.Xauthority:/bmstu/.Xauthority:rw" \
-		--env XAUTHORITY=/bmstu/.Xauthority \
-		--volume="$(PWD)/ros2_ws:/bmstu/ros2_ws" \
-		${GPU} \
-		-e NVIDIA_DRIVER_CAPABILITIES=all \
+		--volume="/tmp/.X11-unix://tmp/.X11-unix:rw" \
+		--volume="$(PWD)/ros2_ws://home/developer/robocross.dune/ros2_ws" \
 		$(IMAGE_NAME) tail -f /dev/null
+
+#  --volume="$(HOME)/.Xauthority://home/developer/.Xauthority:rw" \
