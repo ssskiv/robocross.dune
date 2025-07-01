@@ -75,19 +75,19 @@ install-docker:
 	    lsb-release
 	@sudo install -m 0755 -d /etc/apt/keyrings
 	@curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-	@sudo chmod a+r /etc/apt/keyrings/docker.asc
+	@sudo chmod a+r /etc/apt/keyrings/docker.gpg
 	@echo \
 	  "deb [arch=$$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
 	  $$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 	@sudo apt-get update
-	@sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+	@sudo apt-get install -y uidmap docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 	@echo "Docker installation complete! Configuring for non-root."
 	@$(MAKE) docker-nonroot
 
 docker-nonroot:
 	@echo "Configuring Docker for non-root access."
 	@sudo systemctl disable --now docker.service docker.socket
-	@sudo rm /var/run/docker.sock
+	@sudo rm -f /var/run/docker.sock
 	@sudo apt-get install -y docker-ce-rootless-extras
 	@dockerd-rootless-setuptool.sh install
 	@echo "Docker configured! Continuing to container configuration."
