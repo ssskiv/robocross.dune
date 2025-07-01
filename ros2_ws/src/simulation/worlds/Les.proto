@@ -2,10 +2,16 @@
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/trees/protos/Forest.proto"
 
 PROTO Les[
+      field SFVec3f translation 68.865 -14.041 -3.1
+      field SFRotation rotation 0 0 0 0
+      field SFVec3f scale 1 1 1
       field SFString{"random", "oak tree", "crab apple tree", "cherry tree", "birch tree", "palm tree", "spruce", "white pine", "hackberry tree", "hazel tree"} type     "birch tree" 
 ]
 {
   Pose{
+    translation IS translation
+    rotation IS rotation
+    scale IS scale
     children [
 Forest {
   translation 68.865 -14.041 -3.1

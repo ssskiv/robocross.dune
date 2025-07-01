@@ -16,16 +16,15 @@ WorldInfo {
     contactProperties ContactProperties {maxContactJoints 30}
 }
 Viewpoint {
-    orientation -0.33185733874619844 -0.09874274160469809 0.9381474178937331 3.686018050088086
-    position 1.700313773507203 1.0549607538959629 1.4846240848267684
-    follow "none"
+    orientation -0.57735 0.57735 0.57735 2.0944
+    position 0 0 50
+    follow "my_robot"
+    followType "Tracked Shot"
 }
-TexturedBackground {
-    texture "noon_cloudy_empty"
-}
-TexturedBackgroundLight {
-    texture "noon_cloudy_empty"
-    luminosity 0.5
+PointLight{
+    intensity 1
+    location 0 0 500
+    radius 5000
 }
 # CircleArena {
 # radius 15
@@ -35,34 +34,120 @@ TexturedBackgroundLight {
 # floorTileSize 5 5
 # }
 Solid {
-    translation -1.57 0.940121 -2.5
+    translation -9.5 -31 -11
     rotation 1 -0.00166614 0.00167217 -0.00159531
     # scale 1 1 1
     children [
+        
         Shape {
-            appearance SandyGround {
-                textureTransform TextureTransform {
-                scale 8 8
+            # appearance PBRAppearance{
+            #     baseColor 0 1 0
+            #     roughness 1
+            #     metalness 0
+            # }
+            appearance Appearance{
+                # baseColor 0 1 0
+                # roughness 1
+                # metalness 0
+                material Material{transparency 0.8}
+                texture ImageTexture{
+                                    url "/bmstu/ros2_ws/src/simulation/worlds/1234/texture.png"
+
                 }
             }
             geometry DEF MESH Mesh {
                 url "/home/developer/robocross.dune/ros2_ws/src/simulation/worlds/1234/map.obj"
             }
+            castShadows FALSE
         }
+        
         
        
     ]
     boundingObject USE MESH
 
 }
+
+Solid {
+    translation -9.5 -31 -12
+    rotation 1 -0.00166614 0.00167217 -0.00159531
+    # scale 1 1 1
+    children [
+        
+        Shape {
+            appearance PBRAppearance{
+                baseColor 0.5 0.5 0
+                roughness 1
+                metalness 0
+            }
+            # appearance Appearance{
+            #     # baseColor 0 1 0
+            #     # roughness 1
+            #     # metalness 0
+            #     material Material{transparency 0.8}
+            #     texture ImageTexture{
+            #                         url "/bmstu/ros2_ws/src/simulation/worlds/1234/texture.png"
+
+            #     }
+            # }
+            geometry DEF MESH Mesh {
+                url "/bmstu/ros2_ws/src/simulation/worlds/1234/forest.obj"
+            }
+            castShadows FALSE
+        }
+        
+        
+       
+    ]
+    boundingObject USE MESH
+
+}
+
+# Transform {
+#     translation -111.35 34.9601 30
+#     rotation 1 -0.00166614 0.00167217 -0.00159531
+#     # scale 1 1 1
+#     children [
+        
+#         Shape {
+#             appearance Appearance{
+#                 # baseColor 0 1 0
+#                 # roughness 1
+#                 # metalness 0
+#                 material Material{transparency 0.8}
+#                 texture ImageTexture{
+#                                     url "/bmstu/ros2_ws/src/simulation/worlds/1234/texture.png"
+
+#                 }
+#             }
+#             geometry DEF MESH Mesh {
+#                 url "/bmstu/ros2_ws/src/simulation/worlds/1234/map.obj"
+#             }
+#             castShadows FALSE
+#         }
+        
+        
+       
+#     ]
+#     # boundingObject USE MESH
+
+# }
+# CircleArena {
+# translation -1.57 0.940121 -1
+# radius 300
+# subdivision 9
+# wallHeight 1
+# wallThickness 2
+# floorTileSize 5000 5000
+# }
 Tarakan{
     name "my_robot"
-    translation 0 0 0
+    translation 0 0 -2.5
 }
-BarrelGenerator{}
 # Les{}
-Fog {
-    color 0.541 0.545 0.42
-    fogType "EXPONENTIAL2"
-    visibilityRange 50
-}
+# Fog {
+#     color 0.541 0.545 0.42
+#     fogType "EXPONENTIAL2"
+#     visibilityRange 50
+# }
+BarrelGenerator{}

@@ -41,9 +41,9 @@ def generate_launch_description():
         parameters = [{'use_sim_time': False}]
     )
     
-    robot_launch = IncludeLaunchDescription(
+    rsp_launch = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory(main_name),'launch','robot.launch.py'
+                    get_package_share_directory(main_name),'launch','rsp.launch.py'
                 )]),
     )
 
@@ -51,5 +51,5 @@ def generate_launch_description():
         world_arg,
         webots,
         rviz2,
-        robot_launch,
+        rsp_launch,
     ])

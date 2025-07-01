@@ -22,8 +22,10 @@ def generate_launch_description():
     package_name = 'simulation'
     package_dir = get_package_share_directory(package_name)
     # sim_pkg_dir = get_package_share_directory('simulation')
+    main_dir = get_package_share_directory('main')
+
     
-    robot_description = os.path.join(package_dir, pathlib.Path(os.path.join(package_dir, 'resource', 'robot.urdf')))
+    robot_description = os.path.join(package_dir, pathlib.Path(os.path.join(main_dir, 'resource', 'robot.urdf')))
     
     default_world = os.path.join(
         get_package_share_directory(package_name),
@@ -81,7 +83,7 @@ def generate_launch_description():
         webots._supervisor,
         # ros2_supervisor,
         my_robot_driver,
-        pointcloud_to_laserscan_node,
+        # pointcloud_to_laserscan_node,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=webots,

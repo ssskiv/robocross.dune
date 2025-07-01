@@ -78,6 +78,13 @@ def generate_launch_description():
         output='screen',
         condition=IfCondition(no_sim),
     )
+    scan_filter_node = Node(
+        package = 'core',
+        name = 'scan_filter_node',
+        executable = 'scan_filter_node',
+        output='screen',
+        remappings=[('/scan/raw', '/scan')],
+    )
     
     gps_filter = Node(
         package='robot_localization',
@@ -147,10 +154,10 @@ def generate_launch_description():
         declare_use_sim_time,
         ekf,
         ekf2,
-        gps_fixer,
-        lidar_fixer,
+        # gps_fixer,
+        # lidar_fixer,
         gps_filter,
-        yolo_detect_node,
+        # yolo_detect_node,
         # indicator_node,
         # goal_checker_node,
         # goal_sender_node,
@@ -158,7 +165,8 @@ def generate_launch_description():
         # mavlink_node,
         # start_localization,
         # start_navigation,
-        # mapviz,
+        scan_filter_node,
+        mapviz,
         TimerAction(
             period=5.0,  # Delay in seconds
             actions=[

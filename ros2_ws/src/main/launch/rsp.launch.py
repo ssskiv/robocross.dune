@@ -14,6 +14,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 import xacro
+import pathlib
 
 
 def generate_launch_description():
@@ -21,6 +22,7 @@ def generate_launch_description():
     # Check if we're told to use sim time
     use_sim_time = LaunchConfiguration('use_sim_time')
     package_name='main'
+    package_dir = get_package_share_directory(package_name)
     
     params = {'use_sim_time': use_sim_time}
 
@@ -47,6 +49,19 @@ def generate_launch_description():
                 launch_arguments={'use_sim_time': use_sim_time}.items()
     )
 
+    urdf = os.path.join(
+        package_dir,
+        os.path.join(package_dir, pathlib.Path(os.path.join(package_dir, 'resource', 'robot.urdf'))))
+    with open(urdf, 'r') as infp:
+        robot_desc = infp.read()
+
+    state_publisher_node = Node(
+            package='robot_state_publisher',
+            executable='robot_state_publisher',
+            name='robot_state_publisher',
+            output='screen',
+            parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_desc}],
+            arguments=[urdf])
     
     # Launch!
     return LaunchDescription([
@@ -54,6 +69,7 @@ def generate_launch_description():
             'use_sim_time',
             default_value='false',
             description='Use sim time if true'),
+        state_publisher_node,
         # joint_state_publisher_gui, 
         # node_robot_state_publisher,
         # node_joint_state_publisher,

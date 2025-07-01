@@ -8,10 +8,10 @@ show_displays: true
 show_status_bar: true
 show_capture_tools: true
 window_width: 1920
-window_height: 1056
-view_scale: 0.0922961459
-offset_x: 4.20469856
-offset_y: -15.1642418
+window_height: 1031
+view_scale: 0.0618491434
+offset_x: 10.9245319
+offset_y: 11.7429657
 use_latest_transforms: true
 background: "#a0a0a4"
 image_transport: raw
@@ -34,12 +34,12 @@ displays:
       visible: true
       collapsed: false
       frame: base_link
-      color: "#00ff00"
-      draw_style: arrows
+      color: "#ff0000"
+      draw_style: points
       position_tolerance: 0
       buffer_size: 1
       static_arrow_sizes: true
-      arrow_size: 53
+      arrow_size: 225
   - type: mapviz_plugins/navsat
     name: new display
     config:
@@ -59,8 +59,8 @@ displays:
     config:
       visible: true
       collapsed: false
-      alpha: 1
-      topic: /local_costmap/voxel_layer
+      alpha: 0.60000000000000009
+      topic: /local_costmap/costmap
       update: true
       scheme: costmap
       qos_depth: 10
@@ -83,6 +83,24 @@ displays:
       static_arrow_sizes: false
       arrow_size: 25
       show_timestamps: 0
+      qos_depth: 10
+      qos_history: 1
+      qos_reliability: 1
+      qos_durability: 2
+  - type: mapviz_plugins/point_click_publisher
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: clicked_point
+      output_frame: wgs84
+  - type: mapviz_plugins/path
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /plan
+      color: "#00ff00"
       qos_depth: 10
       qos_history: 1
       qos_reliability: 1
