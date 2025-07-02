@@ -76,7 +76,7 @@
     </joint>
 
     <joint name="base_link_to_lidar_link" type="fixed">
-        <origin xyz="0.65 0 0.5" rpy="0 0.05 3.1415"/>
+        <origin xyz="0.65 0 0.5" rpy="0 -0.05 3.1415"/>
         <parent link="base_link"/>
         <child link="lidar_link"/>
     </joint>
@@ -98,7 +98,7 @@
     </link>
 
     <joint name="base_link_to_cam_link" type="fixed">
-        <origin xyz="0.65 0 0.5" rpy="3.1415 0 0"/>
+        <origin xyz="0.65 0 0.5" rpy="0 0 0"/>
         <parent link="base_link"/>
         <child link="cam_link"/>
     </joint>
@@ -113,7 +113,7 @@
     </link>
 
     <joint name="cam_link_to_rs1_link" type="fixed">
-        <origin xyz="0 0.07 0" rpy="3.1415 0 0.7"/>
+        <origin xyz="0 0.07 0" rpy="0 0 0.5"/>
         <parent link="cam_link"/>
         <child link="rs1_link"/>
     </joint>
@@ -131,7 +131,7 @@
 
 
     <joint name="cam_link_to_rs2_link" type="fixed">
-        <origin xyz="0 -0.07 0" rpy="0 0 -0.7"/>
+        <origin xyz="0 -0.07 0" rpy="0 0 -0.5"/>
         <parent link="cam_link"/>
         <child link="rs2_link"/>
     </joint>

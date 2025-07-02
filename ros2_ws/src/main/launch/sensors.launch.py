@@ -31,8 +31,9 @@ def generate_launch_description():
                 'pointcloud.enable':'True',
                 'camera_namespace':'rs1',
                 # 'base_frame_id':'cam1_link',
-                'usb_port_id':'2-3',
+                'usb_port_id':'1-3.4',
                 'camera_name':'rs1',
+                # 'json_file_path':str(get_package_share_directory('main')+'/config/settings.json'),
             }.items(),
         )
     rs2 = IncludeLaunchDescription(
@@ -46,8 +47,9 @@ def generate_launch_description():
                 'pointcloud.enable':'True',
                 'camera_namespace':'rs2',
                 # 'base_frame_id':'cam2_link',
-                'usb_port_id':'2-1',
+                'usb_port_id':'1-3.3',
                 'camera_name':'rs2',
+                # 'json_file_path':str(get_package_share_directory('main')+'/config/settings.json'),
             }.items(),
         )
 
@@ -55,6 +57,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([get_package_share_directory("rplidar_ros")+'/launch', '/rplidar_a3_launch.py']),
         launch_arguments={
             'frame_id':'lidar_link',
+            'serial_baudrate':'256000',
         }.items(),
     )
 
