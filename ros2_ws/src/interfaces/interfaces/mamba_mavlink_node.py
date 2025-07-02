@@ -9,7 +9,7 @@ class MambaMAVLinkNode(Node):
         super().__init__('mamba_mavlink_node')
 
         # Connect to MAVLink
-        self.master = mavutil.mavlink_connection('/dev/ttyUSB1', baud=115200)
+        self.master = mavutil.mavlink_connection('/dev/ttyACM0', baud=115200)
         self.publisher_ = self.create_publisher(String, 'mavlink_heartbeat', 10)
         self.create_timer(1.0, self.read_heartbeat)
 
@@ -17,6 +17,7 @@ class MambaMAVLinkNode(Node):
         msg = self.master.recv_match(type='HEARTBEAT', blocking=False)
         if msg:
             self.publisher_.publish(String(data=str(msg)))
+            self.get_logger().info(str(msg))
 
 def main(args=None):
     rclpy.init(args=args)
