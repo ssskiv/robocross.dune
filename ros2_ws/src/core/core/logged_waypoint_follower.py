@@ -6,6 +6,7 @@ from nav2_simple_commander.robot_navigator import BasicNavigator
 from geometry_msgs.msg import PointStamped, PoseStamped
 from core.utils.gps_utils import latLonYaw2Geopose
 from robot_localization.srv import FromLL
+from main.srv import CheckGoal
 from ament_index_python.packages import get_package_share_directory
 import yaml
 import os
@@ -25,6 +26,7 @@ class LoggedGpsWpCommander(Node):
         self.wp_parser = YamlWaypointParser(self.wps_file_path)
  
         self.localizer = self.create_client(FromLL,  '/fromLL')
+        self.checker = self.create_client(CheckGoal, 'checkGoal')
         
         while not self.localizer.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('Service not available, waiting again...')
@@ -32,6 +34,7 @@ class LoggedGpsWpCommander(Node):
 
         self.get_logger().info('Ready for waypoints...')
         self.parse_wp_cb()
+        self.creq = CheckGoal.Request()
 
     def parse_wp_cb(self):
         """
@@ -70,6 +73,8 @@ class LoggedGpsWpCommander(Node):
                 if f[0].done():
                     self.get_logger().info("Following converted waypoint...")
                     self.command_send_cb(f)
+                    self.get_logger().warn('END FOR THIS POINT')
+                    self.check_goal()
                 else:
                     incomplete_futures.append(f)
                     
@@ -77,7 +82,13 @@ class LoggedGpsWpCommander(Node):
             if len(self.client_futures) == 0:
                 self.get_logger().warn("DONE")
                 return 0
-            
+    def check_goal(self):
+        self.creq.enabled = True
+        self.future = self.checker.call_async(self.creq)
+        rclpy.spin_until_future_complete(self, self.future)
+        return self.future.result()
+        
+                    
 def main():
     rclpy.init()
     gps_wpf = LoggedGpsWpCommander()

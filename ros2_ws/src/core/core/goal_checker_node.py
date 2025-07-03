@@ -6,7 +6,8 @@ from std_msgs.msg import String
 from sensor_msgs.msg import Image, PointCloud2, LaserScan
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped, Twist
-
+from main.srv import CheckGoal
+import time
 
 class GoalCheckerNode(Node):
     def __init__(self):
@@ -19,9 +20,17 @@ class GoalCheckerNode(Node):
         self.scan_sub = self.create_subscription(LaserScan, '/scan', self.on_scan, 10)
         self.odom_sub = self.create_subscription(Odometry, '/odometry/filtered', self.on_odom, 10)
         self.goal_pose_sub = self.create_subscription(PoseStamped, '/goal_pose', self.on_goal, 10)
+        self.srv = self.create_service(CheckGoal, 'checkGoal', self.check_goal)
         self.get_logger().info('Launched')
 
-
+    def check_goal(self, request, response):
+        self.get_logger().warn('DOING')
+        flag = False
+        while not flag:
+            self.get_logger().info(str(self.odom.pose.pose.orientation.z))
+        self.get_logger().warn('DONE')
+        response.status=True
+        return response
     def on_image(self, msg):
         pass
     def on_depth(self, msg):
@@ -29,7 +38,7 @@ class GoalCheckerNode(Node):
     def on_scan(self, msg):
         pass
     def on_odom(self, msg):
-        pass
+        self.odom = msg
     def on_goal(self, msg):
         pass
 
