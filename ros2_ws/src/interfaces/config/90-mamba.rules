@@ -1,0 +1,5 @@
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="5741", MODE:="0777", SYMLINK+="mamba"
+#udev rule for mamba controller. Get data from lsusb in 'vendor:prod' format.
+# 
+#sudo udevadm control --reload
+#sudo udevadm trigger 

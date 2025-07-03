@@ -37,9 +37,9 @@ class YoloDetect(Node):
             Image,
             param_camera,
             self.image_callback,
-            2)
-        self.publisher_image = self.create_publisher(Image, param_outtopic_img, 2)
-        self.publisher_scan = self.create_publisher(LaserScan, param_outtopic_scan, 2)  # Топик для LaserScan
+            1)
+        self.publisher_image = self.create_publisher(Image, param_outtopic_img, 1)
+        self.publisher_scan = self.create_publisher(LaserScan, param_outtopic_scan, 1)  # Топик для LaserScan
     
         # # Чтобы один было время
 
@@ -52,15 +52,14 @@ class YoloDetect(Node):
         self.model = YOLO('/home/developer/robocross.dune/ros2_ws/src/core/train/weights/best.pt')
 
         # Параметры камеры
-        self.image_width = 640  # Ширина изображения
-        self.fov_horizontal = 3.1453/2  # Поле зрения камеры в градусах 
+        self.image_width = 424  # Ширина изображения
+        self.fov_horizontal = 2.09 # Поле зрения камеры в градусах 
 
 
         self.k = 197.47  # Как определить? Запустить либо скрипт, либо дебил с рулеткой и бочкой
 
 
-        # Масив
-        self.data_pairs= []
+        
 
         self.get_logger().info('YOLOv8 нода запущена')
 
@@ -71,6 +70,9 @@ class YoloDetect(Node):
         cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
         
         results = self.model(cv_image)
+
+        annotated_image = cv_image.copy()
+        
 
         # # Параметры лидара
         # angle_min = -3.14  # Минимальный угол
@@ -100,9 +102,21 @@ class YoloDetect(Node):
         for result in results:
             boxes = result.boxes  
             for box in boxes:
+                confidence = box.conf.item()  # Уверенность 
+                if confidence < 0.50:
+                    continue
                 
                 x1, y1, x2, y2 = box.xyxy[0].cpu().numpy()  
                 x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)  
+                
+                
+                #Test
+                cv2.rectangle(annotated_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                class_id = int(box.cls)
+                label = f"{result.names[class_id]} {confidence:.2f}"
+                cv2.putText(annotated_image, label, (x1, y1 - 10), 
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
                 
                 width = x2 - x1
                 height = y2 - y1
@@ -181,7 +195,7 @@ class YoloDetect(Node):
     
         self.publisher_scan.publish(scan_msg)
 
-        annotated_image = results[0].plot()  # Метод plot() делает bounding boxes
+        #annotated_image = results[0].plot()  # Метод plot() делает bounding boxes
         
         processed_image_msg = self.bridge.cv2_to_imgmsg(annotated_image, encoding='bgr8')
         processed_image_msg.header = msg.header

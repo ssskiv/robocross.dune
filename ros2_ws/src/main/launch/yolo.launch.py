@@ -25,7 +25,7 @@ def generate_launch_description():
         executable='yolo_detect',
         output='screen',
         parameters=[{
-            'input_topic':'/rs1/rs1/color/image_raw',
+            'input_topic':'/rs1/rs1/infra1/image_rect_raw',
             'base_frame':'rs1_link',
             'outtopic_img':'/yolo_detect_image_rs1',
             'outtopic_scan':'/yolo_scan1',
@@ -37,7 +37,7 @@ def generate_launch_description():
         executable='yolo_detect',
         output='screen',
         parameters=[{
-            'input_topic':'/rs2/rs2/color/image_raw',
+            'input_topic':'/rs2/rs2/infra1/image_rect_raw',
             'base_frame':'rs2_link',
             'outtopic_img':'/yolo_detect_image_rs2',
             'outtopic_scan':'/yolo_scan2',
@@ -47,5 +47,5 @@ def generate_launch_description():
 
     return LaunchDescription([
         rs1,
-        rs2,
+        #rs2,
     ])

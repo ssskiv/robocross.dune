@@ -8,11 +8,17 @@ Panels:
         - /Status1
         - /Maps1/Voxel Layer1
         - /Sensors1
+        - /Sensors1/RS11
+        - /Sensors1/RS21
         - /Camera1
+        - /Camera1/Topic1
+        - /Camera2
         - /LaserScan1/Status1
         - /LaserScan2/Status1
-        - /Image1
+        - /Image1/Topic1
         - /Image2
+        - /Image2/Topic1
+        - /Image3
       Splitter Ratio: 0.5088235139846802
     Tree Height: 778
   - Class: rviz_common/Selection
@@ -32,7 +38,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Scan Raw
+    SyncSource: RS2
 Visualization Manager:
   Class: ""
   Displays:
@@ -217,13 +223,13 @@ Visualization Manager:
           Channel Name: intensity
           Class: rviz_default_plugins/DepthCloud
           Color: 255; 255; 255
-          Color Image Topic: /rs1/rs1/color/image_raw
+          Color Image Topic: ""
           Color Transformer: RGB8
           Color Transport Hint: raw
           Decay Time: 0
-          Depth Map Topic: /rs1/rs1/aligned_depth_to_color/image_raw
+          Depth Map Topic: /rs1/rs1/depth/image_rect_raw
           Depth Map Transport Hint: raw
-          Enabled: false
+          Enabled: true
           Invert Rainbow: false
           Max Color: 255; 255; 255
           Max Intensity: 4096
@@ -242,7 +248,7 @@ Visualization Manager:
           Topic Filter: true
           Use Fixed Frame: true
           Use rainbow: true
-          Value: false
+          Value: true
         - Alpha: 1
           Auto Size:
             Auto Size Factor: 1
@@ -256,13 +262,13 @@ Visualization Manager:
           Channel Name: intensity
           Class: rviz_default_plugins/DepthCloud
           Color: 255; 255; 255
-          Color Image Topic: /rs2/rs2/color/image_raw
+          Color Image Topic: ""
           Color Transformer: RGB8
           Color Transport Hint: raw
           Decay Time: 0
-          Depth Map Topic: /rs2/rs2/aligned_depth_to_color/image_raw
+          Depth Map Topic: /rs2/rs2/depth/image_rect_raw
           Depth Map Transport Hint: raw
-          Enabled: false
+          Enabled: true
           Invert Rainbow: false
           Max Color: 255; 255; 255
           Max Intensity: 4096
@@ -281,7 +287,7 @@ Visualization Manager:
           Topic Filter: true
           Use Fixed Frame: true
           Use rainbow: true
-          Value: false
+          Value: true
       Enabled: true
       Name: Sensors
     - Class: rviz_common/Group
@@ -616,15 +622,23 @@ Visualization Manager:
               Value: true
             origin:
               Value: true
+            rs1_aligned_depth_to_infra1_frame:
+              Value: true
             rs1_color_frame:
-              Value: false
+              Value: true
             rs1_color_optical_frame:
-              Value: false
+              Value: true
             rs1_depth_frame:
-              Value: false
+              Value: true
             rs1_depth_optical_frame:
-              Value: false
+              Value: true
+            rs1_infra1_frame:
+              Value: true
+            rs1_infra1_optical_frame:
+              Value: true
             rs1_link:
+              Value: true
+            rs2_aligned_depth_to_infra1_frame:
               Value: true
             rs2_color_frame:
               Value: false
@@ -634,6 +648,10 @@ Visualization Manager:
               Value: false
             rs2_depth_optical_frame:
               Value: false
+            rs2_infra1_frame:
+              Value: true
+            rs2_infra1_optical_frame:
+              Value: true
             rs2_link:
               Value: true
           Marker Scale: 1
@@ -651,19 +669,29 @@ Visualization Manager:
                 {}
               cam_link:
                 rs1_link:
+                  rs1_aligned_depth_to_infra1_frame:
+                    rs1_infra1_optical_frame:
+                      {}
                   rs1_color_frame:
                     rs1_color_optical_frame:
                       {}
                   rs1_depth_frame:
                     rs1_depth_optical_frame:
                       {}
+                  rs1_infra1_frame:
+                    {}
                 rs2_link:
+                  rs2_aligned_depth_to_infra1_frame:
+                    rs2_infra1_optical_frame:
+                      {}
                   rs2_color_frame:
                     rs2_color_optical_frame:
                       {}
                   rs2_depth_frame:
                     rs2_depth_optical_frame:
                       {}
+                  rs2_infra1_frame:
+                    {}
               fl_wheel:
                 {}
               fr_wheel:
@@ -691,9 +719,51 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
+        Value: /rs2/rs2/color/image_raw
+      Value: false
+      Visibility:
+        Camera: true
+        Grid: true
+        Image: true
+        LaserScan: true
+        Maps:
+          Global Costmap: true
+          Local Costmap: true
+          Value: true
+          Voxel Layer: true
+        Navigation:
+          Footprint: true
+          Odometry: true
+          Path: true
+          PointStamped: true
+          Polygon: true
+          Pose: true
+          RobotModel: true
+          TF: true
+          Value: true
+        Sensors:
+          RS1: true
+          RS2: true
+          Scan Filtered: true
+          Scan Raw: true
+          Value: true
+        Value: true
+      Zoom Factor: 1
+    - Class: rviz_default_plugins/Camera
+      Enabled: false
+      Far Plane Distance: 100
+      Image Rendering: overlay
+      Name: Camera
+      Overlay Alpha: 1
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
         Value: /rs1/rs1/color/image_raw
       Value: false
       Visibility:
+        Camera: true
         Grid: true
         Image: true
         LaserScan: true
@@ -789,7 +859,7 @@ Visualization Manager:
       Use rainbow: true
       Value: true
     - Class: rviz_default_plugins/Image
-      Enabled: true
+      Enabled: false
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -801,9 +871,9 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /yolo_detect_image_rs2
-      Value: true
+      Value: false
     - Class: rviz_default_plugins/Image
-      Enabled: true
+      Enabled: false
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -814,8 +884,22 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /yolo_detect_image_rs1
-      Value: true
+        Value: /rs1/rs1/depth/image_rect_raw
+      Value: false
+    - Class: rviz_default_plugins/Image
+      Enabled: false
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /rs1/rs1/infra1/image_rect_raw
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -861,21 +945,26 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 0
-      Class: rviz_default_plugins/TopDownOrtho
+      Class: rviz_default_plugins/Orbit
+      Distance: 6.814720153808594
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
+      Focal Point:
+        X: 0.05207478255033493
+        Y: 0.06322594732046127
+        Z: -0.09031084924936295
+      Focal Shape Fixed Size: false
+      Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 36.38965606689453
+      Pitch: 0.539796769618988
       Target Frame: base_link
-      Value: TopDownOrtho (rviz_default_plugins)
-      X: 2.874081611633301
-      Y: -0.15375153720378876
+      Value: Orbit (rviz_default_plugins)
+      Yaw: 2.5703961849212646
     Saved: ~
 Window Geometry:
   Camera:
@@ -887,7 +976,7 @@ Window Geometry:
   Hide Right Dock: false
   Image:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000001c300000347fc0200000016fb0000001200530065006c0065006300740069006f006e000000003d000000880000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000347000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000a0049006d006100670065000000013d000002150000000000000000fb000000220053006c0061006d0054006f006f006c0062006f00780050006c007500670069006e000000049e000002a40000000000000000fb0000000c00430061006d00650072006102000001cd0000011b0000024a0000019efb0000000c00430061006d0065007200610000000418000000d60000000000000000fb0000000a0049006d00610067006500000002d6000000690000000000000000fb0000000a0049006d006100670065010000020a000001a40000000000000000fb0000000c00430061006d00650072006100000002ce000000c70000000000000000fb0000000a0049006d00610067006501000002ce000000c70000000000000000fb0000000c00430061006d00650072006100000002be000000c60000000000000000fb000000100079006f006c006f005f00720073003102000004c60000016200000156000000c6fb000000100079006f006c006f005f00720073003202000004bf0000027800000156000000c6fb0000000c00430061006d00650072006103000001b5000000c0000002ee0000020cfb000000100079006f006c006f002000720073003202000004340000025e000002c6000001cefb0000000a0049006d006100670065030000015200000137000002230000022e000000010000010f00000347fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003d00000347000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b20000000000000000000000020000075a000000a9fc0100000003fb0000000a0049006d00610067006503000004de000001d3000002a2000001f4fb000000100079006f006c006f002000720073003102000001df0000027b00000267000001aefb0000000a00560069006500770073030000004e00000080000002e100000197000000030000075a00000051fc0100000002fb0000000800540069006d006501000000000000075a000002fb00fffffffb0000000800540069006d006501000000000000045000000000000000000000047c0000034700000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001c300000347fc0200000017fb000000100044006900730070006c006100790073010000003d00000347000000c900fffffffb0000001200530065006c0065006300740069006f006e000000003d000000880000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb0000000a0049006d006100670065020000042c000002370000017300000129fb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000220053006c0061006d0054006f006f006c0062006f00780050006c007500670069006e000000049e000002a40000000000000000fb0000000c00430061006d006500720061020000044d0000024e0000017f00000134fb0000000c00430061006d00650072006102000005ad0000023a000001b30000018bfb0000000a0049006d00610067006502000002a40000012d000001680000012dfb0000000a0049006d00610067006503000003cc0000016d000001c3000001a4fb0000000c00430061006d006500720061030000055b000001ab000001c3000000c7fb0000000a0049006d006100670065030000020700000234000001c300000197fb0000000c00430061006d006500720061030000011d000000da0000033a000002c0fb000000100079006f006c006f005f00720073003102000004c60000016200000156000000c6fb000000100079006f006c006f005f00720073003202000004bf0000027800000156000000c6fb0000000c00430061006d00650072006103000001b5000000c0000002ee0000020cfb000000100079006f006c006f002000720073003202000004340000025e000002c6000001cefb0000000a0049006d006100670065030000015200000137000002230000022efb0000000a0049006d00610067006502000003410000019e000003e700000262000000010000010f00000347fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fc0000003d00000347000000a400fffffffa000000010100000002fb0000000c00430061006d0065007200610300000600000003040000014f0000012efb0000000a00560069006500770073010000064b0000010f0000010000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b20000000000000000000000020000075a000000a9fc0100000003fb0000000a0049006d00610067006503000004de000001d3000002a2000001f4fb000000100079006f006c006f002000720073003102000001df0000027b00000267000001aefb0000000a00560069006500770073030000004e00000080000002e100000197000000030000075a00000051fc0100000002fb0000000800540069006d006501000000000000075a000002fb00fffffffb0000000800540069006d006501000000000000045000000000000000000000047c0000034700000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:

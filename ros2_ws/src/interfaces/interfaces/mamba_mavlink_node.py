@@ -3,34 +3,85 @@ import rclpy
 from rclpy.node import Node
 from pymavlink import mavutil
 from std_msgs.msg import String
+from sensor_msgs.msg import Imu
+import time
 
 class MambaMAVLinkNode(Node):
     def __init__(self):
         super().__init__('mamba_mavlink_node')
 
         # Connect to MAVLink
-        self.master = mavutil.mavlink_connection('/dev/ttyACM0', baud=115200)
-        self.publisher_ = self.create_publisher(String, 'mavlink_heartbeat', 10)
-        self.create_timer(1.0, self.read_heartbeat)
+        self.master = mavutil.mavlink_connection('/dev/mamba', baud=115200)
+        # self.create_timer(3.0, self.slow_data)
+        self.create_timer(0.1, self.frequent_data)
+        self.imu_publisher=self.create_publisher(Imu, '/mamba_odom', 10)
+        self.imu_coef = 100.0
+        self.init_imu()
 
-        # self.master.wait_heartbeat()
-        # # Get some information !
-        # while True:
-        #     try:
-        #         altitude = self.master.messages['GPS_RAW_INT'].alt  # Note, you can access message fields as attributes!
-        #         timestamp = self.master.time_since('GPS_RAW_INT')
-        #         print(altitude)
-        #     except:
-        #         print('No GPS_RAW_INT message received')
+    def init_imu(self):
+        self.master.mav.request_data_stream_send(self.master.target_system, self.master.target_component,
+                                                 mavutil.mavlink.MAV_DATA_STREAM_ALL, 10, 1)
+        while True:
+            dmsg = self.read_mamba_msg('RAW_IMU')
+            try:
+                self.xacc = float(dmsg['xacc'])/self.imu_coef
+                self.yacc = float(dmsg['yacc'])/self.imu_coef
+                self.zacc = float(dmsg['zacc'])/self.imu_coef
+                self.get_logger().info(f'Imu initialized with these zeroes: ax: {self.xacc} ay: {self.yacc} az: {self.zacc}')
+                break
+            except:
+                self.get_logger().warn('No Imu data available, retrying')
+                time.sleep(1)
+        
 
-    def read_heartbeat(self):
-        # self.master.write()
-        # lat = self.master.field('GLOBAL_POSITION_INT', 'lat', 0) * 1.0e-7
-        msg = self.master.recv_match(type='GPS_RAW_INT', blocking=True)
-        # msg = flightmode_list()
-        if msg :
-            self.publisher_.publish(String(data=str(msg)))
-            self.get_logger().info(str(msg))
+    def frequent_data(self):
+        dmsg = self.read_mamba_msg('RAW_IMU')
+        try:
+            xacc = float(dmsg['xacc'])/self.imu_coef# - self.xacc
+            yacc = float(dmsg['yacc'])/self.imu_coef# - self.yacc
+            zacc = float(dmsg['zacc'])/self.imu_coef# - self.zacc
+            xgyro = float(dmsg['xgyro'])
+            ygyro = float(dmsg['ygyro'])
+            zgyro = float(dmsg['zgyro'])
+            self.get_logger().info(f'ax: {xacc}, ay: {yacc}, az: {zacc}')
+
+            msg = Imu()
+            msg.header.stamp = self.get_clock().now().to_msg()
+            msg.header.frame_id = 'base_link'
+
+            msg.linear_acceleration.x = xacc
+            msg.linear_acceleration.y = yacc
+            msg.linear_acceleration.z = zacc
+
+            msg.angular_velocity.x = xgyro
+            msg.angular_velocity.y = ygyro
+            msg.angular_velocity.z = zgyro
+
+            self.imu_publisher.publish(msg)
+        except:
+            self.get_logger().warn('No Imu data available')
+        
+
+    def slow_data(self):
+        dmsg = self.read_mamba_msg('GPS_RAW_INT')
+        try:
+            lat = float(dmsg['lat'])
+            lon = float(dmsg['lon'])
+            self.get_logger().info(f'lat: {lat}, lon: {lon}')
+        except:
+            self.get_logger().warn('No GPS data available')
+
+        
+        
+    def read_mamba_msg(self,msg_type):
+        time.sleep(0.1)
+        msg = self.master.recv_match(type=msg_type, blocking=False)
+        if msg:
+            s = str(msg)
+            s = s[s.index('{')+1:-1]
+            dmsg = {i.split(' : ')[0]: i.split(' : ')[1] for i in s.split(', ')} 
+            return dmsg
+        return {} 
 
 def main(args=None):
     rclpy.init(args=args)
@@ -38,3 +89,6 @@ def main(args=None):
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
+    master = mavutil.mavlink_connection('/dev/mamba', baud=115200)
+    master.mav.request_data_stream_send(master.target_system, master.target_component,
+                                                 mavutil.mavlink.MAV_DATA_STREAM_ALL, 10, 0)
