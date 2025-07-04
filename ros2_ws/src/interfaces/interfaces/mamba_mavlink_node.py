@@ -11,7 +11,7 @@ class MambaMAVLinkNode(Node):
         super().__init__('mamba_mavlink_node')
 
         # Connect to MAVLink
-        self.master = mavutil.mavlink_connection('/dev/mamba', baud=115200)
+        self.master = mavutil.mavlink_connection('/dev/serial/by-id/usb-ArduPilot_MambaF405v2_4C0044001451363333393534-if00', baud=115200)
         # self.create_timer(3.0, self.slow_data)
         self.create_timer(0.1, self.frequent_data)
         self.imu_publisher=self.create_publisher(Imu, '/mamba_odom', 10)

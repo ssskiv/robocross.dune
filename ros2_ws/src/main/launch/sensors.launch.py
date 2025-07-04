@@ -20,50 +20,45 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
     no_sim = LaunchConfiguration('no_sim')
 
-    rs1 = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([get_package_share_directory("realsense2_camera")+'/launch', '/rs_launch.py']),
-            launch_arguments={
-                # 'enable_rgbd':'True',
+    args = {# 'enable_rgbd':'True',
                 'enable_sync':'True',
-                # 'align_depth.enable':'True',
-                'enable_color':'false',
-                'enable_depth':'True',
+                'align_depth.enable':'True',
+                # 'enable_color':'True',
                 'pointcloud.enable':'True',
+                'depth_module.depth_profile': '848x480x30',
+                # 'depth_module.infra_profile': '424x240x60',
+                # 'rgb_camera.color_profile': '320x180x6',
+                # 'rgb_camera.color_format': 'Y8',
+                'clip_distance':'3.0',
+                'enable_infra1':'true',
+                # 'enable_infra2':'true',
+                'enable_depth':'True',
+            }
+    rs1_params = {
                 'camera_namespace':'rs1',
                 # 'base_frame_id':'cam1_link',
                 # 'usb_port_id':'2-2',
-                'serial_no': '_938422071383',
+                'serial_no':'_944122071765',
                 'camera_name':'rs1',
-                'depth_module.depth_profile': '640x360x6',
-                'depth_module.infra_profile': '424x240x6',
-                'rgb_camera.color_profile': '320x180x6',
-                'rgb_camera.color_format': 'Y8',
-                'clip_distance':'3.0',
-                'enable_infra1':'true',
                 # 'json_file_path':str(get_package_share_directory('main')+'/config/settings.json'),
-            }.items(),
-        )
-    rs2 = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([get_package_share_directory("realsense2_camera")+'/launch', '/rs_launch.py']),
-            launch_arguments={
-                # 'enable_rgbd':'True',
-                'enable_sync':'True',
-                # 'align_depth.enable':'True',
-                'enable_color':'false',
-                'enable_depth':'True',
-                'pointcloud.enable':'True',
+            }
+
+    rs2_params = {
                 'camera_namespace':'rs2',
                 # 'base_frame_id':'cam2_link',
                 # 'usb_port_id':'2-1',
-                'serial_no':'_944122071765',
                 'camera_name':'rs2',
-                'depth_module.depth_profile': '640x360x6',
-                'depth_module.infra_profile': '424x240x6',
-                'rgb_camera.color_profile': '320x180x6',
-                'rgb_camera.color_format': 'Y8',
-                'clip_distance':'3.0',
-                # 'json_file_path':str(get_package_share_directory('main')+'/config/settings.json'),
-            }.items(),
+                'serial_no': '_938422071383',
+                }
+    rs1_params.update(args)
+    rs2_params.update(args)
+    rs1 = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([get_package_share_directory("realsense2_camera")+'/launch', '/rs_launch.py']),
+            launch_arguments=rs1_params.items(),
+        )
+    rs2 = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([get_package_share_directory("realsense2_camera")+'/launch', '/rs_launch.py']),
+            launch_arguments=rs2_params.items(),
         )
 
     #lidar = IncludeLaunchDescription(
