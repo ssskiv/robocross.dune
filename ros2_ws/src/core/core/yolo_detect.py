@@ -31,6 +31,9 @@ class YoloDetect(Node):
         self.declare_parameter('outtopic_scan','error3')
         param_outtopic_scan = self.get_parameter('outtopic_scan').get_parameter_value().string_value
 
+        self.declare_parameter('posefinish_topic','error4')
+        param_outtopic_scan = self.get_parameter('posefinish_topic').get_parameter_value().string_value
+
 
         self.img_camera=[]
 
@@ -44,7 +47,7 @@ class YoloDetect(Node):
         self.publisher_image = self.create_publisher(Image, param_outtopic_img, 1)
         self.publisher_scan = self.create_publisher(LaserScan, param_outtopic_scan, 1)  # Топик для LaserScan
 
-        
+        self.publisher_image = self.create_publisher(Image, param_outtopic_img, 1)
 
         
         self.timer=self.create_timer(0.7,self.image_callback)
