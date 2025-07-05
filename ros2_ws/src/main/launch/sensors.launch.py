@@ -61,16 +61,16 @@ def generate_launch_description():
             launch_arguments=rs2_params.items(),
         )
 
-    #lidar = IncludeLaunchDescription(
-    #    PythonLaunchDescriptionSource([get_package_share_directory("rplidar_ros")+'/launch', '/rplidar_a3_launch.py']),
-    #    launch_arguments={
-    #        'frame_id':'lidar_link',
-    #        'serial_baudrate':'256000',
-    #    }.items(),
-    #)
+    lidar = IncludeLaunchDescription(
+       PythonLaunchDescriptionSource([get_package_share_directory("rplidar_ros")+'/launch', '/rplidar_a3_launch.py']),
+       launch_arguments={
+           'frame_id':'lidar_link',
+           'serial_baudrate':'256000',
+       }.items(),
+    )
 
     return LaunchDescription([
         rs1,
         rs2,
-        #lidar,
+        lidar,
     ])

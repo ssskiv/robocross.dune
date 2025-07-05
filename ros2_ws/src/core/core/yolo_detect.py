@@ -4,6 +4,8 @@ import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy
 from sensor_msgs.msg import Image , LaserScan
+from geometry_msgs.msg import PoseStamped 
+from tf_transformations import quaternion_from_euler
 from cv_bridge import CvBridge
 import cv2
 from ultralytics import YOLO
@@ -31,8 +33,8 @@ class YoloDetect(Node):
         self.declare_parameter('outtopic_scan','error3')
         param_outtopic_scan = self.get_parameter('outtopic_scan').get_parameter_value().string_value
 
-        self.declare_parameter('posefinish_topic','error4')
-        param_outtopic_scan = self.get_parameter('posefinish_topic').get_parameter_value().string_value
+        self.declare_parameter('pointfinish_topic','/checkpoint/point')
+        param_outtopic_point = self.get_parameter('pointfinish_topic').get_parameter_value().string_value
 
 
         self.img_camera=[]
@@ -47,7 +49,7 @@ class YoloDetect(Node):
         self.publisher_image = self.create_publisher(Image, param_outtopic_img, 1)
         self.publisher_scan = self.create_publisher(LaserScan, param_outtopic_scan, 1)  # Топик для LaserScan
 
-        self.publisher_image = self.create_publisher(Image, param_outtopic_img, 1)
+        self.publisher_point_finish= self.create_publisher(PoseStamped, param_outtopic_point, 1)
 
         
         self.timer=self.create_timer(0.7,self.image_callback)
@@ -66,8 +68,10 @@ class YoloDetect(Node):
         self.fov_horizontal = 2.09 # Поле зрения камеры в градусах 
 
 
-        self.k = 120.36 # Как определить? Запустить либо скрипт, либо дебил с рулеткой и бочкой
+        self.k1 = 120.36 # Как определить? Запустить либо скрипт, либо дебил с рулеткой и бочкой
+        self.k2 = 350.36
 
+        self.correct_camera = 0.5
 
         
 
@@ -82,7 +86,7 @@ class YoloDetect(Node):
         
             cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
             
-            results = self.model(cv_image)
+            results = self.model(cv_image, verbose = False)
 
             annotated_image = cv_image.copy()
             
@@ -98,26 +102,39 @@ class YoloDetect(Node):
             scan_msg.header.frame_id = param_base_frame  # ВАНЯЯ
             scan_msg.header.stamp = self.get_clock().now().to_msg()
 
-            scan_msg.angle_min = -self.fov_horizontal / 2.0  # Начальный угол
-            scan_msg.angle_max = self.fov_horizontal / 2.0   # Конечный угол
+            scan_msg.angle_min = (-self.fov_horizontal / 2.0) + self.correct_camera # Начальный угол
+            scan_msg.angle_max = (self.fov_horizontal / 2.0) + self.correct_camera  # Конечный угол
             scan_msg.angle_increment = 0.015  # Шаг угла (можно настроить)
             scan_msg.time_increment = 0.0
             scan_msg.scan_time = 0.0
-            scan_msg.range_min = 1.0
+            scan_msg.range_min = 0.5
             scan_msg.range_max = 50.0
 
 
             num_points = int((scan_msg.angle_max - scan_msg.angle_min) / scan_msg.angle_increment) + 1
             scan_msg.ranges = [float('nan')] * num_points  # Инициализация nan
-            
-
-
+            self.max_confidence = 0.0
+            pose_msg = PoseStamped()   
             for result in results:
                 boxes = result.boxes  
                 for box in boxes:
                     confidence = box.conf.item()  # Уверенность 
                     if confidence < 0.50:
                         continue
+                    class_id = int(box.cls)
+                    if class_id == 0:
+                        if self.max_confidence < confidence: 
+                            self.max_confidence = confidence
+
+
+               
+            for result in results:
+                boxes = result.boxes  
+                for box in boxes:
+                    confidence = box.conf.item()  # Уверенность 
+                    if confidence < 0.50:
+                        continue
+                    
                     
                     x1, y1, x2, y2 = box.xyxy[0].cpu().numpy()  
                     x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)  
@@ -137,19 +154,40 @@ class YoloDetect(Node):
 
                     #center_x = x1 + (width // 2)
                     #center_y = y1 + (height // 2)
+                    
+                    #self.get_logger().info('Обработал.. Проверяй площадь'+str(class_id))
+
+                    if class_id == 0 and self.max_confidence == confidence:                 
+                        z = self.k1 / math.sqrt(area)
+                    
+                        theta_left = ((x1 / self.image_width) * self.fov_horizontal )- self.correct_camera
+                        theta_right = ((x2 / self.image_width) * self.fov_horizontal)- self.correct_camera
+
+                        theta_center = (theta_right + theta_left)/2
+
+                        pose_msg.pose.position.x = z * math.sin(theta_center)
+                        pose_msg.pose.position.y = z * math.cos(theta_center)
+
+                        pose_msg.header.stamp = self.get_clock().now().to_msg()
+                        pose_msg.header.frame_id = param_base_frame
+                        que = quaternion_from_euler(0.0 , 0.0 , (3.14/2)-theta_center)
+                        pose_msg.pose.orientation.z = que[2] 
+                        pose_msg.pose.orientation.w = que[3] 
+
+                        self.publisher_point_finish.publish(pose_msg)
 
                     if class_id == 0:
                         
                         # Россия вперед кто такой этот 
-                        z = self.k / math.sqrt(area)
-                        #self.get_logger().info('Обработал.. Проверяй площадь'+str(area))
+                        z = self.k1 / math.sqrt(area)
+                        
                         # Края приколов
                         theta_left = (x1 / self.image_width - 0.5) * self.fov_horizontal
                         theta_right = (x2 / self.image_width - 0.5) * self.fov_horizontal
 
                         
                         # Тип объекта (ID класса)
-                        #class_id = int(box.cls)  # ID класса объекта
+                        #
                         
                         
                         # Маппинг углов на индексы
@@ -162,6 +200,7 @@ class YoloDetect(Node):
                                 
                             elif abs(angle - theta_right) < scan_msg.angle_increment / 2.0:
                                 scan_msg.ranges[num_points - i] = z
+                        self.publisher_scan.publish(scan_msg)
                         
                         
                     
@@ -207,14 +246,16 @@ class YoloDetect(Node):
                     # )
         
     
-            self.publisher_scan.publish(scan_msg)
+                
 
-            #annotated_image = results[0].plot()  # Метод plot() делает bounding boxes
-            
-            processed_image_msg = self.bridge.cv2_to_imgmsg(annotated_image, encoding='bgr8')
-            processed_image_msg.header = msg.header
-            self.publisher_image.publish(processed_image_msg)
-            #self.get_logger().info('Обработал.. Проверяй')
+                #annotated_image = results[0].plot()  # Метод plot() делает bounding boxes
+
+                
+                
+                processed_image_msg = self.bridge.cv2_to_imgmsg(annotated_image, encoding='bgr8')
+                processed_image_msg.header = msg.header
+                self.publisher_image.publish(processed_image_msg)
+                #self.get_logger().info('Обработал.. Проверяй')
 
 def main(args=None):
     rclpy.init(args=args)

@@ -52,12 +52,6 @@ def generate_launch_description():
         executable = 'goal_checker_node',
         output='screen',
     )
-    yolo_detect_node = Node(
-        package = 'core',
-        name = 'yolo_detect_node',
-        executable = 'yolo_detect',
-        output='screen',
-    )
     goal_sender_node = Node(
         package = 'core',
         name = 'goal_sender_node',
@@ -133,7 +127,27 @@ def generate_launch_description():
         )]),
         launch_arguments={'use_sim_time': use_sim_time}.items()
     )
-    
+
+    rviz2 = Node(
+            package="rviz2",
+            executable="rviz2",
+            name="rviz2",
+            arguments=['-d'+os.path.join(get_package_share_directory(package_name), 'config', 'urdf_core.rviz')]
+        )
+    sensors = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory(package_name), 'launch', 'sensors.launch.py'
+        )]),
+        launch_arguments={'use_sim_time': use_sim_time}.items()
+    )
+
+    yolo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory(package_name), 'launch', 'yolo.launch.py'
+        )]),
+        launch_arguments={'use_sim_time': use_sim_time}.items()
+    )
+
     gps_fixer = Node(
             package="tf2_ros",
             executable="static_transform_publisher",
@@ -157,6 +171,8 @@ def generate_launch_description():
         # gps_fixer,
         # lidar_fixer,
         gps_filter,
+        sensors,
+        yolo,
         # yolo_detect_node,
         # indicator_node,
         # goal_checker_node,
@@ -166,7 +182,8 @@ def generate_launch_description():
         # start_localization,
         # start_navigation,
         scan_filter_node,
-        mapviz,
+        rviz2,
+        # mapviz,
         TimerAction(
             period=5.0,  # Delay in seconds
             actions=[

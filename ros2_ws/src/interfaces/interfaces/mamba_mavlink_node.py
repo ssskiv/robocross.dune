@@ -17,7 +17,7 @@ class MambaMAVLinkNode(Node):
         self.imu_publisher=self.create_publisher(Imu, '/mamba_odom', 10)
         self.imu_coef = 100.0
         self.init_imu()
-
+    #1-1000 1-1000 5 bits
     def init_imu(self):
         self.master.mav.request_data_stream_send(self.master.target_system, self.master.target_component,
                                                  mavutil.mavlink.MAV_DATA_STREAM_ALL, 10, 1)
