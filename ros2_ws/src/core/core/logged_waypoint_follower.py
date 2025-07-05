@@ -74,7 +74,7 @@ class LoggedGpsWpCommander(Node):
                     self.get_logger().info("Following converted waypoint...")
                     self.command_send_cb(f)
                     self.get_logger().warn('END FOR THIS POINT')
-                    self.check_goal()
+                    #self.check_goal()
                 else:
                     incomplete_futures.append(f)
                     

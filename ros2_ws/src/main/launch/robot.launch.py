@@ -147,6 +147,13 @@ def generate_launch_description():
             arguments=["0", "0", "0.7", "0", "0.05", "0", "base_link", "lidar_link"]
         )
     
+    uart_node = Node(
+            package="uart_drive",
+            executable="uart_drive",
+            name="uart_node",
+            parameters=[{'device':'/dev/pts/8'}]
+    )
+    
     
     #TODO!!!! Create/find and launch RealSense node !!!!     
 
@@ -165,6 +172,7 @@ def generate_launch_description():
         # mavlink_node,
         # start_localization,
         # start_navigation,
+        uart_node,
         scan_filter_node,
         mapviz,
         TimerAction(

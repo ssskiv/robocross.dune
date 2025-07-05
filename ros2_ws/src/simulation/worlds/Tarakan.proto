@@ -165,6 +165,17 @@ PROTO Tarakan [
         InertialUnit{name "imu"}
         Gyro{name "gyro"}
         Accelerometer{name "accel"}
+        
+        InertialUnit {
+            name "imu1"
+            #translation 0.5 0 0.1
+            #boundingObject NULL  # Отключите коллизии
+            noise 0.05
+            resolution 0.001
+        }
+        Gyro { name "gyro1" }
+        Accelerometer { name "accel1" }
+
                 # Solid {
                 #     boundingObject USE BODY
                 #     physics physics Physics {

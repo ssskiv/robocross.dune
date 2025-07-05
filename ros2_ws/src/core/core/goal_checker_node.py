@@ -25,8 +25,8 @@ class GoalCheckerNode(Node):
 
     def check_goal(self, request, response):
         self.get_logger().warn('DOING')
-        flag = False
-        while not flag:
+        self.flag = False
+        while not self.flag:
             self.get_logger().info(str(self.odom.pose.pose.orientation.z))
         self.get_logger().warn('DONE')
         response.status=True
@@ -41,7 +41,8 @@ class GoalCheckerNode(Node):
         self.odom = msg
     def on_goal(self, msg):
         pass
-
+def spin_node(node):
+    rclpy.spin_once()
 def main(args=None):
     rclpy.init(args=args)
     node = GoalCheckerNode()
