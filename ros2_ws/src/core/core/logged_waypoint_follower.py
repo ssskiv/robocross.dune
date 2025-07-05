@@ -90,6 +90,7 @@ class LoggedGpsWpCommander(Node):
         elif wp_type == 2:
             self.get_logger().info("Waypoint Type 2: Charging station")
             self.check_goal()  # Call check_goal 
+            #finall
         elif wp_type == 3:
             self.get_logger().info("Waypoint Type 3: Drop-off point")
         
