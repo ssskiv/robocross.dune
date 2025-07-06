@@ -48,10 +48,10 @@ class LoggedGpsWpCommander(Node):
         Callback to set the flag for starting the waypoint following
         """
         if msg.data == "sosal":
-            self.get_logger().info("Starting waypoint following...")
+            #self.get_logger().info("Starting waypoint following...")
             self.flag = True
         else:
-            self.get_logger().warn("Received unexpected message, not starting waypoint following.")
+            #self.get_logger().warn("Received unexpected message, not starting waypoint following.")
             self.flag = False
 
     def parse_wp_cb(self):
@@ -82,22 +82,26 @@ class LoggedGpsWpCommander(Node):
         self.get_logger().info(f"Processing waypoint with type: {wp_type}")
         
         # Perform different actions based on waypoint type
-        if wp_type == 0:
-            self.get_logger().info("Waypoint Type 0: Standard navigation point")
-        elif wp_type == 1:
-            self.get_logger().info("Waypoint Type 1: Inspection point")
-            self.check_goal()  # Call check_goal 
-        elif wp_type == 2:
-            self.get_logger().info("Waypoint Type 2: Charging station")
-            self.check_goal()  # Call check_goal 
-            #finall
-        elif wp_type == 3:
-            self.get_logger().info("Waypoint Type 3: Drop-off point")
+        
         
         self.navigator.goToPose(self.resp)
         while not self.navigator.isTaskComplete():
             time.sleep(0.1)
         self.get_logger().info("Completed navigation to waypoint")
+
+        if wp_type == 0:
+            self.get_logger().info("Waypoint Type 0: Standard navigation point")
+        elif wp_type == 1:
+            self.get_logger().info("Waypoint Type 1: Inspection point")
+
+            self.check_goal(self.get_clock().now().to_msg().sec)  # Call check_goal 
+        elif wp_type == 2:
+            self.get_logger().info("Waypoint Type 2: Charging station")
+            
+            #self.check_goal(self.get_clock().now().to_msg().sec)  # Call check_goal 
+            #finall
+        elif wp_type == 3:
+            self.get_logger().info("Waypoint Type 3: Drop-off point")
 
     def spin(self):
         while rclpy.ok():
@@ -121,10 +125,18 @@ class LoggedGpsWpCommander(Node):
                 self.get_logger().warn("DONE")
                 return 0
             
-    def check_goal(self):
+    def check_goal(self,time):
+        self.creq.time = time
         self.creq.enabled = True
         self.future = self.checker.call_async(self.creq)
         rclpy.spin_until_future_complete(self, self.future)
+        self.get_logger().info(str(self.future.result().status))
+        while not self.future.result().status:
+           #self.get_logger().warn("I m v while fro check_goal")
+            #self.get_logger().warn("Waiting for goal check to complete...")
+            rclpy.spin_once(self)
+            self.future = self.checker.call_async(self.creq)
+            rclpy.spin_until_future_complete(self, self.future)
         return self.future.result()
         
                     
