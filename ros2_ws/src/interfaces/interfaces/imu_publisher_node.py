@@ -22,7 +22,7 @@ class ImuPublisherNode(Node):
     
     def __init__(self):
         super().__init__('imu_node')
-        self.declare_parameter('target_socket','ws://192.168.0.104:45123')
+        self.declare_parameter('target_socket','ws://localhost:45123')
         self.target_socket = self.get_parameter('target_socket').value
         self.ws = None
         self.rate = self.create_rate(10)
@@ -48,15 +48,18 @@ class ImuPublisherNode(Node):
 
 
     def on_error(self, ws, error):
-        print(f"Error occurred: {error}")
+        self.get_logger().error(f"Error occurred: {error}")
+        # self.ws.close()
+        # self.connect()
+        # self.rate.sleep()
 
     def on_close(self, ws, close_code, reason):
 
         self.rate.sleep()
-        self.connect()
+        # self.connect()
 
     def on_open(self, ws):
-        print("Connected to the WebSocket server")
+        self.get_logger().info("Connected to the WebSocket server")
 
     def android_timestamp_to_ros_time(self, android_timestamp_ms):
         """Convert Android timestamp in milliseconds to rospy.Time."""
@@ -81,13 +84,13 @@ class ImuPublisherNode(Node):
             # )
 
             imu_msg = Imu()
-            imu_msg.header.frame_id = "imu_link" 
+            imu_msg.header.frame_id = "base_link" 
 
             # latest_timestamp_ms = df_merged['timestamp'].iloc[-1]
             imu_msg.header.stamp = self.get_clock().now().to_msg()
-            quaternion = quaternion_from_euler(df_orient['y'].iloc[-1]/180*pi,
-            df_orient['z'].iloc[-1]/180*pi,
-            df_orient['x'].iloc[-1]/180*pi)
+            quaternion = quaternion_from_euler(df_orient['y'].iloc[-1]/-180*pi,
+            df_orient['z'].iloc[-1]/-180*pi,
+            df_orient['x'].iloc[-1]/-180*pi)
             imu_msg.orientation = Quaternion(
                 x=quaternion[0],
                 y=quaternion[1],
@@ -101,7 +104,7 @@ class ImuPublisherNode(Node):
                 y=0.0,
                 z=df_gyro['z'].iloc[-1]
             )
-            #/180*pi
+            #/-180*pi
             imu_msg.linear_acceleration = Vector3(
                 x=df_accel['x'].iloc[-1],
                 y=df_accel['y'].iloc[-1],
@@ -114,7 +117,7 @@ class ImuPublisherNode(Node):
             try:
                 self.imu_pub.publish(imu_msg)
             except self.ROSException as e:
-                print(f"Error publishing IMU message: {e}")
+                self.get_logger().warn(f"Error publishing IMU message: {e}")
 
     def on_message(self, ws, message):
         # self.get_logger().info('Got message')
@@ -137,7 +140,7 @@ class ImuPublisherNode(Node):
                     
                     self.synchronize_data()
         except json.JSONDecodeError as e:
-            print(f"Error decoding JSON: {e}")
+            self.get_logger().warn(f"Error decoding JSON: {e}")
 
     def connect(self):
         self.ws = websocket.WebSocketApp(

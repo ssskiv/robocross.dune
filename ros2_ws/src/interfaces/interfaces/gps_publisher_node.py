@@ -5,7 +5,7 @@ import urllib.parse
 import rclpy.node
 from collections import deque
 import pandas as pd
-from sensor_msgs.msg import Imu
+from sensor_msgs.msg import NavSatFix
 from geometry_msgs.msg import Vector3, Quaternion
 import time
 import threading
@@ -22,11 +22,11 @@ class GPSPublisherNode(Node):
     
     def __init__(self):
         super().__init__('imu_node')
-        self.declare_parameter('target_socket','ws://192.168.0.104:45123')
+        self.declare_parameter('target_socket','ws://localhost:45123')
         self.target_socket = self.get_parameter('target_socket').value
         self.ws = None
         self.rate = self.create_rate(10)
-        self.imu_pub = self.create_publisher(Imu, '/imu', 10)
+        self.pub = self.create_publisher(NavSatFix, '/gps/fix', 10)
         self.url = f"{self.target_socket}/gps"
         self.ws = websocket.WebSocketApp(self.url,
                               on_open=self.on_open,
@@ -50,12 +50,20 @@ class GPSPublisherNode(Node):
         # self.get_logger().info('Got message')
         try:
             data = json.loads(message)
-            sensor_type = data.get("type", "")
-            accuracy = data.get("accuracy", None)
-            timestamp = data.get("timestamp", None)
-            values = data.get("values", [])
+            # sensor_type = data.get("type", "")
+            # accuracy = data.get("accuracy", None)
+            # timestamp = data.get("timestamp", None)
+            # values = data.get("values", [])
+            msg = NavSatFix()
+            msg.header.stamp = self.get_clock().now().to_msg()
+            msg.header.frame_id = 'base_link'
+            msg.latitude = data.get("latitude", None)
+            msg.longitude = data.get("longitude", None)
+            msg.altitude = data.get("altitude", None)
 
-            self.get_logger().info(str(data))
+            self.pub.publish(msg)
+
+            # self.get_logger().info(str(data))
                     
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON: {e}")

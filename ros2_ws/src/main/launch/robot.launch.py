@@ -148,6 +148,13 @@ def generate_launch_description():
         launch_arguments={'use_sim_time': use_sim_time}.items()
     )
 
+    phone = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory(package_name), 'launch', 'phone.launch.py'
+        )]),
+        launch_arguments={'use_sim_time': use_sim_time}.items()
+    )
+
     gps_fixer = Node(
             package="tf2_ros",
             executable="static_transform_publisher",
@@ -173,6 +180,7 @@ def generate_launch_description():
         gps_filter,
         sensors,
         yolo,
+        phone,
         # yolo_detect_node,
         # indicator_node,
         # goal_checker_node,
