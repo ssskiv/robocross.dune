@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 import serial
-from std_msgs.msg import UInt8
+from std_msgs.msg import UInt8, String
 from geometry_msgs.msg import PoseStamped, Twist
 
 class IndicatorNode(Node):
@@ -15,6 +15,8 @@ class IndicatorNode(Node):
         self.log  = self.get_logger()
         self.vx = 0.0
         self.log.info('Launched')
+        self.msg = UInt8() 
+        self.msg.data = int('0b00000000',2)
 
     """
         0bXXXXXXXX - число, которое отправляется на stm
@@ -30,7 +32,8 @@ class IndicatorNode(Node):
     """
 
     def on_status(self, msg):
-        match msg.split()[0]:#предполагается разделение по пробелам, решение временное
+        e = self.msg
+        match msg.data.split()[0]:#предполагается разделение по пробелам, решение временное
             # case 'moving_forward':
             #     self.publisher.publish('0b00010110')
             #     self.log.info('Got moving')
@@ -38,45 +41,56 @@ class IndicatorNode(Node):
             #     self.publisher.publish('0b00111110')
             #     self.log.info('Got moving')
             case 'local':
-                self.publisher.publish('0b01111101')
+                e = int('0b01111101',2)
+                # self.publisher.publish('0b01111101')
                 self.log.info('Got decelerating')    
             case 'stop':
-                self.publisher.publish('0b00000010')
+                e = int('0b00000010',2)
+                # self.publisher.publish('0b00000010')
                 self.log.info('Got stop')
             # case 'lights_on':
             #     self.log.info('Got lights_on')
             # case 'lights_off':
             #     self.log.info('Got lights_off')
             case 'pause':
-                self.publisher.publish('0b00010000')
+                # self.publisher.publish('0b00010000')
+                e = int('0b00010000',2)
                 self.log.info('Got pause')
+        self.msg.data = e
+        self.publisher.publish(self.msg)
     def on_cmd(self, msg):
         # если движемся вперёд
+        e = int('0b00011001',2)
         if msg.linear.x > 0:
             # если тормозим
             if self.vx - msg.linear.x > 0:
-                self.publisher.publish('0b00011001')
+                e = int('0b00011001',2)
+                # self.publisher.publish('0b00011001')
                 self.log.info('deccelerating')
             # ускор. или пост. скорость
             else:
-                self.publisher.publish('0b00111101')
+                e = int('0b00111101',2)
+                # self.publisher.publish('0b00111101')
                 self.log.info('Got moving')
         # если скорость уменьшается
         if msg.linear.x < 0:
-            self.publisher.publish('0b00111101')
+            e = int('0b00111101',2)
+            # self.publisher.publish('0b00111101')
             self.log.info('Got moving')
-
+        self.msg.data = e
+        self.publisher.publish(self.msg)
         self.vx = msg.linear.x
+        
 
-    def lamplighter(self, msg):
+    def lamplighter(self):
         # мигание передних фар
-        if (msg >> 7 & 1):
-            msg ^= (1 << 0) 
-            self.publisher.publish(msg)
+        if (self.msg.data >> 7 & 1):
+            self.msg.data ^= (1 << 0) 
+            self.publisher.publish(self.msg)
         # мигание задних фар
-        if (msg >> 6 & 1):
-            msg ^= (1 << 2) 
-            self.publisher.publish(msg)
+        if (self.msg.data >> 6 & 1):
+            self.msg.data ^= (1 << 2) 
+            self.publisher.publish(self.msg)
 
 def main(args=None):
     rclpy.init(args=args)

@@ -14,6 +14,7 @@
 #include "nav_msgs/msg/odometry.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include <std_msgs/msg/string.hpp>
+#include <std_msgs/msg/u_int8.hpp>
 
 using std::placeholders::_1;
 using namespace std::chrono_literals;
@@ -27,7 +28,7 @@ class UARTNode : public rclcpp::Node {
           int baudrate, bytesize, stopbits;
           std::string parity;
   
-          this->declare_parameter("device", "/dev/ttyUSB0");
+          this->declare_parameter("device", "/dev/pts/39");
           this->declare_parameter("baudrate", 115200);
           this->declare_parameter("bytesize", 8);
           this->declare_parameter("parity", "none");
@@ -119,6 +120,9 @@ class UARTNode : public rclcpp::Node {
           // Подписка на входящие сообщения для отправки в UART
           sub_ = this->create_subscription<geometry_msgs::msg::Twist>(
             "cmd_vel", 10, std::bind(&UARTNode::topic_callback, this, _1));
+
+          indicator_sub = this->create_subscription<std_msgs::msg::UInt8>(
+            "indication", 10, std::bind(&UARTNode::indication_callback, this, _1));
       
   
           // Паблишер для вывода из UART
@@ -151,6 +155,8 @@ class UARTNode : public rclcpp::Node {
         v_y = 0.0;
         v_w = 0.0;
 
+        indicator_state = 0;
+
       }
 
 
@@ -163,6 +169,7 @@ class UARTNode : public rclcpp::Node {
           if (uart_fd_ >= 0) {
               close(uart_fd_);
           }
+          RCLCPP_ERROR(this->get_logger(), "Ошибка применения настроек UART");
       }
     mutable double vel_x;
     mutable double vel_y;
@@ -173,6 +180,7 @@ class UARTNode : public rclcpp::Node {
     double x, y, w, v_x, v_y, v_w;
     double move_x, move_y, move_w;
     double real_x, real_y, real_w;
+    mutable uint8_t indicator_state = 0;
 
     double current_time;
     double prev_time;
@@ -184,6 +192,7 @@ class UARTNode : public rclcpp::Node {
       int uart_fd_;
       std::atomic<bool> running_{true};
       rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr sub_;
+      rclcpp::Subscription<std_msgs::msg::UInt8>::SharedPtr indicator_sub;
       rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pub_;
       std::thread uart_thread_;
       rclcpp::TimerBase::SharedPtr timer_;
@@ -319,7 +328,10 @@ class UARTNode : public rclcpp::Node {
           }
         }
       }
-
+      void indication_callback(const std_msgs::msg::UInt8::SharedPtr msg) const
+      {
+        indicator_state = msg->data;
+      }
       void topic_callback(const geometry_msgs::msg::Twist::SharedPtr msg) const
       {
         vel_x = msg->linear.x;
@@ -327,8 +339,8 @@ class UARTNode : public rclcpp::Node {
         vel_w = msg->angular.z;            
 
         std::ostringstream oss;
-        oss << "set_body_vel " << (int) (vel_x * 1000) << " " << (int) (vel_y * 1000) << " " << (int) (vel_w * 1000) <<"\r";
-        
+        // oss << "set_body_vel " << (int) (vel_x * 1000) << " " << (int) (vel_y * 1000) << " " << (int) (vel_w * 1000) <<"\r";
+        oss << (int) (vel_x * 1000) << " "<< (int) (vel_w * 1000) << " " <<  (int) (indicator_state)<<"\r";
         
 
         std::string result = oss.str();
@@ -340,8 +352,17 @@ class UARTNode : public rclcpp::Node {
 
 int main(int argc, char ** argv)
 {
+  // rclcpp::init(argc, argv);
+  // rclcpp::spin(std::make_shared<UARTNode>());
+
+  // rclcpp::shutdown();
+  // return 0;
+
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<UARTNode>());
-  rclcpp::shutdown();
-  return 0;
+    {
+        auto node = std::make_shared<UARTNode>();
+        rclcpp::spin(node); // Node runs until shutdown or Ctrl+C
+    } // Node object goes out of scope here, destructor is called
+    rclcpp::shutdown();
+    return 0;
 }

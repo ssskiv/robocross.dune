@@ -28,6 +28,7 @@ class GPSPublisherNode(Node):
         self.rate = self.create_rate(10)
         self.pub = self.create_publisher(NavSatFix, '/gps/fix', 10)
         self.url = f"{self.target_socket}/gps"
+        self.closed = False
         self.ws = websocket.WebSocketApp(self.url,
                               on_open=self.on_open,
                               on_message=self.on_message,
@@ -41,10 +42,22 @@ class GPSPublisherNode(Node):
 
     def on_close(self, ws, close_code, reason):
         self.rate.sleep()
+        self.closed = True
         self.connect()
 
     def on_open(self, ws):
         print("Connected to the WebSocket server")
+        thread = threading.Thread(target=self.send_requests, args=(ws,))
+        thread.start()
+    
+
+    def send_requests(self,ws):
+        while True:
+            if not self.closed:
+                ws.send("getLastKnownLocation")
+                time.sleep(0.1) # 1 second sleep
+            else:
+                sys.exit() # stop this thread   
 
     def on_message(self, ws, message):
         # self.get_logger().info('Got message')
