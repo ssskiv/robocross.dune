@@ -12,8 +12,8 @@ class ScanFilterNode(Node):
         # Parameters
         self.declare_parameter('input_topic', '/scan/raw')
         self.declare_parameter('output_topic', '/scan/filtered')
-        self.declare_parameter('distance_threshold', 0.40)  # clustering
-        self.declare_parameter('max_perimeter', 3.0)        # metersz
+        self.declare_parameter('distance_threshold', 0.10)  # clustering
+        self.declare_parameter('max_perimeter', 2.0)        # metersz
         self.key = 4568.0
 
         self.input_topic = self.get_parameter('input_topic').get_parameter_value().string_value

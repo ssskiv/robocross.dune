@@ -29,7 +29,8 @@ setup(
             'scan_filter_node = core.scan_filter_node:main',
             'logged_waypoint_follower = core.logged_waypoint_follower:main',
             'interactive_waypoint_follower = core.interactive_waypoint_follower:main',
-            'gps_waypoint_logger = core.gps_waypoint_logger:main'
+            'gps_waypoint_logger = core.gps_waypoint_logger:main',
+            'speed_manager = core.speed_manager:main',
         ],
     },
 )

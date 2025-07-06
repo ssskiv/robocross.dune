@@ -1,0 +1,26 @@
+teleop_twist_joy_node:
+  ros__parameters:
+    axis_linear:
+      x: 1
+    scale_linear:
+      x: 2.0
+    scale_linear_turbo:
+      x: 5.0
+
+    axis_angular:
+      yaw: 3
+    scale_angular:
+      yaw: 1.0
+
+    enable_button: 4
+    enable_turbo_button: 5
+
+    publish_limit_millisec: 100
+
+    #axes
+    # 5 - rt
+    # 4 - right y
+    # 3 - right x
+    # 2 - lt
+    # 1 - left y
+    # 0 - left x

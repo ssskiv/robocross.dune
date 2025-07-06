@@ -3,21 +3,21 @@ ekf_filter_node_map:
     frequency: 10.0
     sensor_timeout: 0.1
 
-    two_d_mode: false
+    two_d_mode: true
     publish_tf: true
     base_link_frame: base_link
     world_frame: map
 
-    odom0: /stm_odom
-    odom0_config: [false, false, false,
-                   false, false, false,
-                   true, true, true,
-                   false, false, false,
-                   false, false, false]
+    # odom0: /stm_odom
+    # odom0_config: [false, false, false,
+    #                false, false, false,
+    #                true, true, true,
+    #                false, false, false,
+    #                false, false, false]
 
     odom1: /odometry/gps
     odom1_config: [true,  true,  true,
-                  false, false, true,
+                  false, false, false,
                   false, false, false,
                   false, false, false,
                   false, false, false]
@@ -25,7 +25,7 @@ ekf_filter_node_map:
     imu0: /imu           
     imu0_config: [false, false, false,
                    false, false, true,
-                   false, false, true,
+                   false, false, false,
                    false, false, false,
                    false, false, false]
                    
@@ -40,19 +40,19 @@ ekf_filter_node_odom:
     base_link_frame: base_link
     world_frame: odom
 
-    odom0: /stm_odom
-    odom0_config: [false, false, false,
-                   false, false, false,
-                   true, true, true,
-                   false, false, false,
-                   false, false, false]
+    # odom0: /stm_odom
+    # odom0_config: [false, false, false,
+    #                false, false, false,
+    #                true, true, true,
+    #                false, false, false,
+    #                false, false, false]
 
     imu0: /imu
     imu0_config: [false, false, false,
                   true,  true,  true,
                   false, false, false,
                   false,  false,  false,
-                  false,  false,  false]
+                  true,  true,  true]
   # x     y      z
   # roll  pitch  yaw
   # vx    vy     vz
