@@ -1,0 +1,4 @@
+int32 time
+bool enabled
+---
+bool status

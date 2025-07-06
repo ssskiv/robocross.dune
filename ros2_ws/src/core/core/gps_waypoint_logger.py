@@ -11,7 +11,7 @@ from core.utils.gps_utils import euler_from_quaternion
 
 class GpsGuiLogger(tk.Tk, Node):
     """
-    ROS2 node to log GPS waypoints to a file
+    ROS2 node to log GPS waypoints to a file with type
     """
 
     def __init__(self, logging_file_path):
@@ -25,6 +25,14 @@ class GpsGuiLogger(tk.Tk, Node):
         self.gps_pose_label.pack()
         self.gps_pose_textbox = tk.Label(self, text="", width=45)
         self.gps_pose_textbox.pack()
+
+        # Add dropdown for waypoint type
+        self.type_label = tk.Label(self, text="Waypoint Type: (0: Промежуточность, 1: Контрольная, 2:ГОООЛ, 3: Ваня зарезал)")
+        self.type_label.pack()
+        self.waypoint_type = tk.StringVar(self)
+        self.waypoint_type.set("0")  # Default value
+        self.type_dropdown = tk.OptionMenu(self, self.waypoint_type, "0", "1", "2", "3")
+        self.type_dropdown.pack()
 
         self.log_gps_wp_button = tk.Button(self, text="Log GPS Waypoint",
                                            command=self.log_waypoint)
@@ -65,11 +73,11 @@ class GpsGuiLogger(tk.Tk, Node):
         Function to update the GUI with the last coordinates
         """
         self.gps_pose_textbox.config(
-            text=f"Lat: {self.last_gps_position.latitude:.6f}, Lon: {self.last_gps_position.longitude:.6f}, yaw: {self.last_heading:.2f} rad")
+            text=f"Lat: {self.last_gps_position.latitude:.6f}, Lon: {self.last_gps_position.longitude:.6f}, yaw: {self.last_heading:.2f} rad, type: {self.waypoint_type.get()}")
 
     def log_waypoint(self):
         """
-        Function to save a new waypoint to a file
+        Function to save a new waypoint to a file with type
         """
         # read existing waypoints
         try:
@@ -78,7 +86,7 @@ class GpsGuiLogger(tk.Tk, Node):
         # in case the file does not exist, create with the new wps
         except FileNotFoundError:
             existing_data = {"waypoints": []}
-        # if other exception, raise the warining
+        # if other exception, raise the warning
         except Exception as ex:
             messagebox.showerror(
                 "Error", f"Error logging position: {str(ex)}")
@@ -88,7 +96,8 @@ class GpsGuiLogger(tk.Tk, Node):
         data = {
             "latitude": self.last_gps_position.latitude,
             "longitude": self.last_gps_position.longitude,
-            "yaw": self.last_heading
+            "yaw": self.last_heading,
+            "type": int(self.waypoint_type.get())  # Add waypoint type
         }
         existing_data["waypoints"].append(data)
 
@@ -101,7 +110,7 @@ class GpsGuiLogger(tk.Tk, Node):
                 "Error", f"Error logging position: {str(ex)}")
             return
 
-        messagebox.showinfo("Info", "Waypoint logged succesfully")
+        messagebox.showinfo("Info", "Waypoint logged successfully")
 
 
 def main(args=None):
