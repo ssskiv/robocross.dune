@@ -28,7 +28,7 @@ class UARTNode : public rclcpp::Node {
           int baudrate, bytesize, stopbits;
           std::string parity;
   
-          this->declare_parameter("device", "/dev/pts/39");
+          this->declare_parameter("device", "/dev/serial/by-id/usb-Prolific_Technology_Inc._USB-Serial_Controller-if00-port0");
           this->declare_parameter("baudrate", 115200);
           this->declare_parameter("bytesize", 8);
           this->declare_parameter("parity", "none");
@@ -136,8 +136,8 @@ class UARTNode : public rclcpp::Node {
         odom_pub = this->create_publisher<nav_msgs::msg::Odometry>(odom_topic, 1000); // Создаём Odom Publisher
         odom_broadcaster = std::make_unique<tf2_ros::TransformBroadcaster>(*this);  
 
-        timer_ = this->create_wall_timer(
-            100ms, std::bind(&UARTNode::broadcast_timer_callback, this));
+        // timer_ = this->create_wall_timer(
+        //     100ms, std::bind(&UARTNode::broadcast_timer_callback, this));
 
         current_time = this->now().nanoseconds();
         prev_time = this->now().nanoseconds();
@@ -245,72 +245,72 @@ class UARTNode : public rclcpp::Node {
 
       void make_odom_from_str(std::string in_str) {
 
-        std::istringstream(in_str) >> v_x >> v_y >> v_w >> x >> y >> w;
+        // std::istringstream(in_str) >> v_x >> v_y >> v_w >> x >> y >> w;
         // RCLCPP_INFO(this->get_logger(), "%f %f %f %f %f %f", x, y, w, v_x, v_y, v_w);
+        // RCLCPP_INFO(this->get_logger(),in_str);
+        // nav_msgs::msg::Odometry odom_msg;
         
-        nav_msgs::msg::Odometry odom_msg;
+        // current_time = this->now().nanoseconds();
+        // double d_time = current_time - prev_time;
+
+        // // RCLCPP_INFO(this->get_logger(), "At time '%f' i see: '%f', '%f', '%f'", current_time, vel_x, vel_y, vel_w);
         
-        current_time = this->now().nanoseconds();
-        double d_time = current_time - prev_time;
+        // auto d_w = v_w * d_time / std::pow(10,9);
+        // w += d_w;
 
-        // RCLCPP_INFO(this->get_logger(), "At time '%f' i see: '%f', '%f', '%f'", current_time, vel_x, vel_y, vel_w);
+        // auto d_x = v_x * d_time / std::pow(10,9) * std::cos(w) + v_y * d_time / std::pow(10,9) * std::sin(w);
+        // auto d_y = v_y * d_time / std::pow(10,9) * std::cos(w) + v_x * d_time / std::pow(10,9) * std::sin(w);        
+        // x += d_x;
+        // y += d_y;
         
-        auto d_w = v_w * d_time / std::pow(10,9);
-        w += d_w;
+        // tf2::Quaternion quaternion;
+        // quaternion.setRPY(0, 0, w);   
+        // // quaternion.normalize();        
 
-        auto d_x = v_x * d_time / std::pow(10,9) * std::cos(w) + v_y * d_time / std::pow(10,9) * std::sin(w);
-        auto d_y = v_y * d_time / std::pow(10,9) * std::cos(w) + v_x * d_time / std::pow(10,9) * std::sin(w);        
-        x += d_x;
-        y += d_y;
-        
-        tf2::Quaternion quaternion;
-        quaternion.setRPY(0, 0, w);   
-        // quaternion.normalize();        
+        // //next, we'll publish the odometry message over ROS
+        // nav_msgs::msg::Odometry odom;        
+        // odom.header.stamp = this->now();
+        // odom.header.frame_id = "odom";
 
-        //next, we'll publish the odometry message over ROS
-        nav_msgs::msg::Odometry odom;        
-        odom.header.stamp = this->now();
-        odom.header.frame_id = "odom";
+        // //set the position
+        // odom.pose.pose.position.x = x;
+        // odom.pose.pose.position.y = y;
+        // odom.pose.pose.position.z = 0.01;        
+        // odom.pose.pose.orientation.x = quaternion.x();
+        // odom.pose.pose.orientation.y = quaternion.y();
+        // odom.pose.pose.orientation.z = quaternion.z();
+        // odom.pose.pose.orientation.w = quaternion.w();
 
-        //set the position
-        odom.pose.pose.position.x = x;
-        odom.pose.pose.position.y = y;
-        odom.pose.pose.position.z = 0.01;        
-        odom.pose.pose.orientation.x = quaternion.x();
-        odom.pose.pose.orientation.y = quaternion.y();
-        odom.pose.pose.orientation.z = quaternion.z();
-        odom.pose.pose.orientation.w = quaternion.w();
+        // //set the velocity
+        // odom.child_frame_id = "base_link";
+        // odom.twist.twist.linear.x = v_x;
+        // odom.twist.twist.linear.y = v_y;
+        // odom.twist.twist.linear.z = 0.01;
 
-        //set the velocity
-        odom.child_frame_id = "base_link";
-        odom.twist.twist.linear.x = v_x;
-        odom.twist.twist.linear.y = v_y;
-        odom.twist.twist.linear.z = 0.01;
+        // odom.twist.twist.angular.x = 0.0;
+        // odom.twist.twist.angular.y = 0.0;
+        // odom.twist.twist.angular.z = v_w;
 
-        odom.twist.twist.angular.x = 0.0;
-        odom.twist.twist.angular.y = 0.0;
-        odom.twist.twist.angular.z = v_w;
+        // //publish the message             
+        // odom_pub -> publish(odom);
 
-        //publish the message             
-        odom_pub -> publish(odom);
+        // //first, we'll publish the transform over tf        
+        // geometry_msgs::msg::TransformStamped odom_trans;
+        // // odom_trans.header.stamp = odom.header.stamp;
+        // odom_trans.header.stamp = this->now();        
+        // odom_trans.header.frame_id = "odom";
+        // odom_trans.child_frame_id = "base_link";
 
-        //first, we'll publish the transform over tf        
-        geometry_msgs::msg::TransformStamped odom_trans;
-        // odom_trans.header.stamp = odom.header.stamp;
-        odom_trans.header.stamp = this->now();        
-        odom_trans.header.frame_id = "odom";
-        odom_trans.child_frame_id = "base_link";
+        // odom_trans.transform.translation.x = x;
+        // odom_trans.transform.translation.y = y;
+        // odom_trans.transform.translation.z = 0.01;        
+        // odom_trans.transform.rotation.x = quaternion.x();
+        // odom_trans.transform.rotation.y = quaternion.y();
+        // odom_trans.transform.rotation.z = quaternion.z();
+        // odom_trans.transform.rotation.w = quaternion.w();
 
-        odom_trans.transform.translation.x = x;
-        odom_trans.transform.translation.y = y;
-        odom_trans.transform.translation.z = 0.01;        
-        odom_trans.transform.rotation.x = quaternion.x();
-        odom_trans.transform.rotation.y = quaternion.y();
-        odom_trans.transform.rotation.z = quaternion.z();
-        odom_trans.transform.rotation.w = quaternion.w();
-
-        //send the transform        
-        odom_broadcaster->sendTransform(odom_trans);
+        // //send the transform        
+        // odom_broadcaster->sendTransform(odom_trans);
 
         prev_time = current_time;
       } 
@@ -320,6 +320,7 @@ class UARTNode : public rclcpp::Node {
           while (running_) {
             std::string line = read_until_delim(uart_fd_);  // или другой символ
             if (!line.empty()) {
+                RCLCPP_INFO(this->get_logger(), "%s", line.c_str());
                 make_odom_from_str(line);
                 std_msgs::msg::String msg;
                 msg.data = line;
@@ -331,6 +332,15 @@ class UARTNode : public rclcpp::Node {
       void indication_callback(const std_msgs::msg::UInt8::SharedPtr msg) const
       {
         indicator_state = msg->data;
+
+        std::ostringstream oss;
+        // oss << "set_body_vel " << (int) (vel_x * 1000) << " " << (int) (vel_y * 1000) << " " << (int) (vel_w * 1000) <<"\r";
+        oss << "alarm "<<(int) indicator_state<<"\r";
+
+        std::string result = oss.str();
+        RCLCPP_INFO(this->get_logger(), "%s", result.c_str());
+
+        write(uart_fd_, result.c_str(), result.size());
       }
       void topic_callback(const geometry_msgs::msg::Twist::SharedPtr msg) const
       {
@@ -340,7 +350,7 @@ class UARTNode : public rclcpp::Node {
 
         std::ostringstream oss;
         // oss << "set_body_vel " << (int) (vel_x * 1000) << " " << (int) (vel_y * 1000) << " " << (int) (vel_w * 1000) <<"\r";
-        oss << (int) (vel_x * 1000) << " "<< (int) (vel_w * 1000) << " " <<  (int) (indicator_state)<<"\r";
+        oss << "vel " << (int) (vel_x * 1000) << " "<< (int) (vel_w * 1000)<<"\r";
         
 
         std::string result = oss.str();

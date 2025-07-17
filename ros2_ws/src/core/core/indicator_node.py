@@ -8,16 +8,16 @@ from geometry_msgs.msg import PoseStamped, Twist
 class IndicatorNode(Node):
     def __init__(self):
         super().__init__('indicator_node')
-        self.publisher = self.create_publisher(UInt8, '/indication', 10)
-        self.cmd_sub = self.create_subscription(Twist, '/cmd_vel',self.on_cmd, 10)
-        self.status_sub = self.create_subscription(String, '/goal_status', self.on_status, 10)
+        self.publisher = self.create_publisher(UInt8, '/indication_planned', 10)
+        #self.cmd_sub = self.create_subscription(Twist, '/cmd_vel',self.on_cmd, 10)
+        #self.status_sub = self.create_subscription(String, '/goal_status', self.on_status, 10)
         self.timer = self.create_timer(0.5, self.lamplighter)
         self.log  = self.get_logger()
         self.vx = 0.0
         self.log.info('Launched')
-        self.msg = UInt8() 
-        self.msg.data = int('0b00000000',2)
-
+        self.msg = UInt8()
+        self.msg.data = 1 #int('0b00000001',2)
+        self.publisher.publish(self.msg)
     """
         0bXXXXXXXX - число, которое отправляется на stm
 
@@ -34,63 +34,79 @@ class IndicatorNode(Node):
     def on_status(self, msg):
         e = self.msg
         match msg.data.split()[0]:#предполагается разделение по пробелам, решение временное
-            # case 'moving_forward':
-            #     self.publisher.publish('0b00010110')
-            #     self.log.info('Got moving')
-            # case 'moving_backward':
-            #     self.publisher.publish('0b00111110')
-            #     self.log.info('Got moving')
+            case 'moving':
+                e = int('0b00010000', 2)
+                self.log.info('Got moving')
             case 'local':
-                e = int('0b01111101',2)
-                # self.publisher.publish('0b01111101')
+                e = int('0b01110101',2)
                 self.log.info('Got decelerating')    
             case 'stop':
                 e = int('0b00000010',2)
-                # self.publisher.publish('0b00000010')
                 self.log.info('Got stop')
-            # case 'lights_on':
-            #     self.log.info('Got lights_on')
-            # case 'lights_off':
-            #     self.log.info('Got lights_off')
             case 'pause':
-                # self.publisher.publish('0b00010000')
                 e = int('0b00010000',2)
                 self.log.info('Got pause')
+            case 'off':
+                e = int('0b00000000',2)
+                self.log.info('Got off')
         self.msg.data = e
-        self.publisher.publish(self.msg)
+        self._pub(self.msg)
     def on_cmd(self, msg):
         # если движемся вперёд
-        e = int('0b00011001',2)
+        e = int('0b00010001',2)
         if msg.linear.x > 0:
             # если тормозим
             if self.vx - msg.linear.x > 0:
-                e = int('0b00011001',2)
-                # self.publisher.publish('0b00011001')
+                e = int('0b00010001',2)
                 self.log.info('deccelerating')
             # ускор. или пост. скорость
             else:
-                e = int('0b00111101',2)
-                # self.publisher.publish('0b00111101')
+                e = int('0b00110101',2)
                 self.log.info('Got moving')
         # если скорость уменьшается
         if msg.linear.x < 0:
-            e = int('0b00111101',2)
-            # self.publisher.publish('0b00111101')
+            e = int('0b00110101',2)
             self.log.info('Got moving')
+        if msg.linear.x == 0:
+            e = int('0b00000011',2)#TODO: FIX TO TURN ON SIREN (0b00010000)
+            self.log.info('Got pause')
         self.msg.data = e
-        self.publisher.publish(self.msg)
+        self._pub(self.msg)
         self.vx = msg.linear.x
         
 
     def lamplighter(self):
         # мигание передних фар
-        if (self.msg.data >> 7 & 1):
-            self.msg.data ^= (1 << 0) 
-            self.publisher.publish(self.msg)
-        # мигание задних фар
         if (self.msg.data >> 6 & 1):
+            self.msg.data ^= (1 << 0) 
+            self._pub(self.msg)
+        # мигание задних фар
+        if (self.msg.data >> 5 & 1):
             self.msg.data ^= (1 << 2) 
-            self.publisher.publish(self.msg)
+            self._pub(self.msg)
+
+    def _pub(self, msg):
+        if msg.data:
+            if msg.data ==0:
+                self.publisher.publish(msg)
+            else:
+                s = bin(msg.data)
+                print(s)
+                k = '0b000'
+                u = True
+                
+                for i in range(4,len(s)):
+                    print(s[i])
+                    
+                    if i == 6 and u:
+                        k+='0'
+                        print('SAS')
+                    else:
+                        k+=s[i]
+                
+                print(k)
+                msg.data = int(s,2)
+                self.publisher.publish(msg)
 
 def main(args=None):
     rclpy.init(args=args)

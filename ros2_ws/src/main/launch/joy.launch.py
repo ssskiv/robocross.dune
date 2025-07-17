@@ -19,7 +19,7 @@ def generate_launch_description():
             default_value='false',
             description='Use sim time if true')
     use_sim_time = LaunchConfiguration('use_sim_time')
-    no_sim = LaunchConfiguration('no_sim')
+    no_sim = LaunchConfiguration('no_sim', default=True)
 
 
     joy = Node(
@@ -44,16 +44,27 @@ def generate_launch_description():
     
     teleop = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('teleop_twist_joy'), 'launch', 'teleop-launch.py'
+            get_package_share_directory('main'), 'launch', 'teleop-launch.py'
         )]),
-        launch_arguments={'joy_config': 'f310', 'joy_vel': 'cmd_vel_planned'}.items(),
-        
+        # launch_arguments={'joy_config': 'f310'}.items(),
+        # launch_arguments={'joy_config': 'f310', 'config_filepath': '/home/developer/robocross.dune/ros2_ws/src/main/config/f310.config.yaml', 'joy_topic':'/cmd_vel_planned'}.items(),
+        # remappings = {('/cmd_vel','/cmd_vel_planned')},
+                launch_arguments={'joy_config': 'f310', 'config_filepath': '/home/developer/robocross.dune/ros2_ws/src/main/config/ps4.config.yaml', 'joy_topic':'/cmd_vel_planned'}.items(),
+    )
+
+    uart_node = Node(
+        package = 'uart_drive',
+        name = 'uart_node',
+        executable = 'uart_drive',
+        output='screen',
+        condition=IfCondition(no_sim),
+        # parameters=[{'coalesce_interval_ms':'1000'},],
     )
 
     #TODO!!!! Create/find and launch RealSense node !!!!     
 
     return LaunchDescription([
-        ExecuteProcess(cmd=['adb', 'kill-server']),
         joy,
         teleop,
+        # uart_node,
     ])

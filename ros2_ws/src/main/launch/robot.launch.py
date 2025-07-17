@@ -19,7 +19,7 @@ def generate_launch_description():
             default_value='false',
             description='Use sim time if true')
     use_sim_time = LaunchConfiguration('use_sim_time')
-    no_sim = LaunchConfiguration('no_sim')
+    no_sim = LaunchConfiguration('no_sim', default=True)
 
 
     config_ekf= os.path.join(get_package_share_directory(package_name),'config','ekf_params.yaml')
@@ -59,9 +59,9 @@ def generate_launch_description():
         output='screen',
     )
     uart_node = Node(
-        package = 'interfaces',
+        package = 'uart_drive',
         name = 'uart_node',
-        executable = 'uart_node',
+        executable = 'uart_drive',
         output='screen',
         condition=IfCondition(no_sim),
     )
@@ -104,14 +104,7 @@ def generate_launch_description():
     
     nav_params = os.path.join(get_package_share_directory(package_name),'config','nav2_params.yaml')
     # nav_params = os.path.join(get_package_share_directory(package_name),'config','nav2_params_amcl.yaml')
-    start_localization = IncludeLaunchDescription(
-                PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory(package_name),'launch','localization.launch.py'
-                    # get_package_share_directory(package_name),'launch','localization_launch_amcl.py'
-                )]), 
-                # condition=IfCondition( is_localization ), 
-                launch_arguments={ 'use_sim_time': use_sim_time, 'params_file': nav_params}.items()
-    )
+    
     
     start_navigation = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
@@ -181,16 +174,13 @@ def generate_launch_description():
         sensors,
         yolo,
         phone,
-        # yolo_detect_node,
-        # indicator_node,
-        # goal_checker_node,
+        indicator_node,
+        goal_checker_node,
         # goal_sender_node,
-        # uart_node,
-        # mavlink_node,
-        # start_localization,
-        # start_navigation,
+        uart_node,
+        start_navigation,
         scan_filter_node,
-        rviz2,
+        # rviz2,
         # mapviz,
         TimerAction(
             period=5.0,  # Delay in seconds
