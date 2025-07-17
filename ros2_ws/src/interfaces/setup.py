@@ -12,7 +12,7 @@ setup(
         ('share/' + package_name+ '/config', glob('config/*')),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools', 'pymavlink', 'serial'],
+    install_requires=['setuptools', 'pymavlink', 'serial', 'pandas', 'websocket', 'websocket-client', 'zeroconf'],
     zip_safe=True,
     maintainer='root',
     maintainer_email='ivanioshpa@gmail.com',
@@ -26,6 +26,8 @@ setup(
             'mamba_mavlink = interfaces.mamba_mavlink_node:main',
             'rosbag_recorder_node = interfaces.rosbag_recorder_node:main',
             'uart_node = interfaces.uart_node:main',
+            'imu_publisher_node = interfaces.imu_publisher_node:main',
+            'gps_publisher_node = interfaces.gps_publisher_node:main',
         ],
     },
 )
