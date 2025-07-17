@@ -21,6 +21,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'start_node = core.start_node:main',
             'indicator_node = core.indicator_node:main',
             'yolo_detect = core.yolo_detect:main',
             'goal_checker_node = core.goal_checker_node:main',
